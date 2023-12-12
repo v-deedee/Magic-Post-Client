@@ -10,6 +10,10 @@ import EmployeePage from "./pages/Employee/index.tsx";
 import ThemeProvider from "./utils/ThemeContext.tsx";
 import Departments from "./pages/Boss/Departments/Departments.tsx";
 import Dashboard from "./pages/Boss/Dashboard/Dashboard.tsx";
+import { Provider } from "react-redux";
+import store from "./store/store.ts";
+import TestReduxPage from "./pages/TestReduxPage";
+import TestApiPage from "./pages/TestApiPage/index.tsx";
 
 const router = createBrowserRouter([
   {
@@ -39,12 +43,22 @@ const router = createBrowserRouter([
     path: "/employee",
     element: <EmployeePage />,
   },
+  {
+    path: "/testredux",
+    element: <TestReduxPage />
+  },
+  {
+    path: "/testapi",
+    element: <TestApiPage />
+  }
 ]);
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     <ThemeProvider>
-      <RouterProvider router={router} />
+      <Provider store={store}>
+        <RouterProvider router={router} />
+      </Provider>
     </ThemeProvider>
   </React.StrictMode>,
 );
