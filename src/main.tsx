@@ -14,6 +14,9 @@ import { Provider } from "react-redux";
 import store from "./store/store.ts";
 import TestReduxPage from "./pages/TestReduxPage";
 import TestApiPage from "./pages/TestApiPage/index.tsx";
+import CreateNewTransaction from "./pages/Employee/CreateNewTransaction.tsx";
+import LoginPage from "./pages/Authentication/LoginPage.tsx";
+import { action as loginAction, loader as loginLoader } from "./pages/Authentication/LoginPage.tsx";
 
 const router = createBrowserRouter([
   {
@@ -40,8 +43,14 @@ const router = createBrowserRouter([
     element: <ManagerPage />,
   },
   {
-    path: "/employee",
+    path: "employee",
     element: <EmployeePage />,
+    children: [
+      {
+        path: "create-new-transaction",
+        element: <CreateNewTransaction />
+      },
+    ]
   },
   {
     path: "/testredux",
@@ -50,7 +59,14 @@ const router = createBrowserRouter([
   {
     path: "/testapi",
     element: <TestApiPage />
-  }
+  },
+  {
+    
+    path: "/login",
+    action: loginAction,
+    loader: loginLoader,
+    element: <LoginPage />
+  },
 ]);
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
