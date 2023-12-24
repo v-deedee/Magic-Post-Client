@@ -17,6 +17,12 @@ import TestApiPage from "./pages/TestApiPage/index.tsx";
 import CreateNewTransaction from "./pages/Employee/CreateNewTransaction.tsx";
 import LoginPage from "./pages/Authentication/LoginPage.tsx";
 import { action as loginAction, loader as loginLoader } from "./pages/Authentication/LoginPage.tsx";
+import HomePage from "./pages/HomePage/index.tsx";
+import Customer from "./pages/Customer/index.tsx";
+import { PostageTracking } from "./pages/Customer/PostageTracking.tsx";
+import EstimatedFreight from "./pages/Customer/EstimatedFreight.tsx";
+import { NearestPostOffice } from "./pages/Customer/NearestPostOffice.tsx";
+import {  loader as postageTrackingLoader } from "./pages/Customer/PostageTracking.tsx";
 
 const router = createBrowserRouter([
   {
@@ -67,6 +73,30 @@ const router = createBrowserRouter([
     loader: loginLoader,
     element: <LoginPage />
   },
+  {
+    path: "/home",
+    element: <HomePage />
+  },
+  {
+    path: "/customer",
+    element: <Customer />,
+    children: [
+      {
+        path: "postage-tracking",
+        loader: postageTrackingLoader,
+        element: <PostageTracking />
+      },
+      {
+        path: "estimated-freight",
+        element: <EstimatedFreight />
+      },
+      {
+        path: "nearest-post-office",
+        element: <NearestPostOffice />
+      }
+      
+    ]
+  }
 ]);
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
