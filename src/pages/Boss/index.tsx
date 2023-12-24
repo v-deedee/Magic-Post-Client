@@ -12,7 +12,7 @@ export default function BossPage() {
         {/* Sidebar */}
         <Sidebar />
 
-        <main className="h-screen bg-[#F6F6F8] p-4 pt-20 md:ml-64">
+        <main className="min-h-screen bg-[#F6F6F8] p-4 pt-20 dark:bg-gray-900 lg:ml-64">
           {/* <Table /> */}
           <div id="detail">
             <Outlet />
