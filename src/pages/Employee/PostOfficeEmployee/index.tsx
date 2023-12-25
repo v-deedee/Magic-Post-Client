@@ -1,16 +1,16 @@
 import { Outlet } from "react-router-dom";
-import BossHeader from "./BossHeader";
-import BossSideBar from "./BossSideBar";
+import POEmpHeader from "./POEmpHeader";
+import POEmpSideBar from "./POEmpSideBar";
 
-export default function BossPage() {
+export default function PostOfficeEmployeePage() {
   return (
     <>
       <div className="bg-gray-50 antialiased dark:bg-gray-900">
         {/* Header */}
-        <BossHeader />
+        <POEmpHeader />
 
         {/* Sidebar */}
-        <BossSideBar />
+        <POEmpSideBar />
 
         <main className="min-h-screen bg-[#F6F6F8] p-4 pt-20 dark:bg-gray-900 xl:ml-64">
           {/* <Table /> */}

@@ -1,8 +1,8 @@
 import logo from "/logo.svg";
-import SearchBox from "../../components/SearchBox";
-import SidebarToggle from "../../components/SideBarToggle";
+import SearchBox from "./SearchBox";
+import SidebarToggle from "./SideBarToggle";
 
-export default function Header() {
+const Header: React.FC<{ children: JSX.Element }> = ({ children }) => {
   return (
     <nav className="fixed left-0 right-0 top-0 z-50 border-b border-gray-200 bg-white px-4 py-4 dark:border-gray-700 dark:bg-gray-800">
       <div className="flex flex-wrap items-center justify-between">
@@ -25,22 +25,10 @@ export default function Header() {
         </div>
 
         {/* User avatar */}
-
-        <button
-          type="button"
-          className="mx-3 flex rounded-full bg-gray-800 text-sm focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600 md:mr-0"
-          id="user-menu-button"
-          aria-expanded="false"
-          data-dropdown-toggle="dropdown"
-        >
-          <span className="sr-only">Open user menu</span>
-          <img
-            className="h-8 w-8 rounded-full"
-            src="https://picsum.photos/200"
-            alt="user photo"
-          />
-        </button>
+        {children}
       </div>
     </nav>
   );
-}
+};
+
+export default Header;

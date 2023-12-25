@@ -1,16 +1,16 @@
 import { Outlet } from "react-router-dom";
-import BossHeader from "./BossHeader";
-import BossSideBar from "./BossSideBar";
+import StorageEmpHeader from "./StorageEmpHeader";
+import StorageEmpSideBar from "./StorageEmpSideBar";
 
-export default function BossPage() {
+export default function StorageEmployeePage() {
   return (
     <>
       <div className="bg-gray-50 antialiased dark:bg-gray-900">
         {/* Header */}
-        <BossHeader />
+        <StorageEmpHeader />
 
         {/* Sidebar */}
-        <BossSideBar />
+        <StorageEmpSideBar />
 
         <main className="min-h-screen bg-[#F6F6F8] p-4 pt-20 dark:bg-gray-900 xl:ml-64">
           {/* <Table /> */}

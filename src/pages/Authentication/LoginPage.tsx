@@ -17,9 +17,9 @@ export async function action({ request, params }) {
       case ROLE.BOSS:
         return redirect("/boss/dashboard");
       case ROLE.STORAGE_MANAGER:
-        return redirect("/manager");
+        return redirect("/manager/dashboard");
       case ROLE.POSTOFFICE_MANAGER:
-        return redirect("/manager");
+        return redirect("/manager/dashboard");
       case ROLE.STORAGE_EMPLOYEE:
         return redirect("/employee");
       case ROLE.POSTOFFICE_EMPLOYEE:

@@ -1,10 +1,17 @@
 import { NavLink } from "react-router-dom";
-import SearchBox from "../../components/SearchBox";
-import { toggleSidebar } from "../../components/SideBarToggle";
-import ThemeToggle from "../../components/ThemeToggle";
-import { HiHome, HiUserGroup, HiViewGrid } from "react-icons/hi";
+import SearchBox from "./SearchBox";
+import { toggleSidebar } from "./SideBarToggle";
+import ThemeToggle from "./ThemeToggle";
+// import { HiHome, HiUserGroup, HiViewGrid } from "react-icons/hi";
+// import { IconType } from "react-icons";
 
-export default function Sidebar() {
+const Sidebar: React.FC<{
+  options: Array<{
+    url: string;
+    name: string;
+    icon: JSX.Element;
+  }>;
+}> = ({ options }) => {
   return (
     <>
       <aside
@@ -21,7 +28,22 @@ export default function Sidebar() {
 
           <ul className="space-y-2 pt-4">
             {/* Menu option */}
-            <li>
+            {options.map((option, index) => (
+              <li key={index}>
+                <NavLink
+                  to={option.url}
+                  className={({ isActive }) =>
+                    isActive
+                      ? "group flex items-center rounded-lg bg-[#319684] p-2 text-base font-medium text-white"
+                      : "group flex items-center rounded-lg p-2 text-base font-medium text-gray-800 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
+                  }
+                >
+                  {option.icon}
+                  <span className="ml-3">{option.name}</span>
+                </NavLink>
+              </li>
+            ))}
+            {/* <li>
               <NavLink
                 to="/boss/dashboard"
                 className={({ isActive }) =>
@@ -61,7 +83,7 @@ export default function Sidebar() {
                 <HiUserGroup />
                 <span className="ml-3">Managers</span>
               </NavLink>
-            </li>
+            </li> */}
           </ul>
         </div>
 
@@ -75,4 +97,6 @@ export default function Sidebar() {
       ></div>
     </>
   );
-}
+};
+
+export default Sidebar;

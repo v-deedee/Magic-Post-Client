@@ -9,7 +9,8 @@ import ManagerPage from "./pages/Manager/index.tsx";
 import EmployeePage from "./pages/Employee/index.tsx";
 import ThemeProvider from "./utils/ThemeContext.tsx";
 import Departments from "./pages/Boss/Departments/index.tsx";
-import Dashboard from "./pages/Boss/Dashboard/Dashboard.tsx";
+import BossDashboard from "./pages/Boss/Dashboard/Dashboard.tsx";
+import ManagerDashboard from "./pages/Manager/Dashboard/index.tsx";
 import { Provider } from "react-redux";
 import store from "./store/store.ts";
 import TestReduxPage from "./pages/TestReduxPage";
@@ -27,6 +28,9 @@ import EstimatedFreight from "./pages/Customer/EstimatedFreight.tsx";
 import { NearestPostOffice } from "./pages/Customer/NearestPostOffice.tsx";
 import { loader as postageTrackingLoader } from "./pages/Customer/PostageTracking.tsx";
 import Managers from "./pages/Boss/Managers/index.tsx";
+import Staffs from "./pages/Manager/Staffs/index.tsx";
+import PostOfficeEmployeePage from "./pages/Employee/PostOfficeEmployee/index.tsx";
+import StorageEmployeePage from "./pages/Employee/StorageEmployee/index.tsx";
 
 const router = createBrowserRouter([
   {
@@ -40,7 +44,7 @@ const router = createBrowserRouter([
     children: [
       {
         path: "dashboard",
-        element: <Dashboard />,
+        element: <BossDashboard />,
       },
       {
         path: "departments",
@@ -53,18 +57,33 @@ const router = createBrowserRouter([
     ],
   },
   {
-    path: "/manager",
+    path: "manager",
     element: <ManagerPage />,
-  },
-  {
-    path: "employee",
-    element: <EmployeePage />,
     children: [
       {
-        path: "create-new-transaction",
-        element: <CreateNewTransaction />,
+        path: "dashboard",
+        element: <ManagerDashboard />,
+      },
+      {
+        path: "staffs",
+        element: <Staffs />,
       },
     ],
+  },
+  {
+    path: "post-office-employee",
+    element: <PostOfficeEmployeePage />,
+    children: [
+      // {
+      //   path: "create-new-transaction",
+      //   element: <CreateNewTransaction />,
+      // },
+    ],
+  },
+  {
+    path: "storage-employee",
+    element: <StorageEmployeePage />,
+    children: [],
   },
   {
     path: "/testredux",
