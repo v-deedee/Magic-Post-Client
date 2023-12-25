@@ -26,7 +26,8 @@ import Customer from "./pages/Customer/index.tsx";
 import { PostageTracking } from "./pages/Customer/PostageTracking.tsx";
 import EstimatedFreight from "./pages/Customer/EstimatedFreight.tsx";
 import { NearestPostOffice } from "./pages/Customer/NearestPostOffice.tsx";
-import { loader as postageTrackingLoader } from "./pages/Customer/PostageTracking.tsx";
+import {  loader as postageTrackingLoader } from "./pages/Customer/PostageTracking.tsx";
+import { loader as testAPILoader } from "./pages/TestApiPage/index.tsx";
 import Managers from "./pages/Boss/Managers/index.tsx";
 import Staffs from "./pages/Manager/Staffs/index.tsx";
 import PostOfficeEmployeePage from "./pages/Employee/PostOfficeEmployee/index.tsx";
@@ -91,7 +92,8 @@ const router = createBrowserRouter([
   },
   {
     path: "/testapi",
-    element: <TestApiPage />,
+    loader: testAPILoader,
+    element: <TestApiPage />
   },
   {
     path: "/login",

@@ -1,28 +1,24 @@
 import { useEffect, useState } from "react"
 import { testApi } from "../../services/api"
+import { listManager } from "../../services/bossApi"
+import { useLoaderData } from "react-router-dom"
+
+
+export const loader = async () => {
+    
+    const data = await listManager()
+    const managers = data.data.data.payload.managers
+    return managers
+
+}
 
 const TestApiPage: React.FC = () => {
-    const [data, setData] = useState<Result | null>(null)
+    
 
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const data: Result = await testApi();
-                setData(data)
-            } catch (error) {
-                console.error(error)
-            }
-        }
-
-        fetchData()
-    }, [])
-
+    const managers = useLoaderData()
     return(
         <div>
-            <h1>{data?.count}</h1>
-            <ul>
-                {data?.results.map((quote: Quote) => <li>{quote.author} : {quote.content} || {quote.dateAdded.toString()}</li>)}
-            </ul>
+            {managers.map((item) => (<h1>{item.username} | {item.firstname} | {item.lastname} </h1>))}
         </div>
     )
 }
