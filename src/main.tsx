@@ -23,6 +23,7 @@ import { PostageTracking } from "./pages/Customer/PostageTracking.tsx";
 import EstimatedFreight from "./pages/Customer/EstimatedFreight.tsx";
 import { NearestPostOffice } from "./pages/Customer/NearestPostOffice.tsx";
 import {  loader as postageTrackingLoader } from "./pages/Customer/PostageTracking.tsx";
+import { loader as testAPILoader } from "./pages/TestApiPage/index.tsx";
 
 const router = createBrowserRouter([
   {
@@ -64,6 +65,7 @@ const router = createBrowserRouter([
   },
   {
     path: "/testapi",
+    loader: testAPILoader,
     element: <TestApiPage />
   },
   {
