@@ -8,14 +8,14 @@ export default function Sidebar() {
   return (
     <>
       <aside
-        className="fixed left-0 top-0 z-40 h-screen w-64 -translate-x-full border-r border-gray-200 bg-white pt-14 transition-transform dark:border-gray-700 dark:bg-gray-800 lg:translate-x-0"
+        className="fixed left-0 top-0 z-40 h-screen w-64 -translate-x-full border-r border-gray-200 bg-white pt-14 transition-transform dark:border-gray-700 dark:bg-gray-800 xl:translate-x-0"
         aria-label="Sidenav"
         id="sidenav"
       >
         <div className="h-full overflow-y-auto bg-white px-3 py-5 dark:bg-gray-800">
           {/* Search box for side bar (for responsive) */}
 
-          <div className="mt-3 lg:hidden">
+          <div className="mt-3 xl:hidden">
             <SearchBox />
           </div>
 
@@ -51,7 +51,7 @@ export default function Sidebar() {
 
             <li>
               <NavLink
-                to="/boss/staffs"
+                to="/boss/managers"
                 className={({ isActive }) =>
                   isActive
                     ? "group flex items-center rounded-lg bg-[#319684] p-2 text-base font-medium text-white"
@@ -59,7 +59,7 @@ export default function Sidebar() {
                 }
               >
                 <HiUserGroup />
-                <span className="ml-3">Staffs</span>
+                <span className="ml-3">Managers</span>
               </NavLink>
             </li>
           </ul>

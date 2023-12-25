@@ -8,7 +8,7 @@ import BossPage from "./pages/Boss/index.tsx";
 import ManagerPage from "./pages/Manager/index.tsx";
 import EmployeePage from "./pages/Employee/index.tsx";
 import ThemeProvider from "./utils/ThemeContext.tsx";
-import Departments from "./pages/Boss/Departments/Departments.tsx";
+import Departments from "./pages/Boss/Departments/index.tsx";
 import Dashboard from "./pages/Boss/Dashboard/Dashboard.tsx";
 import { Provider } from "react-redux";
 import store from "./store/store.ts";
@@ -16,14 +16,22 @@ import TestReduxPage from "./pages/TestReduxPage";
 import TestApiPage from "./pages/TestApiPage/index.tsx";
 import CreateNewTransaction from "./pages/Employee/CreateNewTransaction.tsx";
 import { LoginPage } from "./pages/Authentication/LoginPage.tsx";
-import { action as loginAction, loader as loginLoader } from "./pages/Authentication/LoginPage.tsx";
+import {
+  action as loginAction,
+  loader as loginLoader,
+} from "./pages/Authentication/LoginPage.tsx";
 import HomePage from "./pages/HomePage/index.tsx";
 import Customer from "./pages/Customer/index.tsx";
 import { PostageTracking } from "./pages/Customer/PostageTracking.tsx";
 import EstimatedFreight from "./pages/Customer/EstimatedFreight.tsx";
 import { NearestPostOffice } from "./pages/Customer/NearestPostOffice.tsx";
+<<<<<<< HEAD
 import {  loader as postageTrackingLoader } from "./pages/Customer/PostageTracking.tsx";
 import { loader as testAPILoader } from "./pages/TestApiPage/index.tsx";
+=======
+import { loader as postageTrackingLoader } from "./pages/Customer/PostageTracking.tsx";
+import Managers from "./pages/Boss/Managers/index.tsx";
+>>>>>>> 3342d767c7836ddfbff531d28f07dc42a184327c
 
 const router = createBrowserRouter([
   {
@@ -32,16 +40,20 @@ const router = createBrowserRouter([
     errorElement: <ErrorPage />,
   },
   {
-    path: "/",
+    path: "boss",
     element: <BossPage />,
     children: [
       {
-        path: "boss/dashboard",
+        path: "dashboard",
         element: <Dashboard />,
       },
       {
-        path: "boss/departments",
+        path: "departments",
         element: <Departments />,
+      },
+      {
+        path: "managers",
+        element: <Managers />,
       },
     ],
   },
@@ -55,29 +67,32 @@ const router = createBrowserRouter([
     children: [
       {
         path: "create-new-transaction",
-        element: <CreateNewTransaction />
+        element: <CreateNewTransaction />,
       },
-    ]
+    ],
   },
   {
     path: "/testredux",
-    element: <TestReduxPage />
+    element: <TestReduxPage />,
   },
   {
     path: "/testapi",
+<<<<<<< HEAD
     loader: testAPILoader,
     element: <TestApiPage />
+=======
+    element: <TestApiPage />,
+>>>>>>> 3342d767c7836ddfbff531d28f07dc42a184327c
   },
   {
-    
     path: "/login",
     action: loginAction,
     loader: loginLoader,
-    element: <LoginPage />
+    element: <LoginPage />,
   },
   {
     path: "/home",
-    element: <HomePage />
+    element: <HomePage />,
   },
   {
     path: "/customer",
@@ -86,19 +101,18 @@ const router = createBrowserRouter([
       {
         path: "postage-tracking",
         loader: postageTrackingLoader,
-        element: <PostageTracking />
+        element: <PostageTracking />,
       },
       {
         path: "estimated-freight",
-        element: <EstimatedFreight />
+        element: <EstimatedFreight />,
       },
       {
         path: "nearest-post-office",
-        element: <NearestPostOffice />
-      }
-      
-    ]
-  }
+        element: <NearestPostOffice />,
+      },
+    ],
+  },
 ]);
 
 ReactDOM.createRoot(document.getElementById("root")!).render(

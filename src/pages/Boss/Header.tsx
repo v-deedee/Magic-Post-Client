@@ -8,8 +8,10 @@ export default function Header() {
       <div className="flex flex-wrap items-center justify-between">
         {/* Left side (Logo + search box) */}
         <div className="flex items-center justify-start">
+          {/* Hamburger menu button - toggle sidebar (for responsive) */}
+          <SidebarToggle />
           {/* Logo */}
-          <a href="#" className="flex w-64 items-center justify-start md:pl-5">
+          <a href="#" className="flex w-64 items-center justify-start xl:pl-5">
             <img src={logo} className="logo mr-1 h-10 w-10" alt="logo" />
             <span className="self-center whitespace-nowrap text-2xl font-bold dark:text-white">
               MagicPost
@@ -17,32 +19,27 @@ export default function Header() {
           </a>
 
           {/* Search box */}
-          <div className="hidden md:w-64 lg:block lg:w-96">
+          <div className="hidden xl:block xl:w-96">
             <SearchBox />
           </div>
         </div>
 
-        {/* Right side (Noti + Messages + User avatar) */}
-        <div className="hidden items-center lg:order-2 lg:flex">
-          {/* User avatar */}
-          <button
-            type="button"
-            className="mx-3 flex rounded-full bg-gray-800 text-sm focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600 md:mr-0"
-            id="user-menu-button"
-            aria-expanded="false"
-            data-dropdown-toggle="dropdown"
-          >
-            <span className="sr-only">Open user menu</span>
-            <img
-              className="h-8 w-8 rounded-full"
-              src="https://picsum.photos/200"
-              alt="user photo"
-            />
-          </button>
-        </div>
+        {/* User avatar */}
 
-        {/* Hamburger menu button - toggle sidebar (for responsive) */}
-        <SidebarToggle />
+        <button
+          type="button"
+          className="mx-3 flex rounded-full bg-gray-800 text-sm focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600 md:mr-0"
+          id="user-menu-button"
+          aria-expanded="false"
+          data-dropdown-toggle="dropdown"
+        >
+          <span className="sr-only">Open user menu</span>
+          <img
+            className="h-8 w-8 rounded-full"
+            src="https://picsum.photos/200"
+            alt="user photo"
+          />
+        </button>
       </div>
     </nav>
   );
