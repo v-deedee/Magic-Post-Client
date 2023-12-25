@@ -17,13 +17,13 @@ export default function Header() {
           </a>
 
           {/* Search box */}
-          <div className="hidden md:block md:w-64 lg:w-96">
+          <div className="hidden md:w-64 lg:block lg:w-96">
             <SearchBox />
           </div>
         </div>
 
         {/* Right side (Noti + Messages + User avatar) */}
-        <div className="hidden items-center md:flex lg:order-2">
+        <div className="hidden items-center lg:order-2 lg:flex">
           {/* User avatar */}
           <button
             type="button"
