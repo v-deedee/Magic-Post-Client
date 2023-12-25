@@ -21,8 +21,12 @@ function App() {
     formState: { errors },
   } = useForm<IFormInput>();
   const onSubmit: SubmitHandler<IFormInput> = (data) => {
-    console.log(data);
-    nav(`/${data.role.toLowerCase()}/dashboard`);
+    const role = data.role.toLowerCase();
+    if (role === "boss") {
+      nav(`/${role}/dashboard`);
+    } else {
+      nav(`/${role}`);
+    }
   };
 
   const [showPassword, setShowPassword] = useState(false);

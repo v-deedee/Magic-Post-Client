@@ -1,6 +1,6 @@
 import { Modal, Button, Label, TextInput, Select } from "flowbite-react";
 import { useForm, SubmitHandler } from "react-hook-form";
-import { Department } from "../Departments";
+import { Department } from "..";
 import { useEffect } from "react";
 
 interface UpdateDepartmentModalProps {
@@ -137,25 +137,6 @@ const UpdateDepartmentModal: React.FC<UpdateDepartmentModalProps> = ({
               </p>
             )}
           </div>
-
-          {/* Type */}
-          {/* <div className="col-span-2">
-            <div className="mb-2 block">
-              <Label htmlFor="type" value="Type" />
-            </div>
-            <Select id="type" {...register("type", { required: true })}>
-              <option value="" defaultChecked>
-                Select type
-              </option>
-              <option value="STORAGE">STORAGE</option>
-              <option value="POSTOFFICE">POSTOFFICE</option>
-            </Select>
-            {errors.type && (
-              <p className="text-red-500 dark:text-red-400">
-                This field is required
-              </p>
-            )}
-          </div> */}
 
           {currentDepartment.type === "POSTOFFICE" && (
             <>
