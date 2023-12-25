@@ -15,7 +15,7 @@ import store from "./store/store.ts";
 import TestReduxPage from "./pages/TestReduxPage";
 import TestApiPage from "./pages/TestApiPage/index.tsx";
 import CreateNewTransaction from "./pages/Employee/CreateNewTransaction.tsx";
-import LoginPage from "./pages/Authentication/LoginPage.tsx";
+import { LoginPage } from "./pages/Authentication/LoginPage.tsx";
 import {
   action as loginAction,
   loader as loginLoader,

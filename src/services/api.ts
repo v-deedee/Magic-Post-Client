@@ -1,6 +1,6 @@
 import axios, {AxiosResponse} from "axios";
 
-const API_BASE_URL = 'https://localhost:3001'
+const API_BASE_URL = 'http://localhost:3001'
 
 export const testApi = async (): Promise<Result> => {
     try {
@@ -10,22 +10,21 @@ export const testApi = async (): Promise<Result> => {
     } catch (err) {
         console.error('error:', err)
         throw err
+
     }
 }
 
-export const login = async(loginData): Promise<any> => {
-    console.log("loginDataaaa:")
-    console.log(loginData)
+export const login = async (loginData) => {
     try {
         const response: AxiosResponse<any> = await axios({
             method: "post",
             url: API_BASE_URL + "/auth/login",
             data: loginData
         })
-        console.log(response)
         return response
     } catch (err) {
-        console.error("error: ", err)
+        console.log("msg: ", err.message)
+        console.log("res: ", err.response)
         throw err
     }
 }
