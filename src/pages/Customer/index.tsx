@@ -31,7 +31,7 @@ class Customer extends Component<ICustomerProps, ICustomerState> {
   render() {
     return (
       <>
-        <Navbar fluid rounded>
+        <Navbar fluid rounded-lg>
           <Navbar.Brand as={Link} to="/home">
             <img
               src="../../../public/logo.svg"
@@ -45,7 +45,7 @@ class Customer extends Component<ICustomerProps, ICustomerState> {
           <Navbar.Toggle />
           <Navbar.Collapse>
             <Navbar.Link href="/login" active>
-              Đăng nhập
+              <p className="text-green-600">Login</p>
             </Navbar.Link>
           </Navbar.Collapse>
         </Navbar>
@@ -53,50 +53,39 @@ class Customer extends Component<ICustomerProps, ICustomerState> {
         <div className="h-56 sm:h-64 xl:h-80 2xl:h-96">
           <Carousel>
             <img
-              src="https://flowbite.com/docs/images/carousel/carousel-1.svg"
+              src="https://media.product.which.co.uk/prod/images/original/gm-35e787ad-d56d-454c-a6ae-a89925f19d30-post-office-banking-servicesnewsmain.jpeg"
               alt="..."
             />
             <img
-              src="https://flowbite.com/docs/images/carousel/carousel-2.svg"
+              src="https://wallpapers.com/images/featured/post-office-g2g4895jkhi09e3r.jpg"
               alt="..."
             />
-            <img
-              src="https://flowbite.com/docs/images/carousel/carousel-3.svg"
-              alt="..."
-            />
-            <img
-              src="https://flowbite.com/docs/images/carousel/carousel-4.svg"
-              alt="..."
-            />
-            <img
-              src="https://flowbite.com/docs/images/carousel/carousel-5.svg"
-              alt="..."
-            />
+            <img src="https://wallpaper.dog/large/20390507.jpg" alt="..." />
           </Carousel>
         </div>
-        <div className="flex border-2 border-solid border-sky-500">
-          <Button.Group className="flex-col">
-            <Button color="gray">
-              <Link to={"postage-tracking"}>
+        <div className="flex-col mt-8 p-12">
+          <Button.Group className="flex mb-3">
+            <Button color="gray" className="grow">
+              <Link to={"postage-tracking"} className="flex">
                 <HiUserCircle className="mr-3 h-4 w-4" />
-                ĐỊNH VỊ BƯU GỬI
+                Locate
               </Link>
             </Button>
-            <Button color="gray">
-              <Link to={"estimated-freight"}>
+            <Button color="gray" className="grow">
+              <Link to={"estimated-freight"} className="flex">
                 <HiAdjustments className="mr-3 h-4 w-4" />
-                ƯỚC TÍNH CƯỚC PHÍ
+                Estimate Cost
               </Link>
             </Button>
-            <Button color="gray">
-              <Link to={"nearest-post-office"}>
+            <Button color="gray" className="grow">
+              <Link to={"nearest-post-office"} className="flex">
                 <HiCloudDownload className="mr-3 h-4 w-4" />
-                BƯU CỤC GẦN NHẤT
+                Find Post
               </Link>
             </Button>
           </Button.Group>
 
-          <div>
+          <div className="min-h-96">
             <Outlet />
           </div>
         </div>
@@ -107,24 +96,16 @@ class Customer extends Component<ICustomerProps, ICustomerState> {
               <div>
                 <Footer.Brand
                   href="https://flowbite.com"
-                  src="https://flowbite.com/docs/images/logo.svg"
+                  src="../../../public/logo.svg"
                   alt="Flowbite Logo"
-                  name="Flowbite"
+                  name="MagicPost"
                 />
               </div>
               <div className="grid grid-cols-2 gap-8 sm:mt-4 sm:grid-cols-3 sm:gap-6">
                 <div>
                   <Footer.Title title="about" />
                   <Footer.LinkGroup col>
-                    <Footer.Link href="#">Flowbite</Footer.Link>
-                    <Footer.Link href="#">Tailwind CSS</Footer.Link>
-                  </Footer.LinkGroup>
-                </div>
-                <div>
-                  <Footer.Title title="Follow us" />
-                  <Footer.LinkGroup col>
-                    <Footer.Link href="#">Github</Footer.Link>
-                    <Footer.Link href="#">Discord</Footer.Link>
+                    <Footer.Link href="#">MagicPost</Footer.Link>
                   </Footer.LinkGroup>
                 </div>
                 <div>

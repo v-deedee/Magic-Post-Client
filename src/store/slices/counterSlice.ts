@@ -16,7 +16,7 @@ const counterSlice = createSlice({
         dec: (state) => {
             state.count -= 1
         },
-        setCount: (state, action: PayloadAction<number>) => {
+        setCount: (state, action) => {
             state.count = action.payload
         }
     }

@@ -7,6 +7,8 @@ import { Tabs } from "flowbite-react";
 import { HiAdjustments, HiUserCircle } from "react-icons/hi";
 import { MdDashboard } from "react-icons/md";
 import { Footer } from "flowbite-react";
+import { Card, Dropdown } from "flowbite-react";
+
 import {
   BsDribbble,
   BsFacebook,
@@ -25,7 +27,7 @@ class HomePage extends Component<IHomePageProps, IHomePageState> {
   render() {
     return (
       <>
-        <Navbar fluid rounded>
+        <Navbar fluid rounded-lg>
           <Navbar.Brand as={Link} to="/home">
             <img
               src="../../../public/logo.svg"
@@ -39,7 +41,7 @@ class HomePage extends Component<IHomePageProps, IHomePageState> {
           <Navbar.Toggle />
           <Navbar.Collapse>
             <Navbar.Link href="/login" active>
-              Đăng nhập
+              <p className="text-green-600">Login</p>
             </Navbar.Link>
           </Navbar.Collapse>
         </Navbar>
@@ -47,91 +49,116 @@ class HomePage extends Component<IHomePageProps, IHomePageState> {
         <div className="h-56 sm:h-64 xl:h-80 2xl:h-96">
           <Carousel>
             <img
-              src="https://flowbite.com/docs/images/carousel/carousel-1.svg"
+              src="https://media.product.which.co.uk/prod/images/original/gm-35e787ad-d56d-454c-a6ae-a89925f19d30-post-office-banking-servicesnewsmain.jpeg"
               alt="..."
             />
             <img
-              src="https://flowbite.com/docs/images/carousel/carousel-2.svg"
+              src="https://wallpapers.com/images/featured/post-office-g2g4895jkhi09e3r.jpg"
               alt="..."
             />
-            <img
-              src="https://flowbite.com/docs/images/carousel/carousel-3.svg"
-              alt="..."
-            />
-            <img
-              src="https://flowbite.com/docs/images/carousel/carousel-4.svg"
-              alt="..."
-            />
-            <img
-              src="https://flowbite.com/docs/images/carousel/carousel-5.svg"
-              alt="..."
-            />
+            <img src="https://wallpaper.dog/large/20390507.jpg" alt="..." />
           </Carousel>
         </div>
-
-        <div className="flex items-center justify-around" >
-          <Form className="max-w-md" action="/customer/postage-tracking" method="get">
-            <TextInput
-              type="text"
-              placeholder="Định vị bưu gửi"
-              name="id"
-              required
-            />
-            <Button type="submit">Định vị bưu gửi</Button>
-          </Form>
-          <div className="flex">
-            <Button>Tìm bưu cục</Button>
-            <Button>Ước tính phí</Button>
+        <div className="my-8 flex items-center justify-center">
+          <div className="flex h-24 w-1/2 items-center justify-around rounded border-2 border-solid">
+            <Form
+              className="flex max-w-md"
+              action="/customer/postage-tracking"
+              method="get"
+            >
+              <TextInput
+                type="text"
+                placeholder="Shipment ID"
+                name="id"
+                className="mx-2"
+                required
+              />
+              <Button type="submit" className="bg-green-500">Locate</Button>
+            </Form>
+            <div className="flex">
+              <Button className="mx-2 bg-green-500">
+                <Link to="/customer/nearest-post-office">Find Post</Link>
+                
+                
+                </Button>
+              <Button className="bg-green-500">
+              <Link to="/customer/estimated-freight">Estimate Cost</Link></Button>
+            </div>
           </div>
         </div>
 
         <article className="prose lg:prose-xl">
-          <h1>Dịch vụ</h1>
+          <h1>Services</h1>
           <p>
-            Công ty chúng tôi cung cấp dịch vụ chuyển phát nhanh, an toàn và
-            đáng tin cậy. Chúng tôi cam kết giao hàng đúng hẹn và đảm bảo hàng
-            hóa của bạn được bảo vệ tốt nhất trong suốt quá trình vận chuyển.
+            Our company provides fast, secure, and reliable delivery services.
+            We commit to delivering on time and ensuring the best protection for
+            your goods throughout the transportation process.
           </p>
           <p>
-            Với đội ngũ nhân viên chuyên nghiệp, tận tâm và giàu kinh nghiệm,
-            chúng tôi tự tin là đối tác lý tưởng cho mọi nhu cầu vận chuyển của
-            bạn. Dù bạn cần gửi hàng hóa trong nước hay quốc tế, chúng tôi đều
-            có thể đáp ứng.
+            With a professional, dedicated, and experienced team, we are
+            confident in being the ideal partner for all your transportation
+            needs. Whether you need to send goods domestically or
+            internationally, we can meet your requirements.
           </p>
           <p>
-            Chúng tôi cũng cung cấp dịch vụ theo dõi hàng hóa trực tuyến, giúp
-            bạn luôn biết được vị trí của hàng hóa mình gửi. Hãy tin tưởng và
-            lựa chọn dịch vụ của chúng tôi, chúng tôi sẽ không làm bạn thất
-            vọng.
+            We also offer online shipment tracking services, ensuring that you
+            always know the location of your shipped goods. Trust and choose our
+            services; we will not disappoint you.
           </p>
         </article>
 
-        <article className="prose lg:prose-xl">
-          <h1>Tin tức</h1>
+        <article className="prose mt-8 lg:prose-xl">
+          <h1>News</h1>
           <Tabs aria-label="Default tabs" style="default">
-            <Tabs.Item active title="Khuyến mãi" icon={HiUserCircle}>
-              Đây là các tin liên quan tới khuyến mãi
+            <Tabs.Item active title="Promotions" icon={HiUserCircle}>
+              These are the promotions-related news
             </Tabs.Item>
-            <Tabs.Item title="Tin hoạt động" icon={MdDashboard}>
-              Đây là các tin liên quan tới hoạt động
+            <Tabs.Item title="Activity News" icon={MdDashboard}>
+              These are the activity-related news
             </Tabs.Item>
-            <Tabs.Item title="Thông tin hữu ích" icon={HiAdjustments}>
-              Đây là các thông tin hữu ích
+            <Tabs.Item title="Useful Information" icon={HiAdjustments}>
+              This is useful information
             </Tabs.Item>
           </Tabs>
         </article>
 
-        <div>
-          <h1>Các số liệu</h1>
-          <div className="flex items-center justify-between">
-            <div>
-              <p>1000</p> <br />
-              <p>Điểm giao dịch</p>
-            </div>
-            <div>
-              <p>1000000</p> <br />
-              <p>Đơn hàng được chuyển</p>
-            </div>
+        {/* <h1>Các số liệu</h1> */}
+        <div className="item flex justify-center">
+          <div className="mt-28 flex w-1/3 items-center justify-between">
+            <Card className="max-w-sm">
+              <div className="flex flex-col items-center pb-10">
+                <img
+                  alt="Sample Image"
+                  height="96"
+                  src="https://static.vecteezy.com/system/resources/previews/029/924/625/non_2x/building-of-post-office-illustration-vector.jpg"
+                  width="96"
+                  className="mb-3 rounded-full shadow-lg"
+                />
+                <h5 className="mb-1 text-xl font-medium text-gray-900 dark:text-white">
+                  Transaction Point
+                </h5>
+                <span className="text-sm text-gray-500 dark:text-gray-400">
+                  128
+                </span>
+              </div>
+            </Card>
+            <Card className="max-w-sm">
+              <div className="flex flex-col items-center pb-10">
+                <img
+                  alt="Sample Image"
+                  height="96px"
+                  src="https://cdni.iconscout.com/illustration/premium/thumb/express-delivery-2706453-2258946.png?f=webp"
+                  width="96px"
+                  className="mb-3 rounded-full shadow-lg"
+                />
+                <h5 className="mb-1 text-xl font-medium text-gray-900 dark:text-white">
+                  Orders shipped
+                </h5>
+                <span className="text-sm text-gray-500 dark:text-gray-400">
+                  1844
+                </span>
+              </div>
+            </Card>
           </div>
         </div>
 
@@ -141,24 +168,16 @@ class HomePage extends Component<IHomePageProps, IHomePageState> {
               <div>
                 <Footer.Brand
                   href="https://flowbite.com"
-                  src="https://flowbite.com/docs/images/logo.svg"
+                  src="../../../public/logo.svg"
                   alt="Flowbite Logo"
-                  name="Flowbite"
+                  name="MagicPost"
                 />
               </div>
               <div className="grid grid-cols-2 gap-8 sm:mt-4 sm:grid-cols-3 sm:gap-6">
                 <div>
                   <Footer.Title title="about" />
                   <Footer.LinkGroup col>
-                    <Footer.Link href="#">Flowbite</Footer.Link>
-                    <Footer.Link href="#">Tailwind CSS</Footer.Link>
-                  </Footer.LinkGroup>
-                </div>
-                <div>
-                  <Footer.Title title="Follow us" />
-                  <Footer.LinkGroup col>
-                    <Footer.Link href="#">Github</Footer.Link>
-                    <Footer.Link href="#">Discord</Footer.Link>
+                    <Footer.Link href="#">MagicPost</Footer.Link>
                   </Footer.LinkGroup>
                 </div>
                 <div>

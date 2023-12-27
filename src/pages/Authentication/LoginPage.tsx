@@ -23,7 +23,7 @@ export async function action({ request, params }) {
       case ROLE.STORAGE_EMPLOYEE:
         return redirect("/employee");
       case ROLE.POSTOFFICE_EMPLOYEE:
-        return redirect("/employee");
+        return redirect("/post-office-employee");
       default:
         return "hey dev! Kiểm tra lại role";
     }
