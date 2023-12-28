@@ -3,28 +3,14 @@ import { HiPencilAlt, HiCheckCircle, HiXCircle, HiPlus } from "react-icons/hi";
 import CreateDepartmentModal from "./modals/CreateDepartmentModal";
 import UpdateDepartmentModal from "./modals/UpdateDepartmentModal";
 import DepartmentTable from "./DepartmentTable";
-import Pagination from "../Pagination";
-import { ITEMS_PER_PAGE } from "../Pagination";
-
-export interface Department {
-  _id: string;
-  province: string;
-  district: string;
-  street: string;
-  phone: string;
-  type: string;
-  cfs: {
-    _id: string;
-    province: string;
-    district: string;
-    street: string;
-    type: string;
-  };
-  zipcode: string;
-  active: boolean;
-  __v: number;
-  geocoding: number[];
-}
+// import Pagination from "../Pagination";
+// import { ITEMS_PER_PAGE } from "../Pagination";
+import { Department } from "../../../models/Department";
+import {
+  listDepartment,
+  listManager,
+  viewDepartment,
+} from "../../../services/bossApi";
 
 interface Manager {
   _id: string;
@@ -59,7 +45,7 @@ export default function Departments() {
 
   const [openUpdateModal, setOpentUpdateModal] = useState(false);
 
-  const [currentPage, setCurrentPage] = useState(1);
+  // const [currentPage, setCurrentPage] = useState(1);
 
   const [currentDepartmentId, setCurrentDepartmentId] = useState("");
 
@@ -73,17 +59,14 @@ export default function Departments() {
 
   const [departments, setDepartments] = useState<Array<Department>>([]);
 
-  // Get departments by page
+  // Get departments
   useEffect(() => {
-    fetch(
-      `http://localhost:3001/department?limit=${ITEMS_PER_PAGE}&page=${currentPage}`,
-      {
-        headers: {
-          Authorization:
-            "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjIxMDIwMjc3Iiwicm9sZSI6IkJPU1MiLCJleHBpcmVkX3RpbWUiOiIyMDIzLTExLTE1VDAzOjE5OjQ4LjYzNloiLCJjcmVhdGVkX3Rva2VuIjoiMjAyMy0xMS0xNFQwMzoxOTo0OC42MzlaIiwiaWF0IjoxNjk5OTMxOTg4LCJleHAiOjE3ODYzMzE5ODh9.yQMmxKPBu7lpLXPNaRVROJwXfe_zcfvwyoY7FzNCDO0",
-        },
+    fetch(`http://localhost:3001/department?limit=200`, {
+      headers: {
+        Authorization:
+          "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjIxMDIwMjc3Iiwicm9sZSI6IkJPU1MiLCJleHBpcmVkX3RpbWUiOiIyMDIzLTExLTE1VDAzOjE5OjQ4LjYzNloiLCJjcmVhdGVkX3Rva2VuIjoiMjAyMy0xMS0xNFQwMzoxOTo0OC42MzlaIiwiaWF0IjoxNjk5OTMxOTg4LCJleHAiOjE3ODYzMzE5ODh9.yQMmxKPBu7lpLXPNaRVROJwXfe_zcfvwyoY7FzNCDO0",
       },
-    )
+    })
       .then((res) => res.json())
       .then((data) => {
         setDepartments(data.data.payload.departments);
@@ -91,61 +74,23 @@ export default function Departments() {
       .catch((err) => {
         console.log(err);
       });
-  }, [currentPage]);
+  }, []);
+
+  const fetchDetail = async () => {
+    const departmentRes = await viewDepartment(currentDepartmentId);
+    setCurrentDepartment(departmentRes.data.data.payload.department);
+
+    const managerRes = await listManager({ department: currentDepartmentId });
+    setCurrentManager(managerRes.data.data.payload.staffs[0]);
+
+    const linkedPORes = await listDepartment({ cfs: currentDepartmentId });
+    setcurrentLinkedPostOffices(linkedPORes.data.data.payload.departments);
+  };
 
   // Get detail by department id
   useEffect(() => {
     if (currentDepartmentId !== "") {
-      // Get department info
-      fetch(`http://localhost:3001/department/${currentDepartmentId}`, {
-        headers: {
-          Authorization:
-            "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjIxMDIwMjc3Iiwicm9sZSI6IkJPU1MiLCJleHBpcmVkX3RpbWUiOiIyMDIzLTExLTE1VDAzOjE5OjQ4LjYzNloiLCJjcmVhdGVkX3Rva2VuIjoiMjAyMy0xMS0xNFQwMzoxOTo0OC42MzlaIiwiaWF0IjoxNjk5OTMxOTg4LCJleHAiOjE3ODYzMzE5ODh9.yQMmxKPBu7lpLXPNaRVROJwXfe_zcfvwyoY7FzNCDO0",
-        },
-      })
-        .then((res) => res.json())
-        .then((data) => {
-          setCurrentDepartment(data.data.payload.department);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-
-      // Get manager infor
-      fetch(
-        `http://localhost:3001/staff/manager?department=${currentDepartmentId}`,
-        {
-          headers: {
-            Authorization:
-              "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjIxMDIwMjc3Iiwicm9sZSI6IkJPU1MiLCJleHBpcmVkX3RpbWUiOiIyMDIzLTExLTE1VDAzOjE5OjQ4LjYzNloiLCJjcmVhdGVkX3Rva2VuIjoiMjAyMy0xMS0xNFQwMzoxOTo0OC42MzlaIiwiaWF0IjoxNjk5OTMxOTg4LCJleHAiOjE3ODYzMzE5ODh9.yQMmxKPBu7lpLXPNaRVROJwXfe_zcfvwyoY7FzNCDO0",
-          },
-        },
-      )
-        .then((res) => res.json())
-        .then((data) => {
-          setCurrentManager(data.data.payload.staffs[0]);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-
-      // Get list of linked post office
-      fetch(
-        `http://localhost:3001/department?cfs=${currentDepartmentId}&limit=100`,
-        {
-          headers: {
-            Authorization:
-              "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjIxMDIwMjc3Iiwicm9sZSI6IkJPU1MiLCJleHBpcmVkX3RpbWUiOiIyMDIzLTExLTE1VDAzOjE5OjQ4LjYzNloiLCJjcmVhdGVkX3Rva2VuIjoiMjAyMy0xMS0xNFQwMzoxOTo0OC42MzlaIiwiaWF0IjoxNjk5OTMxOTg4LCJleHAiOjE3ODYzMzE5ODh9.yQMmxKPBu7lpLXPNaRVROJwXfe_zcfvwyoY7FzNCDO0",
-          },
-        },
-      )
-        .then((res) => res.json())
-        .then((data) => {
-          setcurrentLinkedPostOffices(data.data.payload.departments);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+      fetchDetail();
     }
   }, [currentDepartmentId]);
 
@@ -168,8 +113,8 @@ export default function Departments() {
       <div className="flex gap-4">
         {/* Table */}
         <div className="w-1/2 overflow-x-auto">
-          {/* Filter & Sort & Create button */}
-          <div className="flex justify-end ps-2">
+          {/* Create button */}
+          <div className="flex justify-end">
             {/* <div className="flex">
               <Dropdown
                 label=""
@@ -224,11 +169,11 @@ export default function Departments() {
           />
 
           {/* Pagination */}
-          <Pagination
+          {/* <Pagination
             itemCount={82}
             currentPage={currentPage}
             setCurrentPage={setCurrentPage}
-          />
+          /> */}
         </div>
 
         {/* Map view */}
@@ -383,12 +328,15 @@ export default function Departments() {
         <CreateDepartmentModal
           openModal={openCreateModal}
           setOpenModal={setOpenCreateModal}
+          departments={departments}
         />
 
         <UpdateDepartmentModal
           openModal={openUpdateModal}
           setOpenModal={setOpentUpdateModal}
           currentDepartment={currentDepartment}
+          departments={departments}
+          fetchDetail={fetchDetail}
         />
       </div>
     </>

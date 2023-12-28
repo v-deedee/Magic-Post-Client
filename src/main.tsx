@@ -24,7 +24,7 @@ import Customer from "./pages/Customer/index.tsx";
 import { PostageTracking } from "./pages/Customer/PostageTracking.tsx";
 import { EstimatedFreight } from "./pages/Customer/EstimatedFreight.tsx";
 import { NearestPostOffice } from "./pages/Customer/NearestPostOffice.tsx";
-import {  loader as postageTrackingLoader } from "./pages/Customer/PostageTracking.tsx";
+import { loader as postageTrackingLoader } from "./pages/Customer/PostageTracking.tsx";
 import { loader as testAPILoader } from "./pages/TestApiPage/index.tsx";
 import Managers from "./pages/Boss/Managers/index.tsx";
 import Staffs from "./pages/Manager/Staffs/index.tsx";
@@ -32,12 +32,16 @@ import PostOfficeEmployeePage from "./pages/Employee/PostOfficeEmployee/index.ts
 import StorageEmployeePage from "./pages/Employee/StorageEmployee/index.tsx";
 import CtPTransactions from "./pages/Employee/PostOfficeEmployee/CtPTransactions/index.tsx";
 import { action as actionPostOfficeEmployee } from "./pages/Employee/PostOfficeEmployee/CtPTransactions/index.tsx";
-import { action as actionTestApi } from "./pages/TestApiPage/index.tsx";
 import Dashboard from "./pages/Employee/PostOfficeEmployee/Dashboard/index.tsx";
 import PtSTransactions from "./pages/Employee/PostOfficeEmployee/PtSTransactions/index.tsx";
 import StPTransactions from "./pages/Employee/PostOfficeEmployee/StPTransactions/index.tsx";
 import { ToShip } from "./pages/Employee/PostOfficeEmployee/ToShip/index.tsx";
 import { loader as postOfficeEmployeeLoader } from "./pages/Employee/PostOfficeEmployee/CtPTransactions/index.tsx";
+import StoragePtSTransactions from "./pages/Employee/StorageEmployee/PtSTransactions/index.tsx";
+import { loader as storagePtSTransactionsLoader } from "./pages/Employee/StorageEmployee/PtSTransactions/index.tsx";
+import SendStSTransactions, {
+  loader as sendStorageStSTransactions,
+} from "./pages/Employee/StorageEmployee/SendStSTransactions/index.tsx";
 
 const router = createBrowserRouter([
   {
@@ -89,7 +93,7 @@ const router = createBrowserRouter([
       },
       {
         path: "dashboard",
-        element: <Dashboard />
+        element: <Dashboard />,
       },
       {
         path: "pts-transactions",
@@ -97,18 +101,35 @@ const router = createBrowserRouter([
       },
       {
         path: "stp-transactions",
-        element: <StPTransactions />
+        element: <StPTransactions />,
       },
       {
         path: "to-ship",
-        element: <ToShip />
-      }
+        element: <ToShip />,
+      },
     ],
   },
   {
     path: "storage-employee",
     element: <StorageEmployeePage />,
-    children: [],
+    children: [
+      {
+        path: "pts-transactions",
+        loader: storagePtSTransactionsLoader,
+        element: <StoragePtSTransactions />,
+      },
+      {
+        path: "send-sts-transactions",
+        loader: sendStorageStSTransactions,
+        element: <SendStSTransactions />,
+      },
+      {
+        path: "receive-sts-transactions",
+      },
+      {
+        path: "stp-transactions",
+      },
+    ],
   },
   {
     path: "/testredux",
@@ -117,8 +138,7 @@ const router = createBrowserRouter([
   {
     path: "/testapi",
     loader: testAPILoader,
-    action: actionTestApi,
-    element: <TestApiPage />
+    element: <TestApiPage />,
   },
   {
     path: "/login",

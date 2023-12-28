@@ -1,10 +1,16 @@
-import Pagination from "../Pagination";
+// import Pagination from "../Pagination";
 import { useEffect, useState } from "react";
 import { HiCheckCircle, HiPencilAlt, HiPlus, HiXCircle } from "react-icons/hi";
-import { ITEMS_PER_PAGE } from "../Pagination";
+// import { ITEMS_PER_PAGE } from "../Pagination";
 import ManagerTable from "./ManagerTable";
 import CreateManagerModal from "./modals/CreateManagerModal";
 import UpdateManagerModal from "./modals/UpdateManagerModal";
+import { Department } from "../../../models/Department";
+import {
+  listDepartment,
+  listManager,
+  viewManager,
+} from "../../../services/bossApi";
 
 export interface IManager {
   _id: string;
@@ -49,7 +55,7 @@ export default function Managers() {
 
   const [openUpdateModal, setOpentUpdateModal] = useState(false);
 
-  const [currentPage, setCurrentPage] = useState(1);
+  // const [currentPage, setCurrentPage] = useState(1);
 
   const [managers, setManagers] = useState<Array<IManager>>([]);
 
@@ -58,44 +64,39 @@ export default function Managers() {
 
   const [currentManagerUsername, setCurrentManagerUsername] = useState("");
 
-  // Get departments by page
+  const [departments, setDepartments] = useState<Department[]>([]);
+
   useEffect(() => {
-    fetch(
-      `http://localhost:3001/staff/manager?limit=${ITEMS_PER_PAGE}&page=${currentPage}`,
-      {
-        headers: {
-          Authorization:
-            "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjIxMDIwMjc3Iiwicm9sZSI6IkJPU1MiLCJleHBpcmVkX3RpbWUiOiIyMDIzLTExLTE1VDAzOjE5OjQ4LjYzNloiLCJjcmVhdGVkX3Rva2VuIjoiMjAyMy0xMS0xNFQwMzoxOTo0OC42MzlaIiwiaWF0IjoxNjk5OTMxOTg4LCJleHAiOjE3ODYzMzE5ODh9.yQMmxKPBu7lpLXPNaRVROJwXfe_zcfvwyoY7FzNCDO0",
-        },
-      },
-    )
-      .then((res) => res.json())
-      .then((data) => {
-        setManagers(data.data.payload.staffs);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }, [currentPage]);
+    const fetchDepartments = async () => {
+      const res = await listDepartment({});
+      const departments = res.data.data.payload.departments;
+      setDepartments(departments);
+    };
+    fetchDepartments();
+  }, []);
+
+  const fetchManagers = async () => {
+    const res = await listManager({});
+    const managers = res.data.data.payload.staffs;
+    setManagers(managers);
+  };
+
+  // Get managers
+  useEffect(() => {
+    fetchManagers();
+  }, []);
+
+  const fetchCurrentManagers = async () => {
+    if (currentManagerUsername !== "") {
+      const res = await viewManager(currentManagerUsername);
+      const cM = res.data.data.payload.manager;
+      setCurrentManager(cM);
+    }
+  };
 
   // Get detail by manager username
   useEffect(() => {
-    if (currentManagerUsername !== "") {
-      // Get manager info
-      fetch(`http://localhost:3001/staff/manager/${currentManagerUsername}`, {
-        headers: {
-          Authorization:
-            "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjIxMDIwMjc3Iiwicm9sZSI6IkJPU1MiLCJleHBpcmVkX3RpbWUiOiIyMDIzLTExLTE1VDAzOjE5OjQ4LjYzNloiLCJjcmVhdGVkX3Rva2VuIjoiMjAyMy0xMS0xNFQwMzoxOTo0OC42MzlaIiwiaWF0IjoxNjk5OTMxOTg4LCJleHAiOjE3ODYzMzE5ODh9.yQMmxKPBu7lpLXPNaRVROJwXfe_zcfvwyoY7FzNCDO0",
-        },
-      })
-        .then((res) => res.json())
-        .then((data) => {
-          setCurrentManager(data.data.payload.manager);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    }
+    fetchCurrentManagers();
   }, [currentManagerUsername]);
 
   const showDetail = (username: string) => {
@@ -108,10 +109,9 @@ export default function Managers() {
     <>
       <div className="flex gap-4">
         {/* Table */}
-
-        <div className="w-1/2">
+        <div className="">
           {/* Filter & Sort & Create button */}
-          <div className="flex justify-end ps-2">
+          <div className=" flex justify-end">
             <button
               type="button"
               className="mb-2 me-2 flex items-center rounded-lg bg-green-500 px-4 py-2 text-sm font-medium text-white hover:bg-green-600"
@@ -125,87 +125,99 @@ export default function Managers() {
           {/* Main table */}
           <ManagerTable
             managers={managers}
-            currentManagerId={""}
+            currentManagerUsername={currentManagerUsername}
             showDetail={showDetail}
           />
 
           {/* Pagination */}
-          <Pagination
+          {/* <Pagination
             itemCount={82}
             currentPage={currentPage}
             setCurrentPage={setCurrentPage}
-          />
+          /> */}
         </div>
 
         {/* Manager information */}
-        <div
-          id="managerView"
-          className="hidden w-1/2 rounded-lg bg-white p-2 dark:bg-gray-800 dark:text-gray-300"
-        >
-          <h1 className="mb-4 text-center text-lg font-semibold">
+        <div className="w-1/2 overflow-x-auto rounded-lg bg-white p-2 dark:bg-gray-800 dark:text-gray-300">
+          <h1 className="border-b p-4 text-center text-xl font-semibold">
             Manager information
           </h1>
-          <div className="flex items-center justify-between p-2">
-            <h1 className="text-lg font-semibold">Details</h1>
+          <div className={`${currentManager._id === "" ? "hidden" : ""}`}>
+            <div className="flex p-2">
+              <h1 className="text-lg font-semibold">Details</h1>
+            </div>
+            <ul className="list-disc ps-6">
+              <li>
+                <span className="font-semibold">Name:</span>{" "}
+                {currentManager?.firstname + " " + currentManager?.lastname}
+              </li>
+              <li>
+                <span className="font-semibold">Department:</span>{" "}
+                {currentManager?.department.district +
+                  " " +
+                  currentManager?.department.type}
+              </li>
+              <li>
+                <span className="font-semibold">Username:</span>{" "}
+                {currentManager?.username}
+              </li>
+              <li>
+                <span className="font-semibold">Role:</span>{" "}
+                {currentManager?.role}
+              </li>
+              <li>
+                <span className="font-semibold">Gender:</span>{" "}
+                {currentManager?.gender}
+              </li>
+              <li>
+                <span className="font-semibold">Email:</span>{" "}
+                {currentManager?.email}
+              </li>
+              <li>
+                <div className="flex items-center">
+                  <span className="font-semibold">Active:</span>{" "}
+                  {currentManager?.active ? (
+                    <div className="ms-1 text-green-400">
+                      <HiCheckCircle />
+                    </div>
+                  ) : (
+                    <div className="ms-1 text-red-400">
+                      <HiXCircle />
+                    </div>
+                  )}
+                </div>
+              </li>
+            </ul>
             <button
               type="button"
-              className="mb-2 me-2 flex items-center rounded-lg bg-blue-700 px-4 py-2 text-sm font-medium text-white hover:bg-blue-800 dark:bg-blue-600 dark:hover:bg-blue-700"
+              className="m-2 mt-4 flex items-center rounded-lg bg-blue-700 px-4 py-2 text-sm font-medium text-white hover:bg-blue-800 dark:bg-blue-600 dark:hover:bg-blue-700"
               onClick={() => setOpentUpdateModal(true)}
             >
               <span className="me-2">Update</span>
               <HiPencilAlt />
             </button>
           </div>
-          <ul className="list-disc ps-6">
-            <li>
-              <span className="font-semibold">Name:</span>{" "}
-              {currentManager?.firstname + " " + currentManager?.lastname}
-            </li>
-            <li>
-              <span className="font-semibold">Department:</span>{" "}
-              {currentManager?.department.district +
-                " " +
-                currentManager?.department.type}
-            </li>
-            <li>
-              <span className="font-semibold">Role:</span>{" "}
-              {currentManager?.role}
-            </li>
-            <li>
-              <span className="font-semibold">Gender:</span>{" "}
-              {currentManager?.gender}
-            </li>
-            <li>
-              <span className="font-semibold">Email:</span>{" "}
-              {currentManager?.email}
-            </li>
-            <li>
-              <div className="flex items-center">
-                <span className="font-semibold">Active:</span>{" "}
-                {currentManager?.active ? (
-                  <div className="ms-1 text-green-400">
-                    <HiCheckCircle />
-                  </div>
-                ) : (
-                  <div className="ms-1 text-red-400">
-                    <HiXCircle />
-                  </div>
-                )}
-              </div>
-            </li>
-          </ul>
+
+          <div className={`${currentManager._id !== "" ? "hidden" : ""}`}>
+            <h1 className="mt-5 text-center text-lg text-gray-500">
+              Click on each manager to see detail information
+            </h1>
+          </div>
         </div>
 
         {/* Modal */}
         <CreateManagerModal
           openModal={openCreateModal}
           setOpenModal={setOpenCreateModal}
+          departments={departments}
         />
 
         <UpdateManagerModal
           openModal={openUpdateModal}
           setOpenModal={setOpentUpdateModal}
+          departments={departments}
           currentManager={currentManager}
+          fetchCurrentManagers={fetchCurrentManagers}
         />
       </div>
     </>

@@ -1,5 +1,4 @@
 import { NavLink } from "react-router-dom";
-import SearchBox from "./SearchBox";
 import { toggleSidebar } from "./SideBarToggle";
 import ThemeToggle from "./ThemeToggle";
 // import { HiHome, HiUserGroup, HiViewGrid } from "react-icons/hi";
@@ -22,9 +21,9 @@ const Sidebar: React.FC<{
         <div className="h-full overflow-y-auto bg-white px-3 py-5 dark:bg-gray-800">
           {/* Search box for side bar (for responsive) */}
 
-          <div className="mt-3 xl:hidden">
+          {/* <div className="mt-3 xl:hidden">
             <SearchBox />
-          </div>
+          </div> */}
 
           <ul className="space-y-2 pt-4">
             {/* Menu option */}

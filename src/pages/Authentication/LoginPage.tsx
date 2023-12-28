@@ -21,7 +21,7 @@ export async function action({ request, params }) {
       case ROLE.POSTOFFICE_MANAGER:
         return redirect("/manager/dashboard");
       case ROLE.STORAGE_EMPLOYEE:
-        return redirect("/employee");
+        return redirect("/storage-employee");
       case ROLE.POSTOFFICE_EMPLOYEE:
         return redirect("/post-office-employee");
       default:

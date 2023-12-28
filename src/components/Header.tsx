@@ -1,5 +1,4 @@
 import logo from "/logo.svg";
-import SearchBox from "./SearchBox";
 import SidebarToggle from "./SideBarToggle";
 
 const Header: React.FC<{ children: JSX.Element }> = ({ children }) => {
@@ -19,9 +18,9 @@ const Header: React.FC<{ children: JSX.Element }> = ({ children }) => {
           </a>
 
           {/* Search box */}
-          <div className="hidden xl:block xl:w-96">
+          {/* <div className="hidden xl:block xl:w-96">
             <SearchBox />
-          </div>
+          </div> */}
         </div>
 
         {/* User avatar */}

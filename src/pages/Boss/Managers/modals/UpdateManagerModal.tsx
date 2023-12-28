@@ -2,11 +2,15 @@ import { Modal, Button, Label, TextInput, Select } from "flowbite-react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { IManager } from "..";
 import { useEffect } from "react";
+import { Department } from "../../../../models/Department";
+import { updateManager } from "../../../../services/bossApi";
 
 interface UpdateManagerModalProps {
   openModal: boolean;
   setOpenModal: (newStatus: boolean) => void;
   currentManager: IManager;
+  departments: Array<Department>;
+  fetchCurrentManagers: () => void;
 }
 
 interface IFormInput {
@@ -22,18 +26,27 @@ const UpdateManagerModal: React.FC<UpdateManagerModalProps> = ({
   openModal,
   setOpenModal,
   currentManager,
+  departments,
+  fetchCurrentManagers,
 }) => {
   const {
     register,
     handleSubmit,
     formState: { errors },
+    watch,
     reset,
     setValue,
   } = useForm<IFormInput>();
 
-  const onSubmit: SubmitHandler<IFormInput> = (data) => {
+  const onSubmit: SubmitHandler<IFormInput> = async (data) => {
     console.log(data);
     setOpenModal(false);
+
+    const res = await updateManager(currentManager.username, data);
+    console.log(res);
+
+    fetchCurrentManagers();
+
     reset();
   };
 
@@ -85,12 +98,28 @@ const UpdateManagerModal: React.FC<UpdateManagerModalProps> = ({
             <div className="mb-2 block">
               <Label htmlFor="department" value="Department" />
             </div>
-            <TextInput
+            <Select
               id="department"
-              type="text"
               {...register("department", { required: true })}
-              placeholder="Enter department id"
-            />
+            >
+              <option value="">Select department</option>
+              {watch("role") !== "POSTOFFICE-MANAGER" &&
+                departments
+                  .filter((department) => department.type === "STORAGE")
+                  .map((department) => (
+                    <option key={department._id} value={department._id}>
+                      {department.district + " STORAGE"}
+                    </option>
+                  ))}
+              {watch("role") !== "STORAGE-MANAGER" &&
+                departments
+                  .filter((department) => department.type === "POSTOFFICE")
+                  .map((department) => (
+                    <option key={department._id} value={department._id}>
+                      {department.district + " POSTOFFICE"}
+                    </option>
+                  ))}
+            </Select>
             {errors.department && (
               <p className="text-red-500 dark:text-red-400">
                 This field is required

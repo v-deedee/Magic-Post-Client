@@ -1,12 +1,15 @@
 import { Modal, Button, Label, TextInput, Select } from "flowbite-react";
 import { useForm, SubmitHandler } from "react-hook-form";
-import { Department } from "..";
+import { Department } from "../../../../models/Department";
 import { useEffect } from "react";
+import { updateDepartment } from "../../../../services/bossApi";
 
 interface UpdateDepartmentModalProps {
   openModal: boolean;
   setOpenModal: (newStatus: boolean) => void;
   currentDepartment: Department;
+  departments: Array<Department>;
+  fetchDetail: () => void;
 }
 
 interface IFormInput {
@@ -23,6 +26,8 @@ const UpdateDepartmentModal: React.FC<UpdateDepartmentModalProps> = ({
   openModal,
   setOpenModal,
   currentDepartment,
+  departments,
+  fetchDetail,
 }) => {
   const {
     register,
@@ -32,9 +37,15 @@ const UpdateDepartmentModal: React.FC<UpdateDepartmentModalProps> = ({
     setValue,
   } = useForm<IFormInput>();
 
-  const onSubmit: SubmitHandler<IFormInput> = (data) => {
+  const onSubmit: SubmitHandler<IFormInput> = async (data) => {
     console.log(data);
     setOpenModal(false);
+
+    const res = await updateDepartment(currentDepartment._id, data);
+    console.log(res);
+
+    fetchDetail();
+
     reset();
   };
 
@@ -145,12 +156,16 @@ const UpdateDepartmentModal: React.FC<UpdateDepartmentModalProps> = ({
                 <div className="mb-2 block">
                   <Label htmlFor="cfs" value="Cfs" />
                 </div>
-                <TextInput
-                  id="cfs"
-                  type="tel"
-                  {...register("cfs", { required: true })}
-                  placeholder="Enter cfs"
-                />
+                <Select id="cfs" {...register("cfs", { required: true })}>
+                  <option value="">Select storage</option>
+                  {departments
+                    .filter((department) => department.type === "STORAGE")
+                    .map((department) => (
+                      <option key={department._id} value={department._id}>
+                        {department.district + " STORAGE"}
+                      </option>
+                    ))}
+                </Select>
                 {errors.cfs && (
                   <p className="text-red-500 dark:text-red-400">
                     This field is required
