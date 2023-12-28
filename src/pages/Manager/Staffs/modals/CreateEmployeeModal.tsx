@@ -1,43 +1,34 @@
 import { Modal, Button, Label, TextInput, Select } from "flowbite-react";
 import { useForm, SubmitHandler } from "react-hook-form";
-import { Department } from "../../../../models/Department";
-import { createManager } from "../../../../services/bossApi";
+import { createEmployee } from "../../../../services/managerApi";
 
-interface CreateManagerModalProps {
+interface CreateEmployeeModalProps {
   openModal: boolean;
   setOpenModal: (newStatus: boolean) => void;
-  departments: Array<Department>;
 }
 
 interface IFormInput {
-  role: string;
-  department: string;
   firstname: string;
   lastname: string;
   gender: string;
   email: string;
 }
 
-const CreateManagerModal: React.FC<CreateManagerModalProps> = ({
+const CreateEmployeeModal: React.FC<CreateEmployeeModalProps> = ({
   openModal,
   setOpenModal,
-  departments,
 }) => {
   const {
     register,
     handleSubmit,
     formState: { errors },
-    watch,
     reset,
   } = useForm<IFormInput>();
   const onSubmit: SubmitHandler<IFormInput> = async (data) => {
-    console.log(data);
     setOpenModal(false);
-
-    const res = await createManager(data);
-    console.log(res);
-
+    const res = await createEmployee(data);
     reset();
+    console.log(res);
   };
   return (
     <Modal
@@ -46,65 +37,12 @@ const CreateManagerModal: React.FC<CreateManagerModalProps> = ({
       size={"xl"}
       onClose={() => setOpenModal(false)}
     >
-      <Modal.Header>Add new manager</Modal.Header>
+      <Modal.Header>Add new Employee</Modal.Header>
       <Modal.Body>
         <form
           className="block grid-cols-2 gap-4 sm:grid"
           onSubmit={handleSubmit(onSubmit)}
         >
-          {/* Role */}
-          <div className="">
-            <div className="mb-2 block">
-              <Label htmlFor="role" value="Role" />
-            </div>
-            <Select id="role" {...register("role", { required: true })}>
-              <option value="" defaultChecked>
-                Select role
-              </option>
-              <option value="STORAGE-MANAGER">STORAGE-MANAGER</option>
-              <option value="POSTOFFICE-MANAGER">POSTOFFICE-MANAGER</option>
-            </Select>
-            {errors.role && (
-              <p className="text-red-500 dark:text-red-400">
-                This field is required
-              </p>
-            )}
-          </div>
-
-          {/* Department */}
-          <div className="">
-            <div className="mb-2 block">
-              <Label htmlFor="department" value="Department" />
-            </div>
-            <Select
-              id="department"
-              {...register("department", { required: true })}
-            >
-              <option value="">Select department</option>
-              {watch("role") === "STORAGE-MANAGER" &&
-                departments
-                  .filter((department) => department.type === "STORAGE")
-                  .map((department) => (
-                    <option key={department._id} value={department._id}>
-                      {department.district + " STORAGE"}
-                    </option>
-                  ))}
-              {watch("role") === "POSTOFFICE-MANAGER" &&
-                departments
-                  .filter((department) => department.type === "POSTOFFICE")
-                  .map((department) => (
-                    <option key={department._id} value={department._id}>
-                      {department.district + " POSTOFFICE"}
-                    </option>
-                  ))}
-            </Select>
-            {errors.department && (
-              <p className="text-red-500 dark:text-red-400">
-                This field is required
-              </p>
-            )}
-          </div>
-
           {/* First name */}
           <div className="">
             <div className="mb-2 block">
@@ -194,4 +132,4 @@ const CreateManagerModal: React.FC<CreateManagerModalProps> = ({
   );
 };
 
-export default CreateManagerModal;
+export default CreateEmployeeModal;

@@ -3,13 +3,13 @@ import { IManager } from ".";
 
 interface IManagerTableProps {
   managers: Array<IManager>;
-  currentManagerId: string;
+  currentManagerUsername: string;
   showDetail: (username: string) => void;
 }
 
 const ManagerTable: React.FC<IManagerTableProps> = ({
   managers,
-  currentManagerId,
+  currentManagerUsername,
   showDetail,
 }) => {
   return (
@@ -32,7 +32,7 @@ const ManagerTable: React.FC<IManagerTableProps> = ({
               key={manager._id}
               className={`dark:border-gray-700 dark:bg-gray-800 
                   ${
-                    manager._id === currentManagerId
+                    manager.username === currentManagerUsername
                       ? "bg-yellow-100 dark:bg-slate-600"
                       : "bg-white"
                   }`}

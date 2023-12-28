@@ -32,13 +32,12 @@ import PostOfficeEmployeePage from "./pages/Employee/PostOfficeEmployee/index.ts
 import StorageEmployeePage from "./pages/Employee/StorageEmployee/index.tsx";
 import CtPTransactions from "./pages/Employee/PostOfficeEmployee/CtPTransactions/index.tsx";
 import { action as actionPostOfficeEmployee } from "./pages/Employee/PostOfficeEmployee/CtPTransactions/index.tsx";
-import { action as actionTestApi } from "./pages/TestApiPage/index.tsx";
 import Dashboard from "./pages/Employee/PostOfficeEmployee/Dashboard/index.tsx";
 import PtSTransactions from "./pages/Employee/PostOfficeEmployee/PtSTransactions/index.tsx";
 import StPTransactions from "./pages/Employee/PostOfficeEmployee/StPTransactions/index.tsx";
 import ToShip from "./pages/Employee/PostOfficeEmployee/ToShip/index.tsx";
 import { loader as postOfficeEmployeeLoader } from "./pages/Employee/PostOfficeEmployee/CtPTransactions/index.tsx";
-import storagePtSTransactions from "./pages/Employee/StorageEmployee/PtSTransactions/index.tsx";
+import StoragePtSTransactions from "./pages/Employee/StorageEmployee/PtSTransactions/index.tsx";
 import { loader as storagePtSTransactionsLoader } from "./pages/Employee/StorageEmployee/PtSTransactions/index.tsx";
 import SendStSTransactions, {
   loader as sendStorageStSTransactions,
@@ -116,8 +115,8 @@ const router = createBrowserRouter([
     children: [
       {
         path: "pts-transactions",
-        loader: storagePtSTransactions,
-        element: <PtSTransactions />,
+        loader: storagePtSTransactionsLoader,
+        element: <StoragePtSTransactions />,
       },
       {
         path: "send-sts-transactions",

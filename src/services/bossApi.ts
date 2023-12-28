@@ -15,13 +15,14 @@ export const createManager = async (reqData) => {
   return response;
 };
 
-export const listManager = async () => {
+export const listManager = async (reqParams) => {
   const response = await axios({
     method: "get",
-    url: API_BASE_URL + "/staff/manager",
+    url: API_BASE_URL + "/staff/manager?limit=500",
     headers: {
       Authorization: "Bearer " + getToken(),
     },
+    params: reqParams,
   });
   return response;
 };
@@ -52,7 +53,7 @@ export const updateManager = async (staffID, reqData) => {
 export const createDepartment = async (reqData) => {
   const response = await axios({
     method: "post",
-    url: API_BASE_URL + `department/create`,
+    url: API_BASE_URL + `/department/create`,
     headers: {
       Authorization: `Bearer ${getToken()}`,
     },
@@ -64,7 +65,7 @@ export const createDepartment = async (reqData) => {
 export const viewDepartment = async (departmentId) => {
   const response = await axios({
     method: "get",
-    url: API_BASE_URL + `department/${departmentId}`,
+    url: API_BASE_URL + `/department/${departmentId}`,
     headers: {
       Authorization: `Bearer ${getToken()}`,
     },
@@ -75,7 +76,7 @@ export const viewDepartment = async (departmentId) => {
 export const listDepartment = async (reqParams) => {
   const response = await axios({
     method: "get",
-    url: API_BASE_URL + `department`,
+    url: API_BASE_URL + `/department?limit=200`,
     headers: {
       Authorization: `Bearer ${getToken()}`,
     },
@@ -87,7 +88,7 @@ export const listDepartment = async (reqParams) => {
 export const updateDepartment = async (departmentId, reqData) => {
   const response = await axios({
     method: "put",
-    url: API_BASE_URL + `department/update/${departmentId}`,
+    url: API_BASE_URL + `/department/update/${departmentId}`,
     headers: {
       Authorization: `Bearer ${getToken()}`,
     },
@@ -100,7 +101,7 @@ export const updateDepartment = async (departmentId, reqData) => {
 export const listShipmentNationwide = async (reqParams) => {
   const response = await axios({
     method: "get",
-    url: API_BASE_URL + `shipment/nationwide`,
+    url: API_BASE_URL + `/shipment/nationwide`,
     headers: {
       Authorization: `Bearer ${getToken()}`,
     },
