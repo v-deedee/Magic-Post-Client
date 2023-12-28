@@ -52,14 +52,13 @@ export const listCtPTransactions = async(reqParams) => {
     return response
 }
 
-export const pushShipmentPtS = async(reqParams, reqData) => {
+export const pushShipmentPtS = async(reqData) => {
     const response = await axios({
         method: "post",
         url: `${API_BASE_URL}/transaction/pts`,
         headers: {
             Authorization: `Bearer ${getToken()}`
         },
-        params: reqParams,
         data: reqData,
     })
 

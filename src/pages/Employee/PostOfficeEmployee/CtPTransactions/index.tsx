@@ -49,7 +49,7 @@ export default function CtPTransactions() {
         setProvinces(provinces)
       };
 
-      const fetchDitrictsData = async () => {
+      const fetchDistrictsData = async () => {
         const data = await getDistricts({ province: "Ha Noi" });
         const payload = data.data.data.payload;
         const districts = payload.districts;
@@ -59,7 +59,7 @@ export default function CtPTransactions() {
 
       fetchListCtPTransactionData()
       fetchProvincesData()
-      fetchDitrictsData()
+      fetchDistrictsData()
 
       
     } catch (e) {
@@ -99,35 +99,29 @@ export default function CtPTransactions() {
 
   const initCtPTransactionData = {
     sender: {
-      name: "Tran Nam Khanh",
-      phone: "0986543694",
-      province: "Ha Noi",
-      district: "Thanh Tri",
-      street: "70 Dinh Tien Hoang",
+      name: "",
+      phone: "",
+      province: "",
+      district: "",
+      street: "",
       zipcode: "100000",
     },
     receiver: {
-      name: "Do Duc Anh",
-      phone: "0948153486",
-      province: "Ha Noi",
-      district: "Dong Anh",
-      street: "144 Xuan Thuy",
+      name: "",
+      phone: "",
+      province: "",
+      district: "",
+      street: "",
       zipcode: "100000",
     },
     meta: {
-      type: "DOCUMENT",
-      note: "Fragile",
-      cost: 40,
+      type: "",
+      note: "",
       item: [
         {
-          name: "Text book",
-          quantity: 1,
-          value: 15000,
-        },
-        {
-          name: "Note book",
-          quantity: 2,
-          value: 10000,
+          name: "",
+          quantity: 0,
+          value: 0,
         },
       ],
     },
@@ -164,10 +158,7 @@ export default function CtPTransactions() {
   const [openModal, setOpenModal] = useState(false);
 
   const createNewTransaction = async () => {
-    console.log("Data");
-    console.log(CtPTransaction);
     await createShipment(CtPTransaction);
-    console.log("Create success!");
   };
 
   const [senderDistrict, setSenderDistrict] = useState([]);
@@ -179,6 +170,9 @@ export default function CtPTransactions() {
     });
     const payload = data.data.data.payload;
     const districts = payload.districts;
+    let clone = { ...CtPTransaction };
+    clone.sender.district = districts[0];
+    setCtPTransaction(clone)
     setSenderDistrict(districts);
   };
 
@@ -191,6 +185,9 @@ export default function CtPTransactions() {
     });
     const payload = data.data.data.payload;
     const districts = payload.districts;
+    let clone = { ...CtPTransaction };
+     clone.receiver.district = districts[0];
+    setCtPTransaction(clone)
     setReceiverDistrict(districts);
   };
 
@@ -264,7 +261,7 @@ export default function CtPTransactions() {
                     </div>
                     <TextInput
                       id={`itemQuantity${index}`}
-                      type="text"
+                      type="number"
                       placeholder=""
                       required
                       value={item.quantity}
@@ -281,7 +278,7 @@ export default function CtPTransactions() {
                     </div>
                     <TextInput
                       id={`itemValue${index}`}
-                      type="text"
+                      type="number"
                       placeholder=""
                       required
                       value={item.value}
@@ -525,12 +522,9 @@ export default function CtPTransactions() {
             <TextInput />
           </Table.HeadCell>
           <Table.HeadCell>
-            Des
-            <TextInput />
-          </Table.HeadCell>
-          <Table.HeadCell>
             Status
             <Select>
+              <option></option>
               <option>RECEIVE</option>
               <option>PASSED</option>
             </Select>
@@ -542,17 +536,16 @@ export default function CtPTransactions() {
         <Table.Body className="divide-y">
           {listCtPTransaction.transactions.map((transaction) => (
             <Table.Row>
-              <Table.Cell>{transaction.shipment.substring(1, 6)}</Table.Cell>
+              <Table.Cell>{transaction.shipment.substring(0, 6)}</Table.Cell>
               <Table.Cell>{transaction.receiver}</Table.Cell>
               <Table.Cell>{transaction.end}</Table.Cell>
-              <Table.Cell>{transaction.des._id}</Table.Cell>
               <Table.Cell>{transaction.status}</Table.Cell>
               <Table.Cell>
                 <a
                   href="#"
                   className="font-medium text-cyan-600 hover:underline dark:text-cyan-500"
                 >
-                  Edit
+                  View
                 </a>
               </Table.Cell>
             </Table.Row>

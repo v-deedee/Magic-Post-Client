@@ -6,7 +6,6 @@ import App from "./App.tsx";
 import ErrorPage from "./error-page.tsx";
 import BossPage from "./pages/Boss/index.tsx";
 import ManagerPage from "./pages/Manager/index.tsx";
-import EmployeePage from "./pages/Employee/index.tsx";
 import ThemeProvider from "./utils/ThemeContext.tsx";
 import Departments from "./pages/Boss/Departments/index.tsx";
 import BossDashboard from "./pages/Boss/Dashboard/Dashboard.tsx";
@@ -15,7 +14,6 @@ import { Provider } from "react-redux";
 import store from "./store/store.ts";
 import TestReduxPage from "./pages/TestReduxPage";
 import TestApiPage from "./pages/TestApiPage/index.tsx";
-import CreateNewTransaction from "./pages/Employee/CreateNewTransaction.tsx";
 import { LoginPage } from "./pages/Authentication/LoginPage.tsx";
 import {
   action as loginAction,
@@ -38,7 +36,7 @@ import { action as actionTestApi } from "./pages/TestApiPage/index.tsx";
 import Dashboard from "./pages/Employee/PostOfficeEmployee/Dashboard/index.tsx";
 import PtSTransactions from "./pages/Employee/PostOfficeEmployee/PtSTransactions/index.tsx";
 import StPTransactions from "./pages/Employee/PostOfficeEmployee/StPTransactions/index.tsx";
-import ToShip from "./pages/Employee/PostOfficeEmployee/ToShip/index.tsx";
+import { ToShip } from "./pages/Employee/PostOfficeEmployee/ToShip/index.tsx";
 import { loader as postOfficeEmployeeLoader } from "./pages/Employee/PostOfficeEmployee/CtPTransactions/index.tsx";
 
 const router = createBrowserRouter([

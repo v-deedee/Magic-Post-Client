@@ -1,3 +1,71 @@
-export default function ToShip() {
-  return <h1>ToShip</h1>;
-}
+import { FC } from "react";
+import { Table } from "flowbite-react";
+import {useState, useEffect} from "react"
+import { listStPTransactions } from "../../../../services/postOfficeEmployeeApi";
+
+interface IToShipProps {}
+
+export const ToShip: FC<IToShipProps> = (props) => {
+  const [listStPTransaction, setListStPTransaction] = useState({
+    page: 0,
+    totalPages: 0,
+    transactions: [],
+  });
+
+  useEffect(() => {
+    const fetchListTransactionData = async () => {
+      const data = await listStPTransactions();
+      const payload = data.data.data.payload;
+      const { page, totalPages, transactions } = payload;
+
+      setListStPTransaction({
+        page,
+        totalPages,
+        transactions,
+      });
+    };
+    fetchListTransactionData();
+  }, []);
+
+  return (
+    <>
+      <h1>StP Transactions</h1>
+      <Table hoverable>
+        <Table.Head>
+          <Table.HeadCell>Shipment</Table.HeadCell>
+          <Table.HeadCell>Date</Table.HeadCell>
+          <Table.HeadCell>Sender</Table.HeadCell>
+          <Table.HeadCell>Pos</Table.HeadCell>
+          <Table.HeadCell>Des</Table.HeadCell>
+          <Table.HeadCell>Receiver</Table.HeadCell>
+          <Table.HeadCell>Status</Table.HeadCell>
+          <Table.HeadCell>
+            <span className="sr-only">Edit</span>
+          </Table.HeadCell>
+        </Table.Head>
+        <Table.Body className="divide-y">
+          {listStPTransaction.transactions.map((transaction) => (
+            <Table.Row className="bg-white dark:border-gray-700 dark:bg-gray-800">
+              <Table.Cell>{transaction.shipment}</Table.Cell>
+              <Table.Cell>{transaction.start}</Table.Cell>
+              <Table.Cell>{transaction.sender}</Table.Cell>
+              <Table.Cell>{transaction.pos.type}</Table.Cell>
+              <Table.Cell>{transaction.des.type}</Table.Cell>
+              <Table.Cell>{transaction.receiver}</Table.Cell>
+              <Table.Cell>{transaction.status}</Table.Cell>
+
+              <Table.Cell>
+                <a
+                  href="#"
+                  className="font-medium text-cyan-600 hover:underline dark:text-cyan-500"
+                >
+                  Edit
+                </a>
+              </Table.Cell>
+            </Table.Row>
+          ))}
+        </Table.Body>
+      </Table>
+    </>
+  );
+};

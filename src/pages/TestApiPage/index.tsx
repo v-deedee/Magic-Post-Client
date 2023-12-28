@@ -1,12 +1,6 @@
-// import { useLoaderData } from "react-router-dom";
-// import jsPDF from "jspdf";
-// import { useEffect, useRef, useState } from "react";
-import React, { useState, useEffect, useRef } from "react";
-// import L from "leaflet";
-// import "leaflet/dist/leaflet.css";
-// import React from 'react';
-import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
-import 'leaflet/dist/leaflet.css';
+import { Table } from "flowbite-react";
+import React, { useRef } from "react";
+import { useReactToPrint } from "react-to-print";
 
 export const loader = async () => {
   return "loader";
@@ -16,90 +10,96 @@ export const action = async ({ request, params }) => {
   return "action";
 };
 
+const Invoice = ({ invoiceData }) => {
+  const handlePrint = (e) => {
+    e.target.hidden = true;
+    window.print(); // Sử dụng hàm in của trình duyệt
+    e.target.hidden = false;
+  };
+
+  return (
+    <>
+      <div className="grid grid-cols-4">
+        <div className="col-span-2">
+          <img src="../../../public/logo.svg" className="h-20 w-20" />
+          <p>MagicPost</p>
+        </div>
+        <div className="col-span-2">
+          <img
+            src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/41/QR_Code_Example.svg/1200px-QR_Code_Example.svg.png"
+            className="h-20 w-20"
+          />
+        </div>
+        <div className="col-span-2">
+          <h1>Sender</h1>
+          <p>Name: DanhPB</p>
+          <p>Phone: 0398152544</p>
+          <p>Address: Mai Dich, Cau Giay, Ha Noi</p>
+        </div>
+        <div className="col-span-2">
+          <h1>Receiver</h1>
+          <p>Name: DanhPB</p>
+          <p>Phone: 0398152544</p>
+          <p>Address: Mai Dich, Cau Giay, Ha Noi</p>
+        </div>
+
+        <div className="col-span-4">
+          <p>Thông tin đơn hàng</p>
+          <p>Loại hàng: Tài liệu</p>
+          <Table>
+            <Table.Head>
+              <Table.HeadCell>Name</Table.HeadCell>
+              <Table.HeadCell>Quantity</Table.HeadCell>
+              <Table.HeadCell>Value</Table.HeadCell>
+            </Table.Head>
+            <Table.Body>
+              <Table.Row>
+                <Table.Cell>Mặt hàng A</Table.Cell>
+                <Table.Cell>1</Table.Cell>
+                <Table.Cell>1000 VNĐ</Table.Cell>
+              </Table.Row>
+            </Table.Body>
+          </Table>
+          <p>Note: Sample note blablaa</p>
+        </div>
+
+        <div className="col-span-2">
+          <p>Cước: </p>
+        </div>
+
+        <div className="col-span-2">
+          <p>Khối lượng: </p>
+        </div>
+
+        <div className="col-span-4">
+          <p>Cam kết của người gửi: </p>
+          <p>Tôi cam kết k gửi hàng bla bla</p>
+          <p>Người gửi kí nhận:</p>
+        </div>
+
+        <div className="col-span-2">
+          <h1>Bưu cục kí nhận</h1>
+        </div>
+
+        <div className="col-span-2">
+          <h1>Ngày giờ kí nhận</h1>
+        </div>
+      </div>
+      <button onClick={handlePrint}>Print Invoice</button>
+    </>
+  );
+};
+
 const TestApiPage: React.FC = () => {
-  //   const reportTemplateRef = useRef(null);
-
-  // 	const handleGeneratePdf = () => {
-  // 		const doc = new jsPDF({
-  // 			format: 'a4',
-  // 			unit: 'px',
-  // 		});
-
-  // 		// Adding the fonts.
-  // 		doc.setFont('Inter-Regular', 'normal');
-
-  // 		doc.html("<div style=\"width: 500px; border: 1px solid black\"><h1 style=\"color: red\">hello, world</h1><p>sample paragraph</p></div>", {
-  // 			async callback(doc) {
-  // 				await doc.save('document');
-  // 			},
-  // 		});
-  // 	};
-
-  // 	return (
-  // 		<div>
-  // 			<button className="button" onClick={handleGeneratePdf}>
-  // 				Generate PDF
-  // 			</button>
-  // 			<div ref={reportTemplateRef}>
-  // 				<h1>alsdkjfa</h1>
-  //         <p>Danh Pb</p>
-  // 			</div>
-  // 		</div>
-  // 	);
-  // State để giữ mảng các tọa độ của các marker
-  const [coordinates, setCoordinates] = useState([
-    { id: 1, lat: 51.505, lng: -0.09 },
-    { id: 2, lat: 51.51, lng: -0.1 },
-    // Thêm tọa độ khác nếu cần
-  ]);
-
-  // State để giữ giá trị của center
-  const [center, setCenter] = useState({ lat: 51.505, lng: -0.09 });
-
-  // Effect để theo dõi sự thay đổi của mảng coordinates
-  useEffect(() => {
-    // Code xử lý khi mảng coordinates thay đổi, có thể là cập nhật dữ liệu từ API hoặc xử lý một logic nào đó
-    console.log('Coordinates updated:', coordinates);
-  }, [coordinates]);
-
-  // Effect để theo dõi sự thay đổi của center và cập nhật state của center
-  useEffect(() => {
-    console.log('Center updated:', center);
-  }, [center]);
+  const sampleInvoiceData = {
+    // Thông tin hóa đơn
+  };
 
   return (
     <div>
-      <h1>My React Leaflet App</h1>
-      {/* Bản đồ */}
-      <MapContainer center={center} zoom={13} style={{ height: '400px', width: '100%' }}>
-        <TileLayer
-          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-        />
-        {/* Hiển thị các marker từ mảng coordinates */}
-        {coordinates.map(coord => (
-          <Marker key={coord.id} position={[coord.lat, coord.lng]}>
-            <Popup>
-              Marker {coord.id} - Lat: {coord.lat}, Lng: {coord.lng}
-            </Popup>
-          </Marker>
-        ))}
-      </MapContainer>
-      {/* Nút để thay đổi mảng coordinates và center */}
-      <button
-        onClick={() => {
-          setCoordinates([
-            { id: 1, lat: 51.505, lng: -0.09 },
-            { id: 2, lat: 51.51, lng: -0.1 },
-            { id: 3, lat: 51.515, lng: -0.11 }, // Thêm một marker mới
-          ]);
-          setCenter({ lat: 51.51, lng: -0.1 }); // Cập nhật giá trị của center
-        }}
-      >
-        Update Coordinates and Center
-      </button>
+      <Invoice invoiceData={sampleInvoiceData} />
     </div>
   );
 };
 
-export default TestApiPage
+export default TestApiPage;
