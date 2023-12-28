@@ -1,114 +1,207 @@
-import { FC } from "react";
-import { Label, Select } from "flowbite-react";
+import React, { FC, useEffect, useState } from "react";
+import { Button, Label, Select, Table } from "flowbite-react";
 import { Form } from "react-router-dom";
-import { MapContainer, TileLayer, useMap } from "react-leaflet";
+import { MapContainer, TileLayer, useMap, useMapEvents } from "react-leaflet";
 import { Marker } from "react-leaflet";
 import { Popup } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
+import {
+  getDistricts,
+  getProvinces,
+} from "../../services/postOfficeEmployeeApi";
+import {
+  getListPostOffice,
+  getLocationFromText,
+} from "../../services/customerApi";
+import { LatLng } from "leaflet";
 
 interface INearestPostOfficeProps {}
 
 export const NearestPostOffice: FC<INearestPostOfficeProps> = (props) => {
+  useEffect(() => {
+    const fetchDistrictsData = async (province) => {
+      const data = await getDistricts({ province });
+      const payload = data.data.data.payload;
+      const districts = payload.districts;
+      setDistricts(districts);
+      const clone = { ...address };
+      clone.district = districts[0];
+      setAddress(clone);
+    };
+
+    const fetchProvincesData = async () => {
+      const data = await getProvinces();
+      const payload = data.data.data.payload;
+      const provinces = payload.provinces;
+      setProvinces(provinces);
+      const clone = { ...address };
+      clone.province = provinces[0];
+      setAddress(clone);
+      fetchDistrictsData(provinces[0]);
+    };
+    fetchProvincesData();
+  }, []);
+
+  const [provinces, setProvinces] = useState([]);
+
+  const [districts, setDistricts] = useState([]);
+
+  const [address, setAddress] = useState({
+    province: "",
+    district: "",
+    type: "POSTOFFICE",
+  });
+
+  const [location, setLocation] = useState({
+    lat: 15.9266657,
+    lon: 107.9650855,
+  });
+
+  const [listPostOffice, setListPostOffice] = useState([]);
+
+  function ChangeView({ center, zoom }) {
+    const map = useMap();
+    map.setView(center, zoom);
+    return null;
+  }
+
+  function LocationMarkers() {
+    const initialMarkers: LatLng[] = [new LatLng(51.505, -0.09)];
+    const [markers, setMarkers] = useState(initialMarkers);
+
+    const map = useMapEvents({
+      click(e) {
+        markers.push(e.latlng);
+        setMarkers((prevValue) => [...prevValue, e.latlng]);
+      },
+    });
+
+    return (
+      <React.Fragment>
+        {listPostOffice.map((postOffice) => (
+          <Marker position={postOffice.geocoding}>
+            <Popup>{postOffice.street}, {postOffice.geocoding.lat}, {postOffice.geocoding.lon}</Popup>
+        
+          </Marker>
+          
+        ))}
+        {markers.map(marker => <Marker position={marker} ></Marker>)}
+
+      </React.Fragment>
+    );
+  }
+
   return (
     <div>
       <div className="flex">
-        <div>
-          <Form className="flex border-2 border-solid border-sky-500">
+        <div className="grow">
+          <Form>
             <div className="mb-2 block">
-              <Label htmlFor="from" value="Gửi từ" />
+              <Label htmlFor="province" value="Province" />
             </div>
-            <Select id="from" required>
-              <option>Toàn quốc</option>
-              <option>An Giang</option>
-              <option>Bà Rịa - Vũng Tàu</option>
-              <option>Bắc Giang</option>
-              <option>Bắc Kạn</option>
-              <option>Bạc Liêu</option>
-              <option>Bắc Ninh</option>
-              <option>Bến Tre</option>
-              <option>Bình Định</option>
-              <option>Bình Dương</option>
-              <option>Bình Phước</option>
-              <option>Bình Thuận</option>
-              <option>Cà Mau</option>
-              <option>Cần Thơ</option>
-              <option>Cao Bằng</option>
-              <option>Đà Nẵng</option>
-              <option>Đắk Lắk</option>
-              <option>Đắk Nông</option>
-              <option>Điện Biên</option>
-              <option>Đồng Nai</option>
-              <option>Đồng Tháp</option>
-              <option>Gia Lai</option>
-              <option>Hà Giang</option>
-              <option>Hà Nam</option>
-              <option>Hà Nội</option>
-              <option>Hà Tĩnh</option>
-              <option>Hải Dương</option>
-              <option>Hải Phòng</option>
-              <option>Hậu Giang</option>
-              <option>Hòa Bình</option>
-              <option>Hưng Yên</option>
-              <option>Khánh Hòa</option>
-              <option>Kiên Giang</option>
-              <option>Kon Tum</option>
-              <option>Lai Châu</option>
-              <option>Lâm Đồng</option>
-              <option>Lạng Sơn</option>
-              <option>Lào Cai</option>
-              <option>Long An</option>
-              <option>Nam Định</option>
-              <option>Nghệ An</option>
-              <option>Ninh Bình</option>
-              <option>Ninh Thuận</option>
-              <option>Phú Thọ</option>
-              <option>Phú Yên</option>
-              <option>Quảng Bình</option>
-              <option>Quảng Nam</option>
-              <option>Quảng Ngãi</option>
-              <option>Quảng Ninh</option>
-              <option>Quảng Trị</option>
-              <option>Sóc Trăng</option>
-              <option>Sơn La</option>
-              <option>Tây Ninh</option>
-              <option>Thái Bình</option>
-              <option>Thái Nguyên</option>
-              <option>Thanh Hóa</option>
-              <option>Thừa Thiên Huế</option>
-              <option>Tiền Giang</option>
-              <option>TP Hồ Chí Minh</option>
-              <option>Trà Vinh</option>
-              <option>Tuyên Quang</option>
-              <option>Vĩnh Long</option>
-              <option>Vĩnh Phúc</option>
-              <option>Yên Bái</option>
-            </Select>
+            <div>
+              <Select
+                id="province"
+                required
+                onChange={(e) => {
+                  const fetchDistrictsData = async () => {
+                    const data = await getDistricts({
+                      province: e.target.value,
+                    });
+                    const payload = data.data.data.payload;
+                    const districts = payload.districts;
+                    setDistricts(districts);
+                    const clone = { ...address };
+                    clone.province = e.target.value;
+                    clone.district = districts[0];
+                    setAddress(clone);
+                  };
+                  fetchDistrictsData();
+                }}
+              >
+                {provinces.map((province) => (
+                  <option value={province}>{province}</option>
+                ))}
+              </Select>
+            </div>
+
+            <div className="mb-2 block">
+              <Label htmlFor="district" value="District" />
+            </div>
+            <div>
+              <Select
+                id="district"
+                required
+                onChange={(e) => {
+                  const clone = { ...address };
+                  clone.district = e.target.value;
+                  setAddress(clone);
+                }}
+              >
+                {districts.map((district) => (
+                  <option value={district}>{district}</option>
+                ))}
+              </Select>
+            </div>
+            <Button
+              className="my-4 bg-green-500"
+              onClick={async (e) => {
+                const data = await getListPostOffice(address);
+                const payload = data.data.data.payload;
+                setListPostOffice(payload.departments);
+                const locationData = await getLocationFromText({
+                  q: `${address.district} ${address.province}`,
+                  format: "json",
+                });
+                const { lat, lon } = locationData.data[0];
+
+                setLocation({
+                  lat,
+                  lon,
+                });
+              }}
+            >
+              Find
+            </Button>
           </Form>
-          List danh sách
+
+          <Table>
+            <Table.Head>
+              <Table.HeadCell>List Office</Table.HeadCell>
+            </Table.Head>
+            <Table.Body>
+              {listPostOffice.map((postOffice) => (
+                <Table.Row>
+                  <Table.Cell>{postOffice.street}</Table.Cell>
+                </Table.Row>
+              ))}
+            </Table.Body>
+          </Table>
         </div>
 
-        
         <div
           id="map"
-          className="h-96 w-96 border-2 border-solid border-sky-200"
+          className="h-96 w-96 grow"
+          style={{
+            height: "75vh",
+            borderRadius: "10px",
+            overflow: "hidden",
+            padding: "15px",
+          }}
         >
-            <MapContainer
-          center={[51.505, -0.09]}
-          zoom={13}
-          scrollWheelZoom={true}
-          style={{ width: "100%", height: "100%" }}
-        >
-          <TileLayer
-            url="http://{s}.tile.osm.org/{z}/{x}/{y}.png"
-            attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-          />
-          <Marker position={[51.505, -0.09]}>
-            <Popup>
-              A pretty CSS3 popup. <br /> Easily customizable.
-            </Popup>
-          </Marker>
-        </MapContainer>
-
+          <MapContainer
+            center={[location.lat, location.lon]}
+            zoom={13}
+            scrollWheelZoom={true}
+            style={{ width: "100%", height: "100%" }}
+          >
+            <ChangeView center={[location.lat, location.lon]} zoom={13} />
+            <TileLayer
+              url="http://{s}.tile.osm.org/{z}/{x}/{y}.png"
+              attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+            />
+            <LocationMarkers />
+          </MapContainer>
         </div>
       </div>
     </div>

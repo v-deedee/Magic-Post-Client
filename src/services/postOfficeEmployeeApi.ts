@@ -83,7 +83,7 @@ export const pushShipmentPtC = async(reqParams, reqData) => {
 export const listPtSTransactions = async() => {
     const response = await axios({
         method: "get",
-        url: `${API_BASE_URL}/transaction/ptc`,
+        url: `${API_BASE_URL}/transaction/pts/pos`,
         headers: {
             Authorization: `Bearer ${getToken()}`
         },
