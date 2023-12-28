@@ -1,6 +1,6 @@
 import { Modal, Button, Label, TextInput, Select } from "flowbite-react";
 import { useForm, SubmitHandler } from "react-hook-form";
-import { Department } from "..";
+import { Department } from "../../../../models/Department";
 import { useEffect } from "react";
 
 interface UpdateDepartmentModalProps {

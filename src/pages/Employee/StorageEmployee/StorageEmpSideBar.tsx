@@ -1,4 +1,4 @@
-import { HiTruck, HiViewList } from "react-icons/hi";
+import { HiViewList } from "react-icons/hi";
 import Sidebar from "../../../components/SideBar";
 
 const options = [

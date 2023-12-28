@@ -5,26 +5,7 @@ import UpdateDepartmentModal from "./modals/UpdateDepartmentModal";
 import DepartmentTable from "./DepartmentTable";
 import Pagination from "../Pagination";
 import { ITEMS_PER_PAGE } from "../Pagination";
-
-export interface Department {
-  _id: string;
-  province: string;
-  district: string;
-  street: string;
-  phone: string;
-  type: string;
-  cfs: {
-    _id: string;
-    province: string;
-    district: string;
-    street: string;
-    type: string;
-  };
-  zipcode: string;
-  active: boolean;
-  __v: number;
-  geocoding: number[];
-}
+import { Department } from "../../../models/Department";
 
 interface Manager {
   _id: string;

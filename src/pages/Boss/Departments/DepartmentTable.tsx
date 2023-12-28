@@ -1,5 +1,5 @@
 import { Table } from "flowbite-react";
-import { Department } from ".";
+import { Department } from "../../../models/Department";
 
 interface IDepartmentTableProps {
   departments: Array<Department>;

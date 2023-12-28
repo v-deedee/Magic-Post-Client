@@ -1,4 +1,12 @@
-export default function SearchBox() {
+const SearchBox: React.FC<{
+  placeholder: string;
+  setKeyword: (keyword: string) => void;
+}> = ({ placeholder, setKeyword }) => {
+  const search = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const keyword = event.currentTarget.value;
+    setKeyword(keyword);
+  };
+
   return (
     <form action="" method="">
       <label htmlFor="topbar-search" className="sr-only">
@@ -24,10 +32,13 @@ export default function SearchBox() {
           type="text"
           name=""
           id="topbar-search"
+          onChange={search}
           className="focus:ring-primary-500 focus:border-primary-500 dark:focus:ring-primary-500 dark:focus:border-primary-500 block w-full rounded-lg border border-gray-300 p-2 pl-9 text-sm text-gray-900 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400"
-          placeholder="Search"
+          placeholder={placeholder ? placeholder : "Search"}
         />
       </div>
     </form>
   );
-}
+};
+
+export default SearchBox;
