@@ -33,7 +33,7 @@ const UpdateEmployeeModal: React.FC<UpdateEmployeeModalProps> = ({
   const onSubmit: SubmitHandler<IFormInput> = async (data) => {
     console.log(data);
     setOpenModal(false);
-    const res = await updateEmployee(currentEmployee._id, data);
+    const res = await updateEmployee(currentEmployee.username, data);
     console.log(res);
     reset();
   };

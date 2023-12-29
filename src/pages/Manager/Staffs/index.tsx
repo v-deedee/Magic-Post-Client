@@ -5,6 +5,7 @@ import { HiPlus } from "react-icons/hi";
 import { listEmployee } from "../../../services/managerApi";
 import EmployeeTable from "./EmployeeTable";
 import UpdateEmployeeModal from "./modals/UpdateEmployeeModal";
+import AfterCreateModal from "./modals/AfterCreateModal";
 
 export interface Employee {
   _id: string;
@@ -16,6 +17,12 @@ export interface Employee {
 
 export default function Staffs() {
   const [openCreateModal, setOpenCreateModal] = useState(false);
+
+  const [openAfterCreateModal, setOpenAfterCreateModal] = useState(false);
+
+  const [isSuccess, setIsSuccess] = useState(false);
+
+  const [newUserInfo, setNewUserInfo] = useState("");
 
   const [openUpdateModal, setOpentUpdateModal] = useState(false);
 
@@ -29,14 +36,15 @@ export default function Staffs() {
 
   const [employees, setEmployees] = useState([]);
 
+  const fetchEmployees = async () => {
+    const data = await listEmployee({});
+    const payload = data.data.data.payload;
+    const staffs = payload.staffs;
+    setEmployees(staffs);
+  };
+
   useEffect(() => {
-    const fetchData = async () => {
-      const data = await listEmployee({});
-      const payload = data.data.data.payload;
-      const staffs = payload.staffs;
-      setEmployees(staffs);
-    };
-    fetchData();
+    fetchEmployees();
   }, [openCreateModal]);
 
   const showUpdateModal = (employee: Employee) => {
@@ -62,6 +70,19 @@ export default function Staffs() {
       <CreateEmployeeModal
         openModal={openCreateModal}
         setOpenModal={setOpenCreateModal}
+        fetchEmployees={fetchEmployees}
+        openAfterModal={(success: boolean, userInfo: string) => {
+          setOpenAfterCreateModal(true);
+          setIsSuccess(success);
+          setNewUserInfo(userInfo);
+        }}
+      />
+
+      <AfterCreateModal
+        openModal={openAfterCreateModal}
+        setOpenModal={setOpenAfterCreateModal}
+        success={isSuccess}
+        userInfo={newUserInfo}
       />
 
       <UpdateEmployeeModal

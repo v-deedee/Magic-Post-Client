@@ -68,8 +68,8 @@ export const StPTransactions: FC<IStPTransactionsProps> = () => {
         <Modal.Body>
           <Table hoverable>
             <Table.Head>
-              <Table.HeadCell className="p-4">
-                <Checkbox />
+              <Table.HeadCell>
+                <Checkbox disabled />
               </Table.HeadCell>
               <Table.HeadCell>Shipment</Table.HeadCell>
               <Table.HeadCell>Receiver</Table.HeadCell>
@@ -84,6 +84,7 @@ export const StPTransactions: FC<IStPTransactionsProps> = () => {
                 <Table.Row>
                   <Table.Cell>
                     <Checkbox
+                      className="hover:cursor-pointer"
                       onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                         if (e.target.checked) {
                           let clone: Array<{ shipment: string }> = [
@@ -106,9 +107,16 @@ export const StPTransactions: FC<IStPTransactionsProps> = () => {
                   <Table.Cell>{transaction.shipment}</Table.Cell>
                   <Table.Cell>{transaction.receiver}</Table.Cell>
                   <Table.Cell>{transaction.start}</Table.Cell>
-                  <Table.Cell>{transaction.status}</Table.Cell>
                   <Table.Cell>
-                    <a>View</a>
+                    <span
+                      className={`rounded ${
+                        transaction.status === "RECEIVED"
+                          ? "bg-green-400"
+                          : "bg-yellow-300"
+                      } px-1 text-center text-xs font-bold text-white`}
+                    >
+                      {transaction.status}
+                    </span>
                   </Table.Cell>
                 </Table.Row>
               ))}
