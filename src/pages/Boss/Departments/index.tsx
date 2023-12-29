@@ -5,43 +5,25 @@ import UpdateDepartmentModal from "./modals/UpdateDepartmentModal";
 import DepartmentTable from "./DepartmentTable";
 // import Pagination from "../Pagination";
 // import { ITEMS_PER_PAGE } from "../Pagination";
-import { Department } from "../../../models/Department";
+import { Department, defaultDepartment } from "../../../models/Department";
 import {
   listDepartment,
   listManager,
   viewDepartment,
 } from "../../../services/bossApi";
-
-interface Manager {
-  _id: string;
-  username: string;
-  firstname: string;
-  lastname: string;
-  active: boolean;
-}
-
-const defaultDepartment = {
-  _id: "",
-  province: "",
-  district: "",
-  street: "",
-  phone: "",
-  type: "",
-  cfs: {
-    _id: "",
-    province: "",
-    district: "",
-    street: "",
-    type: "",
-  },
-  zipcode: "",
-  active: false,
-  __v: 1,
-  geocoding: [],
-};
+import SearchBox from "../../../components/SearchBox";
+import { Manager } from "../../../models/Manager";
+import AfterCreateModal from "./modals/AfterCreateModal";
 
 export default function Departments() {
   const [openCreateModal, setOpenCreateModal] = useState(false);
+
+  const [openAfterCreateModal, setopenAfterCreateModal] = useState(false);
+
+  const [afterCreateMessage, setAfterCreateMessage] = useState({
+    success: false,
+    content: "",
+  });
 
   const [openUpdateModal, setOpentUpdateModal] = useState(false);
 
@@ -59,21 +41,17 @@ export default function Departments() {
 
   const [departments, setDepartments] = useState<Array<Department>>([]);
 
+  const fetchDepartments = async () => {
+    const res = await listDepartment({});
+    setDepartments(res.data.data.payload.departments);
+  };
   // Get departments
   useEffect(() => {
-    fetch(`http://localhost:3001/department?limit=200`, {
-      headers: {
-        Authorization:
-          "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjIxMDIwMjc3Iiwicm9sZSI6IkJPU1MiLCJleHBpcmVkX3RpbWUiOiIyMDIzLTExLTE1VDAzOjE5OjQ4LjYzNloiLCJjcmVhdGVkX3Rva2VuIjoiMjAyMy0xMS0xNFQwMzoxOTo0OC42MzlaIiwiaWF0IjoxNjk5OTMxOTg4LCJleHAiOjE3ODYzMzE5ODh9.yQMmxKPBu7lpLXPNaRVROJwXfe_zcfvwyoY7FzNCDO0",
-      },
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        setDepartments(data.data.payload.departments);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    const fetchDepartments = async () => {
+      const res = await listDepartment({});
+      setDepartments(res.data.data.payload.departments);
+    };
+    fetchDepartments();
   }, []);
 
   const fetchDetail = async () => {
@@ -108,62 +86,54 @@ export default function Departments() {
     }
   };
 
+  const [keyword, setKeyword] = useState("");
+  const [searchList, setSearchList] = useState([...departments]);
+
+  function search(list: Department[]) {
+    const temp = list.filter(
+      (department) =>
+        (department.district + " " + department.type)
+          .toLowerCase()
+          .includes(keyword.trim().toLowerCase()) ||
+        department.street
+          .toLocaleLowerCase()
+          .includes(keyword.trim().toLowerCase()),
+    );
+    if (keyword !== "") setSearchList(temp);
+    else setSearchList([...list]);
+  }
+  useEffect(() => {
+    search(departments);
+  }, [departments, keyword]);
+
   return (
     <>
       <div className="flex gap-4">
         {/* Table */}
         <div className="w-1/2 overflow-x-auto">
-          {/* Create button */}
-          <div className="flex justify-end">
-            {/* <div className="flex">
-              <Dropdown
-                label=""
-                dismissOnClick={false}
-                renderTrigger={() => (
-                  <button
-                    type="button"
-                    className="mb-2 me-2 flex items-center rounded-lg bg-blue-700 px-4 py-2 text-sm font-medium text-white hover:bg-blue-800 dark:bg-blue-600 dark:hover:bg-blue-700"
-                  >
-                    <HiFilter />
-                    <span className="ms-2">Filter</span>
-                  </button>
-                )}
+          {/* Search box and Create button */}
+          <div className="flex justify-between">
+            <div className="p-2">
+              <SearchBox
+                placeholder="Search by fields"
+                setKeyword={setKeyword}
+              />
+            </div>
+            <div className="p-2">
+              <button
+                type="button"
+                className="mb-2 me-2 flex items-center rounded-lg bg-green-500 px-4 py-2 text-sm font-medium text-white hover:bg-green-600"
+                onClick={() => setOpenCreateModal(true)}
               >
-                <Dropdown.Item>Province</Dropdown.Item>
-                <Dropdown.Item>District</Dropdown.Item>
-              </Dropdown>
-              <Dropdown
-                label=""
-                dismissOnClick={false}
-                renderTrigger={() => (
-                  <button
-                    type="button"
-                    className="mb-2 me-2 flex items-center rounded-lg bg-blue-700 px-4 py-2 text-sm font-medium text-white hover:bg-blue-800 dark:bg-blue-600 dark:hover:bg-blue-700"
-                  >
-                    <HiSortAscending />
-                    <span className="ms-2">Sort</span>
-                  </button>
-                )}
-              >
-                <Dropdown.Item>Dashboard</Dropdown.Item>
-                <Dropdown.Item>Settings</Dropdown.Item>
-                <Dropdown.Item>Earnings</Dropdown.Item>
-                <Dropdown.Item>Sign out</Dropdown.Item>
-              </Dropdown>
-            </div> */}
-            <button
-              type="button"
-              className="mb-2 me-2 flex items-center rounded-lg bg-green-500 px-4 py-2 text-sm font-medium text-white hover:bg-green-600"
-              onClick={() => setOpenCreateModal(true)}
-            >
-              <HiPlus />
-              <span className="ms-1">New</span>
-            </button>
+                <HiPlus />
+                <span className="ms-1">New</span>
+              </button>
+            </div>
           </div>
 
           {/* Main table */}
           <DepartmentTable
-            departments={departments}
+            departments={searchList}
             currentDepartmentId={currentDepartmentId}
             showDetail={showDetail}
           />
@@ -329,6 +299,20 @@ export default function Departments() {
           openModal={openCreateModal}
           setOpenModal={setOpenCreateModal}
           departments={departments}
+          fetchDepartments={fetchDepartments}
+          openAfterModal={(success: boolean, content: string) => {
+            setopenAfterCreateModal(true);
+            setAfterCreateMessage({
+              success: success,
+              content: content,
+            });
+          }}
+        />
+
+        <AfterCreateModal
+          openModal={openAfterCreateModal}
+          setOpenModal={setopenAfterCreateModal}
+          message={afterCreateMessage}
         />
 
         <UpdateDepartmentModal

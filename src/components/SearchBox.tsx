@@ -29,8 +29,7 @@ const SearchBox: React.FC<{
         </div>
         {/* Text field */}
         <input
-          type="text"
-          name=""
+          type="search"
           id="topbar-search"
           onChange={search}
           className="focus:ring-primary-500 focus:border-primary-500 dark:focus:ring-primary-500 dark:focus:border-primary-500 block w-full rounded-lg border border-gray-300 p-2 pl-9 text-sm text-gray-900 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400"

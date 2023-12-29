@@ -17,3 +17,23 @@ export interface Department {
   __v: number;
   geocoding: number[];
 }
+
+export const defaultDepartment = {
+  _id: "",
+  province: "",
+  district: "",
+  street: "",
+  phone: "",
+  type: "",
+  cfs: {
+    _id: "",
+    province: "",
+    district: "",
+    street: "",
+    type: "",
+  },
+  zipcode: "",
+  active: false,
+  __v: 1,
+  geocoding: [],
+};
