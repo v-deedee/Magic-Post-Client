@@ -75,7 +75,7 @@ export default function Departments() {
   const showDetail = (id: string, type: string) => {
     setCurrentDepartmentId(id);
 
-    document.getElementById("mapView")?.classList.add("hidden");
+    // document.getElementById("mapView")?.classList.add("hidden");
 
     if (type === "STORAGE") {
       document.getElementById("storageView")?.classList.remove("hidden");
@@ -147,14 +147,14 @@ export default function Departments() {
         </div>
 
         {/* Map view */}
-        <div
+        {/* <div
           id="mapView"
           className="w-1/2 rounded-lg bg-white dark:bg-gray-800 dark:text-gray-300"
         >
           <div className="border-b p-3 text-center">
             <h2 className="font-bold">MAP</h2>
           </div>
-        </div>
+        </div> */}
 
         {/* Post office view */}
         <div
@@ -162,11 +162,9 @@ export default function Departments() {
           className="hidden w-1/2 rounded-lg bg-white p-2 dark:bg-gray-800 dark:text-gray-300"
         >
           <h1 className="mb-4 text-center text-lg font-semibold">
-            Post-office view
+            Post Office View
           </h1>
-          <div className="flex justify-center">
-            <div className="h-52 w-3/4 bg-gray-200 text-center">Map</div>
-          </div>
+          
           <hr className="mt-4 font-bold text-black" />
           <div className="flex items-center justify-between p-2">
             <h1 className="text-lg font-semibold">Details</h1>
@@ -232,11 +230,9 @@ export default function Departments() {
           className="hidden w-1/2 rounded-lg bg-white p-2 dark:bg-gray-800 dark:text-gray-300"
         >
           <h1 className="mb-4 text-center text-lg font-semibold">
-            Storage view
+            Storage View
           </h1>
-          <div className="flex justify-center">
-            <div className="h-52 w-3/4 bg-gray-200 text-center">Map</div>
-          </div>
+          
           <hr className="mt-4 font-bold text-black" />
           <div className="flex items-center justify-between p-2">
             <h1 className="text-lg font-semibold">Details</h1>
