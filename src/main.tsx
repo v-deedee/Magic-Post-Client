@@ -42,6 +42,7 @@ import { loader as storagePtSTransactionsLoader } from "./pages/Employee/Storage
 import SendStSTransactions, {
   loader as sendStorageStSTransactions,
 } from "./pages/Employee/StorageEmployee/SendStSTransactions/index.tsx";
+import { PrintPage } from "./pages/PrintPage/index.tsx";
 
 const router = createBrowserRouter([
   {
@@ -169,6 +170,10 @@ const router = createBrowserRouter([
       },
     ],
   },
+  {
+    path: "/print",
+    element: <PrintPage />,
+  }
 ]);
 
 ReactDOM.createRoot(document.getElementById("root")!).render(

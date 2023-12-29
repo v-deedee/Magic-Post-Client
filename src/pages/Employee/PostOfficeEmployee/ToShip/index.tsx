@@ -1,7 +1,7 @@
 import { FC } from "react";
-import { Table } from "flowbite-react";
+import { Button, Checkbox, Modal, Table } from "flowbite-react";
 import {useState, useEffect} from "react"
-import { listStPTransactions } from "../../../../services/postOfficeEmployeeApi";
+import { listPtCTransactions, listStPTransactions, pushShipmentPtC } from "../../../../services/postOfficeEmployeeApi";
 
 interface IToShipProps {}
 
@@ -14,7 +14,7 @@ export const ToShip: FC<IToShipProps> = (props) => {
 
   useEffect(() => {
     const fetchListTransactionData = async () => {
-      const data = await listStPTransactions();
+      const data = await listPtCTransactions();
       const payload = data.data.data.payload;
       const { page, totalPages, transactions } = payload;
 
@@ -27,9 +27,97 @@ export const ToShip: FC<IToShipProps> = (props) => {
     fetchListTransactionData();
   }, []);
 
+  const [openCreateModal, setOpenCreateModal] = useState(false)
+
+  const [listStPShipmentNotPassed, setListStPShipmentNotPassed] = useState([])
+
+  const fetchStPShipmentNotPassed = async () => {
+    const data = await listStPTransactions();
+    const payload = data.data.data.payload;
+    const transactions = payload.transactions;
+    const transactionsNotPassed = transactions.filter((transaction) => transaction.status == "RECEIVED")
+    setListStPShipmentNotPassed(transactionsNotPassed)
+  }
+
+  const [listPushShipment, setListPushShipment] = useState([])
+
   return (
     <>
-      <h1>StP Transactions</h1>
+      <h1>PtC Transactions</h1>
+      
+      <Button
+        onClick={() => {
+          setOpenCreateModal(true);
+          fetchStPShipmentNotPassed();
+        }}
+      >
+        Create
+      </Button>
+      <Modal show={openCreateModal} onClose={() => setOpenCreateModal(false)}>
+        <Modal.Header>Create</Modal.Header>
+        <Modal.Body>
+          <Table hoverable>
+            <Table.Head>
+              <Table.HeadCell className="p-4">
+                <Checkbox />
+              </Table.HeadCell>
+              <Table.HeadCell>Shipment</Table.HeadCell>
+              <Table.HeadCell>Receiver</Table.HeadCell>
+              <Table.HeadCell>Date</Table.HeadCell>
+              <Table.HeadCell>Status</Table.HeadCell>
+              <Table.HeadCell>
+                <span className="sr-only">Edit</span>
+              </Table.HeadCell>
+            </Table.Head>
+            <Table.Body>
+              {listStPShipmentNotPassed.map((transaction) => (
+                <Table.Row>
+                  <Table.Cell>
+                    <Checkbox
+                      onClick={(e) => {
+                        if (e.target.checked) {
+                          let clone = [...listPushShipment];
+                          clone.push({ shipment: transaction.shipment });
+                          setListPushShipment(clone);
+                          console.log(clone);
+                        } else {
+                          let clone = listPushShipment.filter(
+                            (shipment) =>
+                              shipment.shipment != transaction.shipment,
+                          );
+                          setListPushShipment(clone);
+                          console.log(clone);
+                        }
+                      }}
+                    />
+                  </Table.Cell>
+                  <Table.Cell>{transaction.shipment}</Table.Cell>
+                  <Table.Cell>{transaction.receiver}</Table.Cell>
+                  <Table.Cell>{transaction.start}</Table.Cell>
+                  <Table.Cell>{transaction.status}</Table.Cell>
+                  <Table.Cell>
+                    <a>View</a>
+                  </Table.Cell>
+                </Table.Row>
+              ))}
+            </Table.Body>
+          </Table>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button
+            onClick={() => {
+              setOpenCreateModal(false);
+              pushShipmentPtC({}, listPushShipment)
+            }}
+          >
+            I accept
+          </Button>
+          <Button color="gray" onClick={() => setOpenCreateModal(false)}>
+            Decline
+          </Button>
+        </Modal.Footer>
+      </Modal>
+
       <Table hoverable>
         <Table.Head>
           <Table.HeadCell>Shipment</Table.HeadCell>
@@ -49,8 +137,8 @@ export const ToShip: FC<IToShipProps> = (props) => {
               <Table.Cell>{transaction.shipment}</Table.Cell>
               <Table.Cell>{transaction.start}</Table.Cell>
               <Table.Cell>{transaction.sender}</Table.Cell>
-              <Table.Cell>{transaction.pos.type}</Table.Cell>
-              <Table.Cell>{transaction.des.type}</Table.Cell>
+              {/* <Table.Cell>{transaction.pos.type}</Table.Cell> */}
+              {/* <Table.Cell>{transaction.des.type}</Table.Cell> */}
               <Table.Cell>{transaction.receiver}</Table.Cell>
               <Table.Cell>{transaction.status}</Table.Cell>
 

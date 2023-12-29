@@ -12,18 +12,18 @@ export default function PtSTransactions() {
     totalPages: 0,
     transactions: [],
   });
-
+  const fetchListTransactionData = async () => {
+    const data = await listPtSTransactions();
+    const payload = data.data.data.payload;
+    const { page, totalPages, transactions } = payload;
+    setListPtSTransaction({
+      page,
+      totalPages,
+      transactions,
+    });
+  };
   useEffect(() => {
-    const fetchListTransactionData = async () => {
-      const data = await listPtSTransactions();
-      const payload = data.data.data.payload;
-      const { page, totalPages, transactions } = payload;
-      setListPtSTransaction({
-        page,
-        totalPages,
-        transactions,
-      });
-    };
+    
     fetchListTransactionData();
   }, []);
 
@@ -43,7 +43,7 @@ export default function PtSTransactions() {
       transactions: [],
     });
 
-    const data = await listCtPTransactions({});
+    const data = await listCtPTransactions({limit: 500});
     const payload = data.data.data.payload;
     const page = payload.page;
     const totalPages = payload.totalPages;
@@ -124,9 +124,12 @@ export default function PtSTransactions() {
         </Modal.Body>
         <Modal.Footer>
           <Button
-            onClick={() => {
+            onClick={async () => {
               setOpenCreateModal(false);
-              pushShipmentPtS(listPushShipment)
+              
+              await pushShipmentPtS(listPushShipment)
+              fetchListTransactionData()
+
             }}
           >
             I accept

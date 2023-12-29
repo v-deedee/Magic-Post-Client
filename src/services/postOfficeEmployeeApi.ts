@@ -103,10 +103,22 @@ export const listStPTransactions = async() => {
     return response
 }
 
-export const updateStpTransactions = async(reqData) => {
+export const listPtCTransactions = async() => {
     const response = await axios({
-        method: "post",
-        url: `${API_BASE_URL}/transaction/sts`,
+        method: "get",
+        url: `${API_BASE_URL}/transaction/ptc/pos`,
+        headers: {
+            Authorization: `Bearer ${getToken()}`
+        }
+    })
+
+    return response
+}
+
+export const updateStPTransactions = async(reqData) => {
+    const response = await axios({
+        method: "put",
+        url: `${API_BASE_URL}/transaction/stp`,
         headers: {
             Authorization: `Bearer ${getToken()}`
         },

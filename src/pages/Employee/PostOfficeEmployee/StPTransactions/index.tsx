@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { listStPTransactions } from "../../../../services/postOfficeEmployeeApi";
+import { listStPTransactions, updateStPTransactions } from "../../../../services/postOfficeEmployeeApi";
 import { Button, Table } from "flowbite-react";
 
 export default function StPTransactions() {
@@ -24,9 +24,21 @@ export default function StPTransactions() {
     fetchListTransactionData();
   }, []);
 
+  const acceptShipment = async(id) => {
+    const data = {
+      "ids": [id],
+      "data": {
+        "status": "RECEIVED"
+      }
+    }
+    const res = await updateStPTransactions(data)
+    console.log(res);
+  }
+
   return (
     <>
       <h1>StP Transactions</h1>
+      <Button>Accept</Button>
       <Table hoverable>
         <Table.Head>
           <Table.HeadCell>Shipment</Table.HeadCell>
@@ -52,12 +64,14 @@ export default function StPTransactions() {
               <Table.Cell>{transaction.status}</Table.Cell>
 
               <Table.Cell>
-                <a
-                  href="#"
-                  className="font-medium text-cyan-600 hover:underline dark:text-cyan-500"
+                <Button
+                  onClick={(e) => {
+                    console.log(transaction._id)
+                    acceptShipment(transaction._id);
+                  }}
                 >
-                  Edit
-                </a>
+                  Accept
+                </Button>
               </Table.Cell>
             </Table.Row>
           ))}

@@ -1,5 +1,5 @@
 import { Button, Checkbox, Label, Select, TextInput } from "flowbite-react";
-import { Form, useLoaderData } from "react-router-dom";
+import { Form, Link, useLoaderData } from "react-router-dom";
 import {
   createShipment,
   getDistricts,
@@ -25,7 +25,7 @@ export default function CtPTransactions() {
   useEffect(() => {
     try {
       const fetchListCtPTransactionData = async () => {
-        const data = await listCtPTransactions({});
+        const data = await listCtPTransactions({ limit: 500 });
         const payload = data.data.data.payload;
         const page = payload.page;
         const totalPages = payload.totalPages;
@@ -34,36 +34,34 @@ export default function CtPTransactions() {
           page,
           totalPages,
           transactions,
-        })
+        });
         setOldListCtPTransaction({
           page,
           totalPages,
-          transactions
-        })
+          transactions,
+        });
       };
 
       const fetchProvincesData = async () => {
         const data = await getProvinces();
         const payload = data.data.data.payload;
         const provinces = payload.provinces;
-        setProvinces(provinces)
+        setProvinces(provinces);
       };
 
       const fetchDistrictsData = async () => {
         const data = await getDistricts({ province: "Ha Noi" });
         const payload = data.data.data.payload;
         const districts = payload.districts;
-        setSenderDistrict(districts)
-        setReceiverDistrict(districts)
+        setSenderDistrict(districts);
+        setReceiverDistrict(districts);
       };
 
-      fetchListCtPTransactionData()
-      fetchProvincesData()
-      fetchDistrictsData()
-
-      
+      fetchListCtPTransactionData();
+      fetchProvincesData();
+      fetchDistrictsData();
     } catch (e) {
-      console.log(e)
+      console.log(e);
     }
   }, []);
 
@@ -80,20 +78,18 @@ export default function CtPTransactions() {
   });
 
   const filterTable = (field, value) => {
-    const {page, totalPages, transactions} = oldListCtPTransaction
+    const { page, totalPages, transactions } = oldListCtPTransaction;
 
     const filterList = transactions.filter((item) => {
-      return item[field].includes(value)
-    })
+      return item[field].includes(value);
+    });
 
     setListCtPTransaction({
       page,
       totalPages,
-      transactions: filterList
-    })
-  }
-
-  
+      transactions: filterList,
+    });
+  };
 
   const [provinces, setProvinces] = useState([]);
 
@@ -115,7 +111,7 @@ export default function CtPTransactions() {
       zipcode: "100000",
     },
     meta: {
-      type: "",
+      type: "DOCUMENT",
       note: "",
       item: [
         {
@@ -158,7 +154,12 @@ export default function CtPTransactions() {
   const [openModal, setOpenModal] = useState(false);
 
   const createNewTransaction = async () => {
-    await createShipment(CtPTransaction);
+    const res = await createShipment(CtPTransaction);
+    const shipment = res.data.data.payload.shipment;
+    let clone = { ...CtPTransaction };
+    clone.shipment = shipment;
+    setCtPTransaction(clone);
+    setDisplayPrintInvoice("block");
   };
 
   const [senderDistrict, setSenderDistrict] = useState([]);
@@ -172,7 +173,7 @@ export default function CtPTransactions() {
     const districts = payload.districts;
     let clone = { ...CtPTransaction };
     clone.sender.district = districts[0];
-    setCtPTransaction(clone)
+    setCtPTransaction(clone);
     setSenderDistrict(districts);
   };
 
@@ -186,10 +187,12 @@ export default function CtPTransactions() {
     const payload = data.data.data.payload;
     const districts = payload.districts;
     let clone = { ...CtPTransaction };
-     clone.receiver.district = districts[0];
-    setCtPTransaction(clone)
+    clone.receiver.district = districts[0];
+    setCtPTransaction(clone);
     setReceiverDistrict(districts);
   };
+
+  const [displayPrintInvoice, setDisplayPrintInvoice] = useState("none");
 
   return (
     <div>
@@ -211,8 +214,8 @@ export default function CtPTransactions() {
                   setCtPTransaction(clone);
                 }}
               >
-                <option value="Document">Document</option>
-                <option value="Gun">Gun</option>
+                <option value="DOCUMENT">Document</option>
+                <option value="GOODS">Goods</option>
               </Select>
               <div className="mb-2 block">
                 <Label htmlFor="note" value="Note" />
@@ -494,7 +497,7 @@ export default function CtPTransactions() {
         <Modal.Footer>
           <Button
             onClick={() => {
-              setOpenModal(false);
+              // setOpenModal(false);
               createNewTransaction();
             }}
           >
@@ -503,15 +506,20 @@ export default function CtPTransactions() {
           <Button color="gray" onClick={() => setOpenModal(false)}>
             Cancel
           </Button>
+          <Link to="/print" state={CtPTransaction}>
+            <Button style={{ display: displayPrintInvoice }}>Print</Button>
+          </Link>
         </Modal.Footer>
       </Modal>
       <Table hoverable>
         <Table.Head>
           <Table.HeadCell>
             Shipment
-            <TextInput onChange={(e) => {
-              filterTable("shipment", e.target.value)
-            }} />
+            <TextInput
+              onChange={(e) => {
+                filterTable("shipment", e.target.value);
+              }}
+            />
           </Table.HeadCell>
           <Table.HeadCell>
             Receiver
