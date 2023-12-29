@@ -109,7 +109,7 @@ export default function Managers() {
     <>
       <div className="flex gap-4">
         {/* Table */}
-        <div className="">
+        <div className="w-1/2">
           {/* Filter & Sort & Create button */}
           <div className=" flex justify-end">
             <button

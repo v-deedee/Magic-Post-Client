@@ -1,9 +1,10 @@
 import { Button, Checkbox, Label, TextInput } from "flowbite-react";
-import { Form, Link, redirect, useActionData } from "react-router-dom";
+import { Form, redirect, useActionData } from "react-router-dom";
 import { login } from "../../services/api";
-import { FC } from "react";
-import { ROLE, User, createUser, stringToRole } from "../../models/User";
+import { useState } from "react";
+import { ROLE, stringToRole } from "../../models/User";
 import { setToken } from "../../services/token";
+import logo from "/logo.svg";
 
 export async function action({ request, params }) {
   const formData = await request.formData();
@@ -21,14 +22,14 @@ export async function action({ request, params }) {
       case ROLE.POSTOFFICE_MANAGER:
         return redirect("/manager/dashboard");
       case ROLE.STORAGE_EMPLOYEE:
-        return redirect("/storage-employee");
+        return redirect("/storage-employee/pts-transactions");
       case ROLE.POSTOFFICE_EMPLOYEE:
-        return redirect("/post-office-employee");
+        return redirect("/post-office-employee/ctp-transactions");
       default:
         return "hey dev! Kiểm tra lại role";
     }
   } catch (err) {
-    return "Sai tài khoản hoặc mật khẩu";
+    return "Wrong username or password";
   }
 }
 
@@ -36,36 +37,66 @@ export async function loader({ params }) {
   return "load success";
 }
 
-interface ILoginPageProps {}
-
-export const LoginPage: FC<ILoginPageProps> = (props) => {
+export default function LoginPage() {
   const actionData: string = useActionData() as string;
+  const [showPassword, setShowPassword] = useState(false);
 
   return (
-    <div className="bg-white dark:bg-gray-800">
-      <Form className="flex max-w-md flex-col gap-4" method="post">
-        <div>
-          <div className="mb-2 block">
-            <Label htmlFor="email2" value="Your email" />
-          </div>
-          <TextInput id="email2" type="text" required shadow name="username" />
+    <main className="flex h-screen bg-[url('/login-background.jpg')] align-middle dark:bg-zinc-700">
+      <div className="m-auto w-96 rounded-lg border-gray-500 bg-white/90 p-5 shadow-lg dark:border-4 dark:bg-zinc-800">
+        <div className="my-10 flex justify-center">
+          <img src={logo} className="mr-2 h-10 w-10" alt="logo" />
+          <span className="self-center whitespace-nowrap text-3xl font-bold text-[#319684] dark:text-white">
+            MagicPost
+          </span>
         </div>
-        <div>
-          <div className="mb-2 block">
-            <Label htmlFor="password2" value="Your password" />
+        <p className="mb-3 font-bold text-red-600 dark:text-red-400">
+          {actionData}
+        </p>
+        <Form className="flex max-w-md flex-col gap-4" method="post">
+          <div>
+            <div className="mb-2 block">
+              <Label htmlFor="email2" value="Username" />
+            </div>
+            <TextInput
+              id="email2"
+              type="text"
+              required
+              shadow
+              name="username"
+              placeholder="Enter your username"
+            />
           </div>
-          <TextInput
-            id="password2"
-            type="password"
-            required
-            shadow
-            name="password"
-          />
-        </div>
+          <div>
+            <div className="mb-2 block">
+              <Label htmlFor="password2" value="Password" />
+            </div>
+            <TextInput
+              id="password2"
+              type={showPassword ? "text" : "password"}
+              required
+              shadow
+              name="password"
+              placeholder="Enter your password"
+            />
+          </div>
 
-        <Button type="submit">Login</Button>
-      </Form>
-      <p>{actionData}</p>
-    </div>
+          <div className="flex items-center gap-2">
+            <Checkbox
+              id="showPassword"
+              className="hover:cursor-pointer"
+              onChange={() => setShowPassword(!showPassword)}
+            />
+            <Label htmlFor="showPassword" className="hover:cursor-pointer">
+              Show password
+            </Label>
+          </div>
+
+          <Button className="mb-10 mt-5" type="submit">
+            Login
+          </Button>
+        </Form>
+      </div>
+    </main>
   );
-};
+}

@@ -34,36 +34,34 @@ export default function CtPTransactions() {
           page,
           totalPages,
           transactions,
-        })
+        });
         setOldListCtPTransaction({
           page,
           totalPages,
-          transactions
-        })
+          transactions,
+        });
       };
 
       const fetchProvincesData = async () => {
         const data = await getProvinces();
         const payload = data.data.data.payload;
         const provinces = payload.provinces;
-        setProvinces(provinces)
+        setProvinces(provinces);
       };
 
       const fetchDistrictsData = async () => {
         const data = await getDistricts({ province: "Ha Noi" });
         const payload = data.data.data.payload;
         const districts = payload.districts;
-        setSenderDistrict(districts)
-        setReceiverDistrict(districts)
+        setSenderDistrict(districts);
+        setReceiverDistrict(districts);
       };
 
-      fetchListCtPTransactionData()
-      fetchProvincesData()
-      fetchDistrictsData()
-
-      
+      fetchListCtPTransactionData();
+      fetchProvincesData();
+      fetchDistrictsData();
     } catch (e) {
-      console.log(e)
+      console.log(e);
     }
   }, []);
 
@@ -80,20 +78,18 @@ export default function CtPTransactions() {
   });
 
   const filterTable = (field, value) => {
-    const {page, totalPages, transactions} = oldListCtPTransaction
+    const { page, totalPages, transactions } = oldListCtPTransaction;
 
     const filterList = transactions.filter((item) => {
-      return item[field].includes(value)
-    })
+      return item[field].includes(value);
+    });
 
     setListCtPTransaction({
       page,
       totalPages,
-      transactions: filterList
-    })
-  }
-
-  
+      transactions: filterList,
+    });
+  };
 
   const [provinces, setProvinces] = useState([]);
 
@@ -172,7 +168,7 @@ export default function CtPTransactions() {
     const districts = payload.districts;
     let clone = { ...CtPTransaction };
     clone.sender.district = districts[0];
-    setCtPTransaction(clone)
+    setCtPTransaction(clone);
     setSenderDistrict(districts);
   };
 
@@ -186,8 +182,8 @@ export default function CtPTransactions() {
     const payload = data.data.data.payload;
     const districts = payload.districts;
     let clone = { ...CtPTransaction };
-     clone.receiver.district = districts[0];
-    setCtPTransaction(clone)
+    clone.receiver.district = districts[0];
+    setCtPTransaction(clone);
     setReceiverDistrict(districts);
   };
 
@@ -211,7 +207,7 @@ export default function CtPTransactions() {
                   setCtPTransaction(clone);
                 }}
               >
-                <option value="Document">Document</option>
+                <option value="DOCUMENT">Document</option>
                 <option value="Gun">Gun</option>
               </Select>
               <div className="mb-2 block">
@@ -509,9 +505,11 @@ export default function CtPTransactions() {
         <Table.Head>
           <Table.HeadCell>
             Shipment
-            <TextInput onChange={(e) => {
-              filterTable("shipment", e.target.value)
-            }} />
+            <TextInput
+              onChange={(e) => {
+                filterTable("shipment", e.target.value);
+              }}
+            />
           </Table.HeadCell>
           <Table.HeadCell>
             Receiver
