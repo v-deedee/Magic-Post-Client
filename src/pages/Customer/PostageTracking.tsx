@@ -28,7 +28,7 @@ export const PostageTracking: FC<IPostageTrackingProps> = (props) => {
       const data = await trackShipment(id);
       const payload = data.data.data.payload;
       const { shipment, transactions } = payload;
-      console.log(transactions)
+      console.log(transactions);
       setShipment(shipment);
       setTransactions(transactions.slice(0, -1));
       setStatus("SUCCESS");
@@ -52,13 +52,13 @@ export const PostageTracking: FC<IPostageTrackingProps> = (props) => {
             setShipmentID(e.target.value);
           }}
           name="id"
-          className="mx-4 grow"
+          className="grow"
           required
         />
 
         <Button
           type="submit"
-          className="mx-4 bg-green-500"
+          className="ms-4 bg-green-500"
           onClick={(e) => {
             e.preventDefault();
             search(shipmentID);
@@ -68,7 +68,7 @@ export const PostageTracking: FC<IPostageTrackingProps> = (props) => {
         </Button>
       </Form>
 
-      <div className="px-8 mt-5">
+      <div className="mt-5 px-8">
         <h1>
           {(() => {
             if (status == "NONE") {
@@ -80,7 +80,7 @@ export const PostageTracking: FC<IPostageTrackingProps> = (props) => {
               return (
                 <>
                   <div className="flex justify-center">
-                    <Card href="#" className="max-w-sm mx-6">
+                    <Card href="#" className="mx-6 max-w-sm">
                       <h5 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
                         Sender: {sender.name}
                       </h5>
@@ -91,7 +91,7 @@ export const PostageTracking: FC<IPostageTrackingProps> = (props) => {
                       </p>
                     </Card>
 
-                    <Card href="#" className="max-w-sm mx-6">
+                    <Card href="#" className="mx-6 max-w-sm">
                       <h5 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
                         Receiver: {receiver.name}
                       </h5>
@@ -109,12 +109,16 @@ export const PostageTracking: FC<IPostageTrackingProps> = (props) => {
                         <Timeline.Item>
                           <Timeline.Point />
                           <Timeline.Content>
-                            <Timeline.Time>{transaction.start.substring(0, 10)}</Timeline.Time>
+                            <Timeline.Time>
+                              {transaction.start.substring(0, 10)}
+                            </Timeline.Time>
                             <Timeline.Title>
                               {transaction.status} : {transaction.des.type}
                             </Timeline.Title>
                             <Timeline.Body>
-                              {transaction.des.street}, {transaction.des.district}, {transaction.des.province}
+                              {transaction.des.street},{" "}
+                              {transaction.des.district},{" "}
+                              {transaction.des.province}
                             </Timeline.Body>
                           </Timeline.Content>
                         </Timeline.Item>

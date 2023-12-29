@@ -1,6 +1,6 @@
 import { connect } from "react-redux";
 import { Component } from "react";
-import { Link, Outlet } from "react-router-dom";
+import { Form, Link, Outlet } from "react-router-dom";
 import {
   Navbar,
   Carousel,
@@ -31,55 +31,75 @@ class Customer extends Component<ICustomerProps, ICustomerState> {
   render() {
     return (
       <>
-        <Navbar fluid rounded-lg>
-          <Navbar.Brand as={Link} to="/home">
-            <img
-              src="../../../public/logo.svg"
-              className="mr-3 h-6 sm:h-9"
-              alt="MagicPost Logo"
-            />
-            <span className="self-center whitespace-nowrap text-xl font-semibold dark:text-white">
-              MagicPost
-            </span>
-          </Navbar.Brand>
-          <Navbar.Toggle />
-          <Navbar.Collapse>
-            <Navbar.Link href="/login" active>
-              <p className="text-green-600">Login</p>
-            </Navbar.Link>
-          </Navbar.Collapse>
-        </Navbar>
+        <div className="bg-gray-800 bg-[url('/hero-bg.png')] bg-cover bg-right pb-14">
+          <div className="container mx-auto w-full p-6">
+            <div className="flex w-full items-center justify-between">
+              <a
+                className="flex items-center text-2xl font-bold text-indigo-400 no-underline hover:no-underline lg:text-4xl"
+                href="/"
+              >
+                <img src="/logo.svg" alt="" className="me-3 w-14" />
+                <span className="self-center whitespace-nowrap text-4xl font-bold text-white">
+                  MagicPost
+                </span>
+              </a>
 
-        <div className="h-56 sm:h-64 xl:h-80 2xl:h-96">
-          <Carousel>
-            <img
-              src="https://media.product.which.co.uk/prod/images/original/gm-35e787ad-d56d-454c-a6ae-a89925f19d30-post-office-banking-servicesnewsmain.jpeg"
-              alt="..."
-            />
-            <img
-              src="https://wallpapers.com/images/featured/post-office-g2g4895jkhi09e3r.jpg"
-              alt="..."
-            />
-            <img src="https://wallpaper.dog/large/20390507.jpg" alt="..." />
-          </Carousel>
+              <div className="flex w-1/2 content-center justify-end">
+                <Link to="/login">
+                  <Button color="blue">Login</Button>
+                </Link>
+              </div>
+            </div>
+          </div>
+
+          {/* <!--Main--> */}
+          <div className="container mx-auto flex flex-col flex-wrap items-center px-6 md:flex-row">
+            {/* <!--Left Col--> */}
+            <div className="flex w-full flex-col justify-center overflow-y-hidden lg:items-start xl:w-2/5">
+              <h1 className="slide-in-bottom-h1 my-4 text-center text-3xl font-bold leading-tight text-white md:text-left md:text-5xl">
+                {">"}Track shipment:
+              </h1>
+              {/* <p className="slide-in-bottom-subtitle mb-8 text-center text-base leading-normal text-white md:text-left md:text-2xl">
+                Track shipment
+              </p> */}
+            </div>
+
+            {/* <!--Right Col--> */}
+            {/* <div className="w-full overflow-y-hidden py-6 xl:w-3/5">
+              <img
+                className="slide-in-bottom mx-auto w-5/6 lg:mr-0"
+                src="/hero-img.svg"
+              />
+            </div> */}
+
+            {/* <!--Footer--> */}
+            {/* <div className="fade-in w-full pb-6 pt-16 text-center text-sm md:text-left">
+              <a
+                className="text-gray-500 no-underline hover:no-underline"
+                href="#"
+              >
+                &copy; App 2019
+              </a>
+            </div> */}
+          </div>
         </div>
-        <div className="flex-col mt-8 p-12">
-          <Button.Group className="flex mb-3">
+        <div className="container mx-auto mt-8 flex-col p-12">
+          <Button.Group className="mb-3 flex">
             <Button color="gray" className="grow">
-              <Link to={"postage-tracking"} className="flex">
-                <HiUserCircle className="mr-3 h-4 w-4" />
+              <Link to={"postage-tracking"} className="flex items-center">
+                <HiUserCircle className="mr-2 mt-0.5 h-4 w-4" />
                 Locate
               </Link>
             </Button>
             <Button color="gray" className="grow">
-              <Link to={"estimated-freight"} className="flex">
-                <HiAdjustments className="mr-3 h-4 w-4" />
+              <Link to={"estimated-freight"} className="flex items-center">
+                <HiAdjustments className="mr-2 mt-0.5 h-4 w-4" />
                 Estimate Cost
               </Link>
             </Button>
             <Button color="gray" className="grow">
-              <Link to={"nearest-post-office"} className="flex">
-                <HiCloudDownload className="mr-3 h-4 w-4" />
+              <Link to={"nearest-post-office"} className="flex items-center">
+                <HiCloudDownload className="mr-2 mt-0.5 h-4 w-4" />
                 Find Post
               </Link>
             </Button>
@@ -90,8 +110,8 @@ class Customer extends Component<ICustomerProps, ICustomerState> {
           </div>
         </div>
 
-        <Footer container>
-          <div className="w-full">
+        <Footer>
+          <div className="container mx-auto mt-10 h-96 border-t pt-10">
             <div className="grid w-full justify-between sm:flex sm:justify-between md:flex md:grid-cols-1">
               <div>
                 <Footer.Brand

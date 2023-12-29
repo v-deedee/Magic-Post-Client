@@ -110,7 +110,7 @@ export default function Departments() {
     <>
       <div className="flex gap-4">
         {/* Table */}
-        <div className="w-1/2 overflow-x-auto">
+        <div className="w-full overflow-x-auto">
           {/* Search box and Create button */}
           <div className="flex justify-between">
             <div className="p-2">
@@ -164,7 +164,7 @@ export default function Departments() {
           <h1 className="mb-4 text-center text-lg font-semibold">
             Post Office View
           </h1>
-          
+
           <hr className="mt-4 font-bold text-black" />
           <div className="flex items-center justify-between p-2">
             <h1 className="text-lg font-semibold">Details</h1>
@@ -232,7 +232,7 @@ export default function Departments() {
           <h1 className="mb-4 text-center text-lg font-semibold">
             Storage View
           </h1>
-          
+
           <hr className="mt-4 font-bold text-black" />
           <div className="flex items-center justify-between p-2">
             <h1 className="text-lg font-semibold">Details</h1>
