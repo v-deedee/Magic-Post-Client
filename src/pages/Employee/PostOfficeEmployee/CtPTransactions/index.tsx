@@ -53,7 +53,7 @@ export default function CtPTransactions() {
       };
 
       const fetchDistrictsData = async () => {
-        const data = await getDistricts({ province: "Ha Noi" });
+        const data = await getDistricts({ province: provinces[0] });
         const payload = data.data.data.payload;
         const districts = payload.districts;
         setSenderDistrict(districts);
@@ -80,20 +80,6 @@ export default function CtPTransactions() {
     transactions: [],
   });
 
-  // const filterTable = (field, value) => {
-  //   const { page, totalPages, transactions } = oldListCtPTransaction;
-
-  //   const filterList = transactions.filter((item) => {
-  //     return item[field].includes(value);
-  //   });
-
-  //   setListCtPTransaction({
-  //     page,
-  //     totalPages,
-  //     transactions: filterList,
-  //   });
-  // };
-
   const [provinces, setProvinces] = useState([]);
 
   const initCtPTransactionData = {
@@ -114,7 +100,7 @@ export default function CtPTransactions() {
       zipcode: "100000",
     },
     meta: {
-      type: "DOCUMENT",
+      type: "",
       note: "",
       item: [
         {
@@ -156,13 +142,30 @@ export default function CtPTransactions() {
 
   const [openCreateModal, setOpenCreateModal] = useState(false);
 
+  const [reqError, setReqError] = useState({
+    error: false,
+    msg: "",
+  });
+
   const createNewTransaction = async () => {
-    const res = await createShipment(CtPTransaction);
-    const shipment = res.data.data.payload.shipment;
-    let clone = { ...CtPTransaction };
-    clone.shipment = shipment;
-    setCtPTransaction(clone);
-    setDisplayPrintInvoice("block");
+    try {
+      const res = await createShipment(CtPTransaction);
+      const shipment = res.data.data.payload.shipment;
+      let clone = { ...CtPTransaction };
+      clone.shipment = shipment;
+      setCtPTransaction(clone);
+      setDisplayPrintInvoice("block");
+      setReqError({
+        error: false,
+        msg: "",
+      });
+    } catch (e) {
+      console.log(e);
+      setReqError({
+        error: true,
+        msg: e.response.data.message,
+      });
+    }
   };
 
   const [openDetailModal, setOpenDetailModal] = useState(false);
@@ -293,6 +296,7 @@ export default function CtPTransactions() {
                   setCtPTransaction(clone);
                 }}
               >
+                <option value="">Select Type</option>
                 <option value="DOCUMENT">Document</option>
                 <option value="GOODS">Goods</option>
               </Select>
@@ -448,6 +452,7 @@ export default function CtPTransactions() {
                       updateSenderDistrict();
                     }}
                   >
+                    <option value="">Select Province</option>
                     {provinces.map((province) => (
                       <option value={province}>{province}</option>
                     ))}
@@ -467,6 +472,7 @@ export default function CtPTransactions() {
                       setCtPTransaction(clone);
                     }}
                   >
+                    <option value="">Select District</option>
                     {senderDistrict.map((district) => (
                       <option value={district}>{district}</option>
                     ))}
@@ -542,6 +548,7 @@ export default function CtPTransactions() {
                       updateReceiverDistrict();
                     }}
                   >
+                    <option value="">Select Province</option>
                     {provinces.map((province) => (
                       <option value={province}>{province}</option>
                     ))}
@@ -561,6 +568,7 @@ export default function CtPTransactions() {
                       setCtPTransaction(clone);
                     }}
                   >
+                    <option value="">Select District</option>
                     {receiverDistrict.map((district) => (
                       <option value={district}>{district}</option>
                     ))}
@@ -590,7 +598,6 @@ export default function CtPTransactions() {
         <Modal.Footer>
           <Button
             onClick={() => {
-              // setOpenCreateModal(false);
               createNewTransaction();
             }}
           >
@@ -602,6 +609,7 @@ export default function CtPTransactions() {
           <Link to="/print" state={CtPTransaction}>
             <Button style={{ display: displayPrintInvoice }}>Print</Button>
           </Link>
+          <p className="text-red-500">{reqError.msg}</p>
         </Modal.Footer>
       </Modal>
 

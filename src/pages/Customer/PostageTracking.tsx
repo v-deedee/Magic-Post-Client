@@ -28,8 +28,9 @@ export const PostageTracking: FC<IPostageTrackingProps> = (props) => {
       const data = await trackShipment(id);
       const payload = data.data.data.payload;
       const { shipment, transactions } = payload;
+      console.log(transactions)
       setShipment(shipment);
-      setTransactions(transactions);
+      setTransactions(transactions.slice(0, -1));
       setStatus("SUCCESS");
     } catch (e) {
       setStatus("FAIL");
