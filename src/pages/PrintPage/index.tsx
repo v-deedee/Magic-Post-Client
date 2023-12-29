@@ -1,11 +1,10 @@
-import { FC, useEffect, useState } from "react";
+import { useState } from "react";
 import { Button, Table } from "flowbite-react";
 import { Link, useLocation } from "react-router-dom";
-import axios from "axios";
-interface IPrintPageProps {}
+// import axios from "axios";
 
-export const PrintPage: FC<IPrintPageProps> = (props) => {
-  const handlePrint = async (e) => {
+export default function PrintPage() {
+  const handlePrint = async () => {
     setDisplayButton("none");
     setTimeout(() => {
       window.print();
@@ -125,4 +124,4 @@ export const PrintPage: FC<IPrintPageProps> = (props) => {
       </div>
     </div>
   );
-};
+}

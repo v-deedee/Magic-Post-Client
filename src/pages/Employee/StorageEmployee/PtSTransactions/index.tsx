@@ -4,22 +4,20 @@ import {
   listPtSTransactions,
   updatePtSTransactions,
 } from "../../../../services/storageEmployeeApi";
-import { useFetcher } from "react-router-dom";
 import { useEffect, useState } from "react";
 import SearchBox from "../../../../components/SearchBox";
-// import { useState } from "react";
-
-export const loader = async () => {
-  const data = await listPtSTransactions("des");
-  const transactions = data.data.data.payload.transactions;
-  return transactions;
-};
 
 export default function PtSTransactions() {
-  // const transactions = useLoaderData() as Array<Transaction>;
-
-  const fetcher = useFetcher();
   const [transactions, setTransactions] = useState<Transaction[]>([]);
+
+  const fetchTransactions = async () => {
+    const res = await listPtSTransactions("des");
+    setTransactions(res.data.data.payload.transactions);
+  };
+
+  useEffect(() => {
+    fetchTransactions();
+  }, []);
 
   const updateStatus = async (id: string) => {
     const response = await updatePtSTransactions({
@@ -29,44 +27,13 @@ export default function PtSTransactions() {
       },
     });
     console.log(response);
-    fetcher.load("/storage-employee/pts-transactions");
-
-    // window.location.reload();
+    fetchTransactions();
   };
-
-  // Store search keyword
-  const [keyword, setKeyword] = useState("");
-  const [searchList, setSearchList] = useState([...transactions]);
-
-  function search(list: Transaction[]) {
-    const temp = list.filter((transaction) =>
-      transaction.shipment.includes(keyword.toLowerCase()),
-    );
-    if (keyword !== "") setSearchList(temp);
-    else setSearchList([...list]);
-  }
-
-  useEffect(() => {
-    console.log(keyword === "");
-
-    search(transactions);
-  }, [keyword]);
-
-  useEffect(() => {
-    if (fetcher.state === "idle" && !fetcher.data) {
-      fetcher.load("/storage-employee/pts-transactions");
-    }
-    if (fetcher.data) {
-      setTransactions(fetcher.data);
-      search(fetcher.data);
-    }
-    console.log(fetcher.data);
-  }, [fetcher]);
 
   return (
     <>
       <div className="mb-2 w-64">
-        <SearchBox placeholder={"Search by ID"} setKeyword={setKeyword} />
+        <SearchBox placeholder={"Search by ID"} setKeyword={() => {}} />
       </div>
       <div className="overflow-x-auto">
         {/* Table */}
@@ -88,7 +55,7 @@ export default function PtSTransactions() {
               </Table.HeadCell>
             </Table.Head>
             <Table.Body className="divide-y">
-              {searchList.map((transaction) => (
+              {transactions.map((transaction) => (
                 <Table.Row
                   key={transaction._id}
                   className="bg-white dark:border-gray-700 dark:bg-gray-800"

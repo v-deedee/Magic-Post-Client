@@ -1,5 +1,8 @@
-import { HiTruck, HiViewGrid, HiViewList } from "react-icons/hi";
+import { HiTruck, HiViewGrid } from "react-icons/hi";
 import Sidebar from "../../../components/SideBar";
+import { IoIosSend } from "react-icons/io";
+import { MdOutlineCallReceived } from "react-icons/md";
+import { RiUserReceived2Fill } from "react-icons/ri";
 
 const options = [
   {
@@ -13,28 +16,28 @@ const options = [
   },
   {
     url: "/post-office-employee/ctp-transactions",
-    name: "CtP Transactions",
+    name: "Customer Transactions",
     icon: (
       <>
-        <HiViewList />
+        <RiUserReceived2Fill />
       </>
     ),
   },
   {
     url: "/post-office-employee/pts-transactions",
-    name: "PtS Transactions",
+    name: "Push to Storage",
     icon: (
       <>
-        <HiViewList />
+        <IoIosSend />
       </>
     ),
   },
   {
     url: "/post-office-employee/stp-transactions",
-    name: "StP transactions",
+    name: "Receive from Storage",
     icon: (
       <>
-        <HiViewList />
+        <MdOutlineCallReceived />
       </>
     ),
   },

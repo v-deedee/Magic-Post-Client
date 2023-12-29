@@ -1,40 +1,42 @@
-import { HiViewList } from "react-icons/hi";
 import Sidebar from "../../../components/SideBar";
+import { IoIosSend } from "react-icons/io";
+import { MdGetApp, MdOutlineCallReceived } from "react-icons/md";
+import { FiSend } from "react-icons/fi";
 
 const options = [
   {
     url: "/storage-employee/pts-transactions",
-    name: "PtS Transactions",
+    name: "Receive from Post Office",
     icon: (
       <>
-        <HiViewList />
+        <MdOutlineCallReceived />
       </>
     ),
   },
   {
     url: "/storage-employee/send-sts-transactions",
-    name: "(Send) StS Transactions",
+    name: "Push to Storage",
     icon: (
       <>
-        <HiViewList />
+        <IoIosSend />
       </>
     ),
   },
   {
     url: "/storage-employee/receive-sts-transactions",
-    name: "(Receive) StS transactions",
+    name: "Receive from Storage",
     icon: (
       <>
-        <HiViewList />
+        <MdGetApp />
       </>
     ),
   },
   {
     url: "/storage-employee/stp-transactions",
-    name: "StP Transactions",
+    name: "Push to Post Office",
     icon: (
       <>
-        <HiViewList />
+        <FiSend />
       </>
     ),
   },

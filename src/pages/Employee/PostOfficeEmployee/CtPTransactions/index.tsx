@@ -1,5 +1,5 @@
-import { Button, Checkbox, Label, Select, TextInput } from "flowbite-react";
-import { Form, Link, useLoaderData } from "react-router-dom";
+import { Button, Label, Select, TextInput } from "flowbite-react";
+import { Form, Link } from "react-router-dom";
 import {
   createShipment,
   getDistricts,
@@ -8,10 +8,12 @@ import {
 } from "../../../../services/postOfficeEmployeeApi";
 import { Table } from "flowbite-react";
 import { Modal } from "flowbite-react";
-import { CtPTransactionModal } from "./CtPTransactionsModal";
+// import { CtPTransactionModal } from "./CtPTransactionsModal";
 import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
-import { HiTrash, HiX } from "react-icons/hi";
+// import { useSelector } from "react-redux";
+import { HiPlus, HiTrash } from "react-icons/hi";
+import SearchBox from "../../../../components/SearchBox";
+import { trackShipment } from "../../../../services/customerApi";
 
 export const loader = async () => {
   return null;
@@ -78,19 +80,19 @@ export default function CtPTransactions() {
     transactions: [],
   });
 
-  const filterTable = (field, value) => {
-    const { page, totalPages, transactions } = oldListCtPTransaction;
+  // const filterTable = (field, value) => {
+  //   const { page, totalPages, transactions } = oldListCtPTransaction;
 
-    const filterList = transactions.filter((item) => {
-      return item[field].includes(value);
-    });
+  //   const filterList = transactions.filter((item) => {
+  //     return item[field].includes(value);
+  //   });
 
-    setListCtPTransaction({
-      page,
-      totalPages,
-      transactions: filterList,
-    });
-  };
+  //   setListCtPTransaction({
+  //     page,
+  //     totalPages,
+  //     transactions: filterList,
+  //   });
+  // };
 
   const [provinces, setProvinces] = useState([]);
 
@@ -152,7 +154,7 @@ export default function CtPTransactions() {
     setCtPTransaction(clone);
   };
 
-  const [openModal, setOpenModal] = useState(false);
+  const [openCreateModal, setOpenCreateModal] = useState(false);
 
   const createNewTransaction = async () => {
     const res = await createShipment(CtPTransaction);
@@ -161,6 +163,16 @@ export default function CtPTransactions() {
     clone.shipment = shipment;
     setCtPTransaction(clone);
     setDisplayPrintInvoice("block");
+  };
+
+  const [openDetailModal, setOpenDetailModal] = useState(false);
+
+  const [currentShipment, setCurrentShipment] = useState();
+  const fetchShipmentData = async (id: string) => {
+    const res = await trackShipment(id);
+    console.log(res);
+
+    setCurrentShipment(res.data.data.payload.shipment);
   };
 
   const [senderDistrict, setSenderDistrict] = useState([]);
@@ -197,9 +209,74 @@ export default function CtPTransactions() {
 
   return (
     <div>
-      <h1>CtP Transactions</h1>
-      <Button onClick={() => setOpenModal(true)}>Create</Button>
-      <Modal show={openModal} onClose={() => setOpenModal(false)}>
+      {/* Search box and Create button */}
+      <div className="mb-4">
+        <div className="py-2">
+          <button
+            type="button"
+            className="mb-2 me-2 flex items-center rounded-lg bg-[#319684] px-4 py-2 text-sm font-medium text-white hover:bg-green-600"
+            onClick={() => setOpenCreateModal(true)}
+          >
+            <HiPlus />
+            <span className="ms-1">New transaction</span>
+          </button>
+        </div>
+        <div className="w-64">
+          <SearchBox placeholder="Search by fields" setKeyword={() => {}} />
+        </div>
+      </div>
+
+      {/* Table */}
+      <div className="overflow-x-auto">
+        <Table>
+          <Table.Head>
+            <Table.HeadCell>Shipment</Table.HeadCell>
+            <Table.HeadCell>Receiver</Table.HeadCell>
+            <Table.HeadCell>Date</Table.HeadCell>
+            <Table.HeadCell>Status</Table.HeadCell>
+            <Table.HeadCell>
+              <span className="sr-only">Edit</span>
+            </Table.HeadCell>
+          </Table.Head>
+          <Table.Body className="divide-y">
+            {listCtPTransaction.transactions.map((transaction) => (
+              <Table.Row
+                key={transaction._id}
+                className="bg-white dark:border-gray-700 dark:bg-gray-800"
+              >
+                <Table.Cell>{transaction.shipment}</Table.Cell>
+                <Table.Cell>{transaction.receiver}</Table.Cell>
+                <Table.Cell>{transaction.end}</Table.Cell>
+                <Table.Cell>
+                  <div
+                    className={`rounded ${
+                      transaction.status === "RECEIVED"
+                        ? "bg-green-400"
+                        : "bg-yellow-300"
+                    } px-1 text-center text-xs font-bold text-white`}
+                  >
+                    {transaction.status}
+                  </div>
+                </Table.Cell>
+                <Table.Cell>
+                  <button
+                    className="font-medium text-cyan-600 hover:underline disabled:opacity-40 disabled:hover:no-underline dark:text-cyan-500"
+                    onClick={() => {
+                      setOpenDetailModal(true);
+                      fetchShipmentData(transaction.shipment);
+                    }}
+                  >
+                    Detail
+                  </button>
+                </Table.Cell>
+              </Table.Row>
+            ))}
+          </Table.Body>
+        </Table>
+      </div>
+
+      {/* Create transaction modal */}
+      <Modal show={openCreateModal} onClose={() => setOpenCreateModal(false)}>
         <Modal.Header>Create new Transaction</Modal.Header>
         <Modal.Body>
           <Form>
@@ -513,13 +590,13 @@ export default function CtPTransactions() {
         <Modal.Footer>
           <Button
             onClick={() => {
-              // setOpenModal(false);
+              // setOpenCreateModal(false);
               createNewTransaction();
             }}
           >
             Submit
           </Button>
-          <Button color="gray" onClick={() => setOpenModal(false)}>
+          <Button color="gray" onClick={() => setOpenCreateModal(false)}>
             Cancel
           </Button>
           <Link to="/print" state={CtPTransaction}>
@@ -527,55 +604,91 @@ export default function CtPTransactions() {
           </Link>
         </Modal.Footer>
       </Modal>
-      <Table hoverable>
-        <Table.Head>
-          <Table.HeadCell>
-            Shipment
-            <TextInput
-              onChange={(e) => {
-                filterTable("shipment", e.target.value);
-              }}
-            />
-          </Table.HeadCell>
-          <Table.HeadCell>
-            Receiver
-            <TextInput />
-          </Table.HeadCell>
-          <Table.HeadCell>
-            Date
-            <TextInput />
-          </Table.HeadCell>
-          <Table.HeadCell>
-            Status
-            <Select>
-              <option></option>
-              <option>RECEIVE</option>
-              <option>PASSED</option>
-            </Select>
-          </Table.HeadCell>
-          <Table.HeadCell>
-            <span className="sr-only">Edit</span>
-          </Table.HeadCell>
-        </Table.Head>
-        <Table.Body className="divide-y">
-          {listCtPTransaction.transactions.map((transaction) => (
-            <Table.Row>
-              <Table.Cell>{transaction.shipment.substring(0, 6)}</Table.Cell>
-              <Table.Cell>{transaction.receiver}</Table.Cell>
-              <Table.Cell>{transaction.end}</Table.Cell>
-              <Table.Cell>{transaction.status}</Table.Cell>
-              <Table.Cell>
-                <a
-                  href="#"
-                  className="font-medium text-cyan-600 hover:underline dark:text-cyan-500"
-                >
-                  View
-                </a>
-              </Table.Cell>
-            </Table.Row>
-          ))}
-        </Table.Body>
-      </Table>
+
+      {/* View shipment detail modal */}
+      <Modal
+        size={"lg"}
+        dismissible
+        show={openDetailModal}
+        onClose={() => setOpenDetailModal(false)}
+      >
+        <Modal.Header>Shipment detail</Modal.Header>
+        <Modal.Body>
+          <div className="space-y-6">
+            <ul>
+              <li>
+                <span className="font-bold">Sender:</span>
+                <ul className="list-inside list-disc">
+                  <li>Name: {currentShipment?.sender.name}</li>
+                  <li>
+                    Address:{" "}
+                    {currentShipment?.sender.street +
+                      ", " +
+                      currentShipment?.sender.district +
+                      ", " +
+                      currentShipment?.sender.province}
+                  </li>
+                  <li>Phone: {currentShipment?.sender.phone}</li>
+                </ul>
+              </li>
+              <li>
+                <span className="font-bold">Receiver:</span>
+                <ul className="list-inside list-disc">
+                  <ul className="list-inside list-disc">
+                    <li>Name: {currentShipment?.receiver.name}</li>
+                    <li>
+                      Address:{" "}
+                      {currentShipment?.receiver.street +
+                        ", " +
+                        currentShipment?.receiver.district +
+                        ", " +
+                        currentShipment?.receiver.province}
+                    </li>
+                    <li>Phone: {currentShipment?.receiver.phone}</li>
+                  </ul>
+                </ul>
+              </li>
+              <li>
+                <span className="font-bold">Meta:</span>
+                <ul className="list-inside list-disc">
+                  <li>Note: {currentShipment?.meta.note}</li>
+                  <li>Type: {currentShipment?.meta.type}</li>
+                  <li>
+                    Items:
+                    <div className="mt-2 overflow-x-auto">
+                      <Table>
+                        <Table.Head>
+                          <Table.HeadCell>Name</Table.HeadCell>
+                          <Table.HeadCell>Quantity</Table.HeadCell>
+                          <Table.HeadCell>Value</Table.HeadCell>
+                        </Table.Head>
+                        <Table.Body className="divide-y">
+                          {currentShipment?.meta.item.map((item) => (
+                            <Table.Row className="bg-slate-100 dark:border-gray-700 dark:bg-gray-800">
+                              <Table.Cell className="text-black">
+                                {item.name}
+                              </Table.Cell>
+                              <Table.Cell className="text-black">
+                                {item.quantity}
+                              </Table.Cell>
+                              <Table.Cell className="text-black">
+                                {item.value}
+                              </Table.Cell>
+                            </Table.Row>
+                          ))}
+                        </Table.Body>
+                      </Table>
+                    </div>
+                  </li>
+                </ul>
+              </li>
+            </ul>
+          </div>
+        </Modal.Body>
+        <Modal.Footer className="flex justify-end">
+          <Button onClick={() => setOpenDetailModal(false)}>Close</Button>
+        </Modal.Footer>
+      </Modal>
     </div>
   );
 }

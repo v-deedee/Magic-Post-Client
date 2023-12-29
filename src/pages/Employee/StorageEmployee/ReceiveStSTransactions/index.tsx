@@ -63,7 +63,8 @@ export const ReceiveStSTransactions: FC<IReceiveStSTransactionsProps> = () => {
                   <Table.Cell className="font-medium text-gray-900 dark:text-white">
                     {transaction.shipment}
                     <div className="py-2 font-normal md:hidden">
-                      From: {transaction.pos.district + " POSTOFFICE"}
+                      From:{" "}
+                      {transaction.pos.district + " " + transaction.pos.type}
                     </div>
                     <div className="mb-2 font-normal md:hidden">
                       Start date: {transaction.start}
@@ -89,7 +90,7 @@ export const ReceiveStSTransactions: FC<IReceiveStSTransactionsProps> = () => {
                     </button>
                   </Table.Cell>
                   <Table.Cell className="hidden md:table-cell">
-                    {transaction.pos.district + " POSTOFFICE"}
+                    {transaction.pos.district + " " + transaction.pos.type}
                   </Table.Cell>
                   <Table.Cell className="hidden md:table-cell">
                     {transaction.start}
@@ -109,7 +110,7 @@ export const ReceiveStSTransactions: FC<IReceiveStSTransactionsProps> = () => {
                     <button
                       className="font-medium text-cyan-600 hover:underline disabled:opacity-40 disabled:hover:no-underline dark:text-cyan-500"
                       onClick={() => updateStatus(transaction._id)}
-                      disabled={transaction.status === "RECEIVED"}
+                      disabled={transaction.status !== "SENT"}
                     >
                       Receive
                     </button>

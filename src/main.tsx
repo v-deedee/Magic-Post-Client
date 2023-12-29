@@ -38,16 +38,9 @@ import { ToShip } from "./pages/Employee/PostOfficeEmployee/ToShip/index.tsx";
 import { loader as postOfficeEmployeeLoader } from "./pages/Employee/PostOfficeEmployee/CtPTransactions/index.tsx";
 import StoragePtSTransactions from "./pages/Employee/StorageEmployee/PtSTransactions/index.tsx";
 import { StPTransactions as StorageStPTransactions } from "./pages/Employee/StorageEmployee/StPTransactions/index.tsx";
-import { loader as storagePtSTransactionsLoader } from "./pages/Employee/StorageEmployee/PtSTransactions/index.tsx";
-<<<<<<< HEAD
-import SendStSTransactions, {
-  loader as sendStorageStSTransactions,
-} from "./pages/Employee/StorageEmployee/SendStSTransactions/index.tsx";
-import { PrintPage } from "./pages/PrintPage/index.tsx";
-=======
 import SendStSTransactions from "./pages/Employee/StorageEmployee/SendStSTransactions/index.tsx";
 import { ReceiveStSTransactions } from "./pages/Employee/StorageEmployee/ReceiveStSTransactions/index.tsx";
->>>>>>> 57d0254ae917fbfb756ad8060ea975008c57a459
+import PrintPage from "./pages/PrintPage/index.tsx";
 
 const router = createBrowserRouter([
   {
@@ -121,7 +114,6 @@ const router = createBrowserRouter([
     children: [
       {
         path: "pts-transactions",
-        loader: storagePtSTransactionsLoader,
         element: <StoragePtSTransactions />,
       },
       {
@@ -175,7 +167,7 @@ const router = createBrowserRouter([
   {
     path: "/print",
     element: <PrintPage />,
-  }
+  },
 ]);
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
