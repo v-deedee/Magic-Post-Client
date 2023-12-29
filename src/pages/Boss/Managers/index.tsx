@@ -11,67 +11,37 @@ import {
   listManager,
   viewManager,
 } from "../../../services/bossApi";
-
-export interface IManager {
-  _id: string;
-  username: string;
-  role: string;
-  department: {
-    _id: string;
-    province: string;
-    district: string;
-    street: string;
-    type: string;
-  };
-  firstname: string;
-  lastname: string;
-  gender: string;
-  email: string;
-  active: boolean;
-  __v: number;
-}
-
-const defaultManager = {
-  _id: "",
-  username: "",
-  role: "",
-  department: {
-    _id: "",
-    province: "",
-    district: "",
-    street: "",
-    type: "",
-  },
-  firstname: "",
-  lastname: "",
-  gender: "",
-  email: "",
-  active: false,
-  __v: 0,
-};
+import SearchBox from "../../../components/SearchBox";
+import { Manager, defaultManager } from "../../../models/Manager";
+import AfterCreateModal from "./modals/AfterCreateModal";
 
 export default function Managers() {
   const [openCreateModal, setOpenCreateModal] = useState(false);
+
+  const [openAfterCreateModal, setOpenAfterCreateModal] = useState(false);
+
+  const [isSuccess, setIsSuccess] = useState(false);
+
+  const [newUserInfo, setNewUserInfo] = useState("");
 
   const [openUpdateModal, setOpentUpdateModal] = useState(false);
 
   // const [currentPage, setCurrentPage] = useState(1);
 
-  const [managers, setManagers] = useState<Array<IManager>>([]);
+  const [managers, setManagers] = useState<Array<Manager>>([]);
 
-  const [currentManager, setCurrentManager] =
-    useState<IManager>(defaultManager);
+  const [currentManager, setCurrentManager] = useState<Manager>(defaultManager);
 
   const [currentManagerUsername, setCurrentManagerUsername] = useState("");
 
   const [departments, setDepartments] = useState<Department[]>([]);
 
+  const fetchDepartments = async () => {
+    const res = await listDepartment({});
+    const departments = res.data.data.payload.departments;
+    setDepartments(departments);
+  };
   useEffect(() => {
-    const fetchDepartments = async () => {
-      const res = await listDepartment({});
-      const departments = res.data.data.payload.departments;
-      setDepartments(departments);
-    };
     fetchDepartments();
   }, []);
 
@@ -105,26 +75,52 @@ export default function Managers() {
     document.getElementById("managerView")?.classList.remove("hidden");
   };
 
+  const [keyword, setKeyword] = useState("");
+  const [searchList, setSearchList] = useState([...managers]);
+
+  function search(list: Manager[]) {
+    const temp = list.filter(
+      (manager) =>
+        (manager.firstname + " " + manager.lastname)
+          .toLowerCase()
+          .includes(keyword.trim().toLowerCase()) ||
+        manager._id.toLocaleLowerCase().includes(keyword.trim().toLowerCase()),
+    );
+    if (keyword !== "") setSearchList(temp);
+    else setSearchList([...list]);
+  }
+  useEffect(() => {
+    search(managers);
+  }, [managers, keyword]);
+
   return (
     <>
       <div className="flex gap-4">
         {/* Table */}
-        <div className="">
-          {/* Filter & Sort & Create button */}
-          <div className=" flex justify-end">
-            <button
-              type="button"
-              className="mb-2 me-2 flex items-center rounded-lg bg-green-500 px-4 py-2 text-sm font-medium text-white hover:bg-green-600"
-              onClick={() => setOpenCreateModal(true)}
-            >
-              <HiPlus />
-              <span className="ms-1">New</span>
-            </button>
+        <div className="w-1/2">
+          {/* Search box & Create button */}
+          <div className="flex justify-between">
+            <div className="p-2">
+              <SearchBox
+                placeholder="Search by fields"
+                setKeyword={setKeyword}
+              />
+            </div>
+            <div className="p-2">
+              <button
+                type="button"
+                className="mb-2 me-2 flex items-center rounded-lg bg-green-500 px-4 py-2 text-sm font-medium text-white hover:bg-green-600"
+                onClick={() => setOpenCreateModal(true)}
+              >
+                <HiPlus />
+                <span className="ms-1">New</span>
+              </button>
+            </div>
           </div>
 
           {/* Main table */}
           <ManagerTable
-            managers={managers}
+            managers={searchList}
             currentManagerUsername={currentManagerUsername}
             showDetail={showDetail}
           />
@@ -210,6 +206,19 @@ export default function Managers() {
           openModal={openCreateModal}
           setOpenModal={setOpenCreateModal}
           departments={departments}
+          fetchManagers={fetchManagers}
+          openAfterModal={(success: boolean, userInfo: string) => {
+            setOpenAfterCreateModal(true);
+            setIsSuccess(success);
+            setNewUserInfo(userInfo);
+          }}
+        />
+
+        <AfterCreateModal
+          openModal={openAfterCreateModal}
+          setOpenModal={setOpenAfterCreateModal}
+          success={isSuccess}
+          userInfo={newUserInfo}
         />
 
         <UpdateManagerModal

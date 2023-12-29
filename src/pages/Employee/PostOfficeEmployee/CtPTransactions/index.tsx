@@ -11,6 +11,7 @@ import { Modal } from "flowbite-react";
 import { CtPTransactionModal } from "./CtPTransactionsModal";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
+import { HiTrash, HiX } from "react-icons/hi";
 
 export const loader = async () => {
   return null;
@@ -202,11 +203,12 @@ export default function CtPTransactions() {
         <Modal.Header>Create new Transaction</Modal.Header>
         <Modal.Body>
           <Form>
-            <div>
-              <div className="mb-2 block">
+            <div className="mb-4">
+              <div className="block">
                 <Label htmlFor="type" value="Type" />
               </div>
               <Select
+                className="mb-2"
                 id="type"
                 onChange={(e) => {
                   let clone = { ...CtPTransaction };
@@ -217,7 +219,8 @@ export default function CtPTransactions() {
                 <option value="DOCUMENT">Document</option>
                 <option value="GOODS">Goods</option>
               </Select>
-              <div className="mb-2 block">
+
+              <div className="block">
                 <Label htmlFor="note" value="Note" />
               </div>
               <TextInput
@@ -233,12 +236,14 @@ export default function CtPTransactions() {
                 }}
               />
             </div>
+
             <div>
-              List Item <br />
+              <h3 className="font-bold">List Item</h3>
+              <hr />
               {CtPTransaction.meta.item.map((item, index) => (
-                <div className="flex">
+                <div className="my-2 flex gap-2">
                   <div className="grow flex-col">
-                    <div className="mb-2 block">
+                    <div className="block">
                       <Label htmlFor={`itemName${index}`} value="Name" />
                     </div>
                     <TextInput
@@ -256,7 +261,7 @@ export default function CtPTransactions() {
                     />
                   </div>
                   <div className="grow flex-col">
-                    <div className="mb-2 block">
+                    <div className="block">
                       <Label
                         htmlFor={`itemQuantity${index}`}
                         value="Quantity"
@@ -276,7 +281,7 @@ export default function CtPTransactions() {
                     />
                   </div>
                   <div className="grow flex-col">
-                    <div className="mb-2 block">
+                    <div className="block">
                       <Label htmlFor={`itemValue${index}`} value="Value" />
                     </div>
                     <TextInput
@@ -292,22 +297,33 @@ export default function CtPTransactions() {
                       }}
                     />
                   </div>
-                  <Button
-                    onClick={() => {
-                      removeItem(index);
-                    }}
-                  >
-                    -
-                  </Button>
+                  <div>
+                    <div className="invisible block">
+                      <Label htmlFor={`itemValue${index}`} value="Value" />
+                    </div>
+                    <Button
+                      color="gray"
+                      onClick={() => {
+                        removeItem(index);
+                      }}
+                    >
+                      <div className="text-xl">
+                        <HiTrash />
+                      </div>
+                    </Button>
+                  </div>
                 </div>
               ))}
-              <Button onClick={addItem}>+</Button>
+              <Button className="my-2" onClick={addItem}>
+                Add
+              </Button>
+              <hr className="my-2" />
             </div>
             <div className="flex">
               <div className="grow">
-                Sender
+                <h3 className="font-bold">Sender</h3>
                 <div>
-                  <div className="mb-2 block">
+                  <div className="mt-3">
                     <Label htmlFor="sender-name" value="Name" />
                   </div>
                   <TextInput
@@ -324,7 +340,7 @@ export default function CtPTransactions() {
                   />
                 </div>
                 <div>
-                  <div className="mb-2 block">
+                  <div className="mt-3">
                     <Label htmlFor="sender-phone" value="Phone" />
                   </div>
                   <TextInput
@@ -341,7 +357,7 @@ export default function CtPTransactions() {
                   />
                 </div>
                 <div>
-                  <div className="mb-2 block">
+                  <div className="mt-3">
                     <Label htmlFor="sender-province" value="Province" />
                   </div>
                   <Select
@@ -361,7 +377,7 @@ export default function CtPTransactions() {
                   </Select>
                 </div>
                 <div>
-                  <div className="mb-2 block">
+                  <div className="mt-3">
                     <Label htmlFor="sender-district" value="District" />
                   </div>
                   <Select
@@ -380,7 +396,7 @@ export default function CtPTransactions() {
                   </Select>
                 </div>
                 <div>
-                  <div className="mb-2 block">
+                  <div className="mt-3">
                     <Label htmlFor="sender-street" value="Street" />
                   </div>
                   <TextInput
@@ -399,9 +415,9 @@ export default function CtPTransactions() {
               </div>
 
               <div className="grow px-4">
-                Receiver
+                <h3 className="font-bold">Receiver</h3>
                 <div>
-                  <div className="mb-2 block">
+                  <div className="mt-3">
                     <Label htmlFor="receiver-name" value="Name" />
                   </div>
                   <TextInput
@@ -418,7 +434,7 @@ export default function CtPTransactions() {
                   />
                 </div>
                 <div>
-                  <div className="mb-2 block">
+                  <div className="mt-3">
                     <Label htmlFor="receiver-phone" value="Phone" />
                   </div>
                   <TextInput
@@ -435,7 +451,7 @@ export default function CtPTransactions() {
                   />
                 </div>
                 <div>
-                  <div className="mb-2 block">
+                  <div className="mt-3">
                     <Label htmlFor="receiver-province" value="Province" />
                   </div>
                   <Select
@@ -455,7 +471,7 @@ export default function CtPTransactions() {
                   </Select>
                 </div>
                 <div>
-                  <div className="mb-2 block">
+                  <div className="mt-3">
                     <Label htmlFor="receiver-district" value="District" />
                   </div>
                   <Select
@@ -474,7 +490,7 @@ export default function CtPTransactions() {
                   </Select>
                 </div>
                 <div>
-                  <div className="mb-2 block">
+                  <div className="mt-3">
                     <Label htmlFor="receiver-street" value="Street" />
                   </div>
                   <TextInput

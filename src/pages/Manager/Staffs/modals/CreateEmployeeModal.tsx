@@ -5,6 +5,8 @@ import { createEmployee } from "../../../../services/managerApi";
 interface CreateEmployeeModalProps {
   openModal: boolean;
   setOpenModal: (newStatus: boolean) => void;
+  openAfterModal: (success: boolean, userInfo: string) => void;
+  fetchEmployees: () => Promise<void>;
 }
 
 interface IFormInput {
@@ -17,6 +19,8 @@ interface IFormInput {
 const CreateEmployeeModal: React.FC<CreateEmployeeModalProps> = ({
   openModal,
   setOpenModal,
+  openAfterModal,
+  fetchEmployees,
 }) => {
   const {
     register,
@@ -26,9 +30,18 @@ const CreateEmployeeModal: React.FC<CreateEmployeeModalProps> = ({
   } = useForm<IFormInput>();
   const onSubmit: SubmitHandler<IFormInput> = async (data) => {
     setOpenModal(false);
-    const res = await createEmployee(data);
+
+    try {
+      const res = await createEmployee(data);
+      console.log(res);
+      openAfterModal(true, res.data.data.payload.employee);
+      fetchEmployees();
+    } catch (error) {
+      console.log(error);
+      openAfterModal(false, "");
+    }
+
     reset();
-    console.log(res);
   };
   return (
     <Modal

@@ -7,6 +7,8 @@ interface CreateManagerModalProps {
   openModal: boolean;
   setOpenModal: (newStatus: boolean) => void;
   departments: Array<Department>;
+  openAfterModal: (success: boolean, userInfo: string) => void;
+  fetchManagers: () => Promise<void>;
 }
 
 interface IFormInput {
@@ -22,6 +24,8 @@ const CreateManagerModal: React.FC<CreateManagerModalProps> = ({
   openModal,
   setOpenModal,
   departments,
+  openAfterModal,
+  fetchManagers,
 }) => {
   const {
     register,
@@ -34,8 +38,15 @@ const CreateManagerModal: React.FC<CreateManagerModalProps> = ({
     console.log(data);
     setOpenModal(false);
 
-    const res = await createManager(data);
-    console.log(res);
+    try {
+      const res = await createManager(data);
+      console.log(res);
+      openAfterModal(true, res.data.data.payload.manager);
+      fetchManagers();
+    } catch (error) {
+      console.log(error);
+      openAfterModal(false, "");
+    }
 
     reset();
   };

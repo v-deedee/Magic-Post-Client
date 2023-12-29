@@ -1,26 +1,27 @@
-import { Button, Checkbox, Modal, Table } from "flowbite-react";
+import { FC, useEffect, useState } from "react";
 import { Transaction } from "../../../../models/Transaction";
 import {
-  listPtSTransactions,
+  listStPTransactions,
   listStSTransactions,
-  pushShipmentStS,
+  pushShipmentStP,
 } from "../../../../services/storageEmployeeApi";
-import { useEffect, useState } from "react";
+import { Button, Modal, Table, Checkbox } from "flowbite-react";
+interface IStPTransactionsProps {}
 
-export default function SendStSTransactions() {
+export const StPTransactions: FC<IStPTransactionsProps> = () => {
   const [openCreateModal, setOpenCreateModal] = useState(false);
 
-  const [sentStSTransactions, setSentStSTransactions] = useState<Transaction[]>(
+  const [sentStPTransactions, setsentStPTransactions] = useState<Transaction[]>(
     [],
   );
 
   useEffect(() => {
-    const fetchSentStSTransaction = async () => {
-      const res = await listStSTransactions("pos");
-      setSentStSTransactions(res.data.data.payload.transactions);
+    const fetchSentStPTransactions = async () => {
+      const res = await listStPTransactions("pos");
+      setsentStPTransactions(res.data.data.payload.transactions);
     };
 
-    fetchSentStSTransaction();
+    fetchSentStPTransactions();
   }, []);
 
   const [notPassedPtSTransactions, setNotPassedPtSTransactions] = useState<
@@ -29,7 +30,7 @@ export default function SendStSTransactions() {
 
   useEffect(() => {
     const fetchReceivedPtSTransactions = async () => {
-      const res = await listPtSTransactions("des");
+      const res = await listStSTransactions("des");
       const receivedPtSTransactions: Transaction[] =
         res.data.data.payload.transactions;
 
@@ -47,7 +48,7 @@ export default function SendStSTransactions() {
   >([]);
 
   const pushShipments = async () => {
-    const res = await pushShipmentStS({}, readyShipments);
+    const res = await pushShipmentStP({}, readyShipments);
     console.log(res);
   };
 
@@ -67,8 +68,8 @@ export default function SendStSTransactions() {
         <Modal.Body>
           <Table hoverable>
             <Table.Head>
-              <Table.HeadCell className="p-4">
-                <Checkbox />
+              <Table.HeadCell>
+                <Checkbox disabled />
               </Table.HeadCell>
               <Table.HeadCell>Shipment</Table.HeadCell>
               <Table.HeadCell>Receiver</Table.HeadCell>
@@ -83,6 +84,7 @@ export default function SendStSTransactions() {
                 <Table.Row>
                   <Table.Cell>
                     <Checkbox
+                      className="hover:cursor-pointer"
                       onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                         if (e.target.checked) {
                           let clone: Array<{ shipment: string }> = [
@@ -105,9 +107,16 @@ export default function SendStSTransactions() {
                   <Table.Cell>{transaction.shipment}</Table.Cell>
                   <Table.Cell>{transaction.receiver}</Table.Cell>
                   <Table.Cell>{transaction.start}</Table.Cell>
-                  <Table.Cell>{transaction.status}</Table.Cell>
                   <Table.Cell>
-                    <a>View</a>
+                    <span
+                      className={`rounded ${
+                        transaction.status === "RECEIVED"
+                          ? "bg-green-400"
+                          : "bg-yellow-300"
+                      } px-1 text-center text-xs font-bold text-white`}
+                    >
+                      {transaction.status}
+                    </span>
                   </Table.Cell>
                 </Table.Row>
               ))}
@@ -151,7 +160,7 @@ export default function SendStSTransactions() {
               </Table.HeadCell>
             </Table.Head>
             <Table.Body className="divide-y">
-              {sentStSTransactions.map((transaction) => (
+              {sentStPTransactions.map((transaction) => (
                 <Table.Row
                   key={transaction._id}
                   className="bg-white dark:border-gray-700 dark:bg-gray-800"
@@ -207,4 +216,4 @@ export default function SendStSTransactions() {
       </div>
     </>
   );
-}
+};

@@ -2,7 +2,6 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import "./index.css";
-import App from "./App.tsx";
 import ErrorPage from "./error-page.tsx";
 import BossPage from "./pages/Boss/index.tsx";
 import ManagerPage from "./pages/Manager/index.tsx";
@@ -14,12 +13,12 @@ import { Provider } from "react-redux";
 import store from "./store/store.ts";
 import TestReduxPage from "./pages/TestReduxPage";
 import TestApiPage from "./pages/TestApiPage/index.tsx";
-import { LoginPage } from "./pages/Authentication/LoginPage.tsx";
+import LoginPage from "./pages/Authentication/LoginPage.tsx";
 import {
   action as loginAction,
   loader as loginLoader,
 } from "./pages/Authentication/LoginPage.tsx";
-import HomePage from "./pages/HomePage/index.tsx";
+import HomePage from "./App.tsx";
 import Customer from "./pages/Customer/index.tsx";
 import { PostageTracking } from "./pages/Customer/PostageTracking.tsx";
 import { EstimatedFreight } from "./pages/Customer/EstimatedFreight.tsx";
@@ -38,16 +37,22 @@ import StPTransactions from "./pages/Employee/PostOfficeEmployee/StPTransactions
 import { ToShip } from "./pages/Employee/PostOfficeEmployee/ToShip/index.tsx";
 import { loader as postOfficeEmployeeLoader } from "./pages/Employee/PostOfficeEmployee/CtPTransactions/index.tsx";
 import StoragePtSTransactions from "./pages/Employee/StorageEmployee/PtSTransactions/index.tsx";
+import { StPTransactions as StorageStPTransactions } from "./pages/Employee/StorageEmployee/StPTransactions/index.tsx";
 import { loader as storagePtSTransactionsLoader } from "./pages/Employee/StorageEmployee/PtSTransactions/index.tsx";
+<<<<<<< HEAD
 import SendStSTransactions, {
   loader as sendStorageStSTransactions,
 } from "./pages/Employee/StorageEmployee/SendStSTransactions/index.tsx";
 import { PrintPage } from "./pages/PrintPage/index.tsx";
+=======
+import SendStSTransactions from "./pages/Employee/StorageEmployee/SendStSTransactions/index.tsx";
+import { ReceiveStSTransactions } from "./pages/Employee/StorageEmployee/ReceiveStSTransactions/index.tsx";
+>>>>>>> 57d0254ae917fbfb756ad8060ea975008c57a459
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <App />,
+    element: <HomePage />,
     errorElement: <ErrorPage />,
   },
   {
@@ -121,14 +126,15 @@ const router = createBrowserRouter([
       },
       {
         path: "send-sts-transactions",
-        loader: sendStorageStSTransactions,
         element: <SendStSTransactions />,
       },
       {
         path: "receive-sts-transactions",
+        element: <ReceiveStSTransactions />,
       },
       {
         path: "stp-transactions",
+        element: <StorageStPTransactions />,
       },
     ],
   },
@@ -146,10 +152,6 @@ const router = createBrowserRouter([
     action: loginAction,
     loader: loginLoader,
     element: <LoginPage />,
-  },
-  {
-    path: "/home",
-    element: <HomePage />,
   },
   {
     path: "/customer",

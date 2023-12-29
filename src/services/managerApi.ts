@@ -4,7 +4,7 @@ import { getToken } from "./token";
 
 const API_BASE_URL = "http://localhost:3001";
 
-export const createEmployee = async (reqData) => {
+export const createEmployee = async (reqData: Object) => {
   const response = axios({
     method: "post",
     url: `${API_BASE_URL}/staff/employee/create`,
@@ -17,7 +17,7 @@ export const createEmployee = async (reqData) => {
   return response;
 };
 
-export const viewEmployee = async (emId) => {
+export const viewEmployee = async (emId: string) => {
   const response = axios({
     method: "get",
     url: `${API_BASE_URL}/staff/employee/${emId}`,
@@ -29,7 +29,7 @@ export const viewEmployee = async (emId) => {
   return response;
 };
 
-export const listEmployee = async (reqParams) => {
+export const listEmployee = async (reqParams: Object) => {
   const response = axios({
     method: "get",
     url: `${API_BASE_URL}/staff/employee`,
@@ -42,7 +42,7 @@ export const listEmployee = async (reqParams) => {
   return response;
 };
 
-export const updateEmployee = async (emId, reqData) => {
+export const updateEmployee = async (emId: string, reqData: Object) => {
   const response = axios({
     method: "put",
     url: `${API_BASE_URL}/staff/employee/update/${emId}`,
@@ -55,7 +55,7 @@ export const updateEmployee = async (emId, reqData) => {
   return response;
 };
 
-export const listShipment = async (reqParams) => {
+export const listShipment = async (reqParams: Object) => {
   const response = axios({
     method: "get",
     url: `${API_BASE_URL}/shipment/department/received`,
