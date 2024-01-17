@@ -1,11 +1,7 @@
-import { connect } from "react-redux";
-import { Component, useState } from "react";
+import { useState } from "react";
 import { Button, Label, Select, TextInput } from "flowbite-react";
 
-import { FC } from "react";
-interface IEstimatedFreightProps {}
-
-export const EstimatedFreight: FC<IEstimatedFreightProps> = (props) => {
+export default function EstimatedFreight() {
   const [cost, setCost] = useState(0);
 
   return (
@@ -175,4 +171,4 @@ export const EstimatedFreight: FC<IEstimatedFreightProps> = (props) => {
       </div>
     </div>
   );
-};
+}

@@ -1,8 +1,8 @@
+import { useState } from "react";
 import { Button, Checkbox, Label, TextInput } from "flowbite-react";
 import { Form, redirect, useActionData } from "react-router-dom";
-import { login } from "../../services/api";
-import { useState } from "react";
 import { ROLE, stringToRole } from "../../models/User";
+import { login } from "../../services/api";
 import { setToken } from "../../services/token";
 import logo from "/logo.svg";
 
@@ -42,7 +42,9 @@ export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
 
   return (
-    <main className="flex h-screen bg-[url('/login-background.jpg')] align-middle dark:bg-zinc-700">
+    <main
+      className={`flex h-screen bg-[url('/src/assets/images/login-background.jpg')] align-middle dark:bg-zinc-700`}
+    >
       <div className="m-auto w-96 rounded-lg border-gray-500 bg-white/90 p-5 shadow-lg dark:border-4 dark:bg-zinc-800">
         <div className="my-10 flex justify-center">
           <img src={logo} className="mr-2 h-10 w-10" alt="logo" />

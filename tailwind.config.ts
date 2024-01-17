@@ -2,15 +2,15 @@
 export default {
   content: [
     "./src/**/*.{js,ts,jsx,tsx}",
-    "node_modules/flowbite-react/lib/esm/**/*.js"
+    "node_modules/flowbite-react/lib/esm/**/*.js",
   ],
   theme: {
-    extend: {},
+    extend: {
+      backgroundImage: {
+        "home-bg": "url('/src/assets/images/home-bg.png')",
+      },
+    },
   },
-  plugins: [
-    require('flowbite/plugin'),
-    require('@tailwindcss/typography'),
-  ],
+  plugins: [require("flowbite/plugin"), require("@tailwindcss/typography")],
   darkMode: "class",
-}
-
+};

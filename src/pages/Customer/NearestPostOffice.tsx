@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button, Label, Select, Table } from "flowbite-react";
 import { Form } from "react-router-dom";
 import { MapContainer, TileLayer, useMap, useMapEvents } from "react-leaflet";
@@ -14,12 +14,11 @@ import {
   getLocationFromText,
 } from "../../services/customerApi";
 import { LatLng } from "leaflet";
+import { Department } from "../../models/Department";
 
-interface INearestPostOfficeProps {}
-
-export const NearestPostOffice: FC<INearestPostOfficeProps> = (props) => {
+export default function NearestPostOffice() {
   useEffect(() => {
-    const fetchDistrictsData = async (province) => {
+    const fetchDistrictsData = async (province: string) => {
       const data = await getDistricts({ province });
       const payload = data.data.data.payload;
       const districts = payload.districts;
@@ -57,7 +56,7 @@ export const NearestPostOffice: FC<INearestPostOfficeProps> = (props) => {
     lon: 107.9650855,
   });
 
-  const [listPostOffice, setListPostOffice] = useState([]);
+  const [listPostOffice, setListPostOffice] = useState<Department[]>([]);
 
   function ChangeView({ center, zoom }) {
     const map = useMap();
@@ -79,14 +78,16 @@ export const NearestPostOffice: FC<INearestPostOfficeProps> = (props) => {
     return (
       <React.Fragment>
         {listPostOffice.map((postOffice) => (
-          <Marker position={postOffice.geocoding}>
-            <Popup>{postOffice.street}, {postOffice.geocoding.lat}, {postOffice.geocoding.lon}</Popup>
-        
+          <Marker key={postOffice._id} position={postOffice.geocoding}>
+            <Popup>
+              {postOffice.street}, {postOffice.geocoding.lat},{" "}
+              {postOffice.geocoding.lon}
+            </Popup>
           </Marker>
-          
         ))}
-        {markers.map(marker => <Marker position={marker} ></Marker>)}
-
+        {markers.map((marker, index) => (
+          <Marker key={index} position={marker}></Marker>
+        ))}
       </React.Fragment>
     );
   }
@@ -120,7 +121,9 @@ export const NearestPostOffice: FC<INearestPostOfficeProps> = (props) => {
                 }}
               >
                 {provinces.map((province) => (
-                  <option value={province}>{province}</option>
+                  <option key={province} value={province}>
+                    {province}
+                  </option>
                 ))}
               </Select>
             </div>
@@ -139,13 +142,15 @@ export const NearestPostOffice: FC<INearestPostOfficeProps> = (props) => {
                 }}
               >
                 {districts.map((district) => (
-                  <option value={district}>{district}</option>
+                  <option key={district} value={district}>
+                    {district}
+                  </option>
                 ))}
               </Select>
             </div>
             <Button
               className="my-4 bg-green-500"
-              onClick={async (e) => {
+              onClick={async () => {
                 const data = await getListPostOffice(address);
                 const payload = data.data.data.payload;
                 setListPostOffice(payload.departments);
@@ -171,7 +176,7 @@ export const NearestPostOffice: FC<INearestPostOfficeProps> = (props) => {
             </Table.Head>
             <Table.Body>
               {listPostOffice.map((postOffice) => (
-                <Table.Row>
+                <Table.Row key={postOffice._id}>
                   <Table.Cell>{postOffice.street}</Table.Cell>
                 </Table.Row>
               ))}
@@ -206,4 +211,4 @@ export const NearestPostOffice: FC<INearestPostOfficeProps> = (props) => {
       </div>
     </div>
   );
-};
+}

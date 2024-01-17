@@ -1,34 +1,27 @@
-import { FC, useEffect, useState } from "react";
-import { Label, TextInput, Button, Card, Timeline } from "flowbite-react";
-import { useActionData, useLoaderData } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { TextInput, Button, Card, Timeline } from "flowbite-react";
+// import { useLoaderData } from "react-router-dom";
 import { Form } from "react-router-dom";
 import { trackShipment } from "../../services/customerApi";
+import { Shipment, defaultShipment } from "../../models/Shipment";
+import { Transaction } from "../../models/Transaction";
 
-interface IPostageTrackingProps {}
+// export async function loader({ request }: { request: Request }) {
+//   const url = new URL(request.url);
+//   const id = url.searchParams.get("id");
+//   return id;
+// }
 
-export async function loader({ request }) {
-  const url = new URL(request.url);
-  const id = url.searchParams.get("id");
-  return id;
-}
+export default function PostageTracking() {
+  // const id = useLoaderData();
+  // let id = "";
 
-export const PostageTracking: FC<IPostageTrackingProps> = (props) => {
-  const id = useLoaderData();
-
-  useEffect(() => {
-    if (id != null) {
-      search(id);
-    } else {
-      console.log("id null");
-    }
-  }, []);
-
-  const search = async (id) => {
+  const search = async (id: string) => {
     try {
       const data = await trackShipment(id);
       const payload = data.data.data.payload;
       const { shipment, transactions } = payload;
-      console.log(transactions);
+      // console.log(transactions);
       setShipment(shipment);
       setTransactions(transactions.slice(0, -1));
       setStatus("SUCCESS");
@@ -36,14 +29,26 @@ export const PostageTracking: FC<IPostageTrackingProps> = (props) => {
       setStatus("FAIL");
     }
   };
-  const [shipmentID, setShipmentID] = useState(id);
-  const [shipment, setShipment] = useState(null);
-  const [transactions, setTransactions] = useState([]);
+
+  const [shipmentID, setShipmentID] = useState("");
+  const [shipment, setShipment] = useState<Shipment>(defaultShipment);
+  const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [status, setStatus] = useState("NONE");
+
+  useEffect(() => {
+    const url = new URL(window.location.href);
+    const param = url.searchParams.get("id");
+    if (param != null) {
+      setShipmentID(param);
+      search(param);
+    } else {
+      console.log("id null");
+    }
+  }, []);
 
   return (
     <>
-      <Form className="flex" method="get" action="">
+      <Form className="flex" method="get" action="/customer/postage-tracking">
         <TextInput
           type="text"
           placeholder="Shipment ID"
@@ -59,8 +64,8 @@ export const PostageTracking: FC<IPostageTrackingProps> = (props) => {
         <Button
           type="submit"
           className="ms-4 bg-green-500"
-          onClick={(e) => {
-            e.preventDefault();
+          onClick={() => {
+            // e.preventDefault();
             search(shipmentID);
           }}
         >
@@ -71,10 +76,10 @@ export const PostageTracking: FC<IPostageTrackingProps> = (props) => {
       <div className="mt-5 px-8">
         <h1>
           {(() => {
-            if (status == "NONE") {
+            if (status === "NONE") {
               return;
             } else {
-              if (status == "FAIL") return <h1>WRONG SHIPMENT ID</h1>;
+              if (status === "FAIL") return <p>WRONG SHIPMENT ID</p>;
               const sender = shipment.sender;
               const receiver = shipment.receiver;
               return (
@@ -106,7 +111,7 @@ export const PostageTracking: FC<IPostageTrackingProps> = (props) => {
                   <div className="mt-6">
                     <Timeline>
                       {transactions.map((transaction) => (
-                        <Timeline.Item>
+                        <Timeline.Item key={transaction._id}>
                           <Timeline.Point />
                           <Timeline.Content>
                             <Timeline.Time>
@@ -133,4 +138,4 @@ export const PostageTracking: FC<IPostageTrackingProps> = (props) => {
       </div>
     </>
   );
-};
+}
