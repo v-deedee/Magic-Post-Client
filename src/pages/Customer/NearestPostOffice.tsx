@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { Button, Label, Select, Table } from "flowbite-react";
-import { Form } from "react-router-dom";
+import { Breadcrumb, Button, Label, Select, Table } from "flowbite-react";
+import { Form, Link } from "react-router-dom";
 import { MapContainer, TileLayer, useMap, useMapEvents } from "react-leaflet";
 import { Marker } from "react-leaflet";
 import { Popup } from "react-leaflet";
@@ -15,6 +15,12 @@ import {
 } from "../../services/customerApi";
 import { LatLng } from "leaflet";
 import { Department } from "../../models/Department";
+import {
+  HiHome,
+  HiAdjustments,
+  HiCloudDownload,
+  HiSearch,
+} from "react-icons/hi";
 
 export default function NearestPostOffice() {
   useEffect(() => {
@@ -93,8 +99,54 @@ export default function NearestPostOffice() {
   }
 
   return (
-    <div>
-      <div className="flex">
+    <>
+      {/* Breadcrumb */}
+      <div className="bg-gray-50">
+        <Breadcrumb
+          aria-label="Solid background breadcrumb example"
+          className="container mx-auto px-5 py-3 dark:bg-gray-800"
+        >
+          <Breadcrumb.Item href="/" icon={HiHome}>
+            Home
+          </Breadcrumb.Item>
+          <Breadcrumb.Item>Find Post</Breadcrumb.Item>
+        </Breadcrumb>
+      </div>
+
+      {/* Navigation */}
+      <div className="container mx-auto mt-8 flex-col px-5">
+        <div className="mb-3 sm:flex">
+          <Link to={"/customer/postage-tracking"} className="grow">
+            <Button
+              color="gray"
+              className="w-full rounded-bl-none rounded-br-none sm:rounded-bl-lg sm:rounded-br-none sm:rounded-tr-none"
+            >
+              <div className="flex items-center">
+                <HiSearch className="mr-2 mt-0.5 h-4 w-4" />
+                Track shipment
+              </div>
+            </Button>
+          </Link>
+          <Link to={"/customer/estimated-freight"} className="grow">
+            <Button className="w-full rounded-none" color="gray">
+              <div className="flex items-center">
+                <HiAdjustments className="mr-2 mt-0.5 h-4 w-4" />
+                Estimate Cost
+              </div>
+            </Button>
+          </Link>
+          <Link to={"#"} className="grow">
+            <Button className="w-full rounded-tl-none rounded-tr-none sm:rounded-bl-none sm:rounded-tl-none sm:rounded-tr-lg">
+              <div className="flex items-center">
+                <HiCloudDownload className="mr-2 mt-0.5 h-4 w-4" />
+                Find Post
+              </div>
+            </Button>
+          </Link>
+        </div>
+      </div>
+
+      <div className="container mx-auto flex px-5">
         <div className="grow">
           <Form>
             <div className="mb-2 block">
@@ -209,6 +261,6 @@ export default function NearestPostOffice() {
           </MapContainer>
         </div>
       </div>
-    </div>
+    </>
   );
 }

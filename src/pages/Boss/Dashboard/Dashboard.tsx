@@ -28,7 +28,7 @@ export default function Dashboard() {
     },
     series: [
       {
-        name: "series-1",
+        name: "Transactions",
         data: [],
       },
     ],
@@ -58,7 +58,7 @@ export default function Dashboard() {
       ...chart1State,
       series: [
         {
-          name: "series-1",
+          name: "Transactions",
           data: res.data.chart1.data,
         },
       ],
@@ -77,16 +77,7 @@ export default function Dashboard() {
 
   return (
     <>
-      <div className="relative mb-8 overflow-hidden rounded-sm bg-indigo-200 p-4 dark:bg-indigo-500 sm:p-6">
-        {/* Background illustration */}
-        <div
-          className="pointer-events-none absolute right-0 top-0 -mt-4 hidden xl:block"
-          aria-hidden="true"
-        >
-          <img src="/login-background.jpg" alt="" width="2000" />
-        </div>
-
-        {/* Content */}
+      <div className="relative mb-8 overflow-hidden rounded-sm bg-[url('/src/assets/images/login-background.jpg')] p-4 sm:p-6">
         <div className="relative">
           <h1 className="mb-1 text-2xl font-bold text-slate-200 dark:text-slate-100 md:text-3xl">
             Annual Statistics 👋
@@ -175,7 +166,7 @@ export default function Dashboard() {
               Transactions by provinces
             </h2>
           </header>
-          <div className="donut flex items-center justify-center p-10">
+          <div className="donut flex items-center justify-center p-10 dark:text-white">
             <Chart
               options={chart2State.chartOptions}
               series={chart2State.series}
@@ -205,34 +196,4 @@ export default function Dashboard() {
       </div>
     </>
   );
-}
-
-{
-  /* <Card className="h-72 w-72 bg-blue-200">
-          <h5 className="text-3xl font-bold tracking-tight text-gray-900 dark:text-white"></h5>
-          <h5 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white"></h5>
-          <p className="font-normal text-gray-700 dark:text-gray-400"></p>
-        </Card> */
-}
-
-{
-  /* <Card className="h-72 w-72 bg-orange-200">
-          <h5 className="text-3xl font-bold tracking-tight text-gray-900 dark:text-white"></h5>
-          <h5 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white"></h5>
-          <p className="font-normal text-gray-700 dark:text-gray-400"></p>
-        </Card> */
-}
-
-{
-  /* <Card className="h-72 w-72 bg-red-100">
-          <h5 className="text-3xl font-bold tracking-tight text-gray-900 dark:text-white">
-            
-          </h5>
-          <h5 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
-            
-          </h5>
-          <p className="font-normal text-gray-700 dark:text-gray-400">
-            
-          </p>
-        </Card> */
 }

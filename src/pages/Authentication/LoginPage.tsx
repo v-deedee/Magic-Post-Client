@@ -46,12 +46,12 @@ export default function LoginPage() {
       className={`flex h-screen bg-[url('/src/assets/images/login-background.jpg')] align-middle dark:bg-zinc-700`}
     >
       <div className="m-auto w-96 rounded-lg border-gray-500 bg-white/90 p-5 shadow-lg dark:border-4 dark:bg-zinc-800">
-        <div className="my-10 flex justify-center">
+        <a href="/" className="my-10 flex justify-center">
           <img src={logo} className="mr-2 h-10 w-10" alt="logo" />
           <span className="self-center whitespace-nowrap text-3xl font-bold text-[#319684] dark:text-white">
             MagicPost
           </span>
-        </div>
+        </a>
         <p className="mb-3 font-bold text-red-600 dark:text-red-400">
           {actionData}
         </p>
