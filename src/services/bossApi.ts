@@ -3,7 +3,7 @@ import { getToken } from "./token";
 
 const API_BASE_URL = "http://localhost:3001";
 
-export const createManager = async (reqData) => {
+export const createManager = async (reqData: {}) => {
   const response = await axios({
     method: "post",
     url: API_BASE_URL + "/staff/manager/create",
@@ -15,7 +15,7 @@ export const createManager = async (reqData) => {
   return response;
 };
 
-export const listManager = async (reqParams) => {
+export const listManager = async (reqParams: {}) => {
   const response = await axios({
     method: "get",
     url: API_BASE_URL + "/staff/manager?limit=500",
@@ -27,7 +27,7 @@ export const listManager = async (reqParams) => {
   return response;
 };
 
-export const viewManager = async (staffID) => {
+export const viewManager = async (staffID: string) => {
   const response = await axios({
     method: "get",
     url: API_BASE_URL + `/staff/manager/${staffID}`,
@@ -38,7 +38,7 @@ export const viewManager = async (staffID) => {
   return response;
 };
 
-export const updateManager = async (staffID, reqData) => {
+export const updateManager = async (staffID: string, reqData: {}) => {
   const response = await axios({
     method: "put",
     url: API_BASE_URL + `/staff/manager/update/${staffID}`,
@@ -50,7 +50,7 @@ export const updateManager = async (staffID, reqData) => {
   return response;
 };
 
-export const createDepartment = async (reqData) => {
+export const createDepartment = async (reqData: {}) => {
   const response = await axios({
     method: "post",
     url: API_BASE_URL + `/department/create`,
@@ -62,7 +62,7 @@ export const createDepartment = async (reqData) => {
   return response;
 };
 
-export const viewDepartment = async (departmentId) => {
+export const viewDepartment = async (departmentId: string) => {
   const response = await axios({
     method: "get",
     url: API_BASE_URL + `/department/${departmentId}`,
@@ -73,7 +73,7 @@ export const viewDepartment = async (departmentId) => {
   return response;
 };
 
-export const listDepartment = async (reqParams) => {
+export const listDepartment = async (reqParams: {}) => {
   const response = await axios({
     method: "get",
     url: API_BASE_URL + `/department?limit=200`,
@@ -85,7 +85,7 @@ export const listDepartment = async (reqParams) => {
   return response;
 };
 
-export const updateDepartment = async (departmentId, reqData) => {
+export const updateDepartment = async (departmentId: string, reqData: {}) => {
   const response = await axios({
     method: "put",
     url: API_BASE_URL + `/department/update/${departmentId}`,
@@ -98,7 +98,7 @@ export const updateDepartment = async (departmentId, reqData) => {
   return response;
 };
 
-export const listShipmentNationwide = async (reqParams) => {
+export const listShipmentNationwide = async (reqParams: {}) => {
   const response = await axios({
     method: "get",
     url: API_BASE_URL + `/shipment/nationwide`,

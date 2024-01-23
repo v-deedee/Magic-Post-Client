@@ -4,7 +4,7 @@ import { getToken } from "./token";
 
 const API_BASE_URL = "http://localhost:3001";
 
-export const createEmployee = async (reqData: Object) => {
+export const createEmployee = async (reqData: {}) => {
   const response = axios({
     method: "post",
     url: `${API_BASE_URL}/staff/employee/create`,
@@ -29,7 +29,7 @@ export const viewEmployee = async (emId: string) => {
   return response;
 };
 
-export const listEmployee = async (reqParams: Object) => {
+export const listEmployee = async (reqParams: {}) => {
   const response = axios({
     method: "get",
     url: `${API_BASE_URL}/staff/employee`,
@@ -42,7 +42,7 @@ export const listEmployee = async (reqParams: Object) => {
   return response;
 };
 
-export const updateEmployee = async (emId: string, reqData: Object) => {
+export const updateEmployee = async (emId: string, reqData: {}) => {
   const response = axios({
     method: "put",
     url: `${API_BASE_URL}/staff/employee/update/${emId}`,
@@ -55,7 +55,7 @@ export const updateEmployee = async (emId: string, reqData: Object) => {
   return response;
 };
 
-export const listShipment = async (reqParams: Object) => {
+export const listShipment = async (reqParams: {}) => {
   const response = axios({
     method: "get",
     url: `${API_BASE_URL}/shipment/department/received`,

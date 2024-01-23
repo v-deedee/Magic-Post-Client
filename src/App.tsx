@@ -1,13 +1,18 @@
 import { Form, Link } from "react-router-dom";
 import { Button } from "flowbite-react";
-import { Footer } from "flowbite-react";
 import homeIcon from "./assets/images/home-icon.svg";
 import serviceImg from "./assets/images/service.jpg";
 import shippingImg from "./assets/images/shipping.png";
 import { PiMapPin, PiPhone } from "react-icons/pi";
 import { HiCheckCircle } from "react-icons/hi";
 import { BiEnvelope } from "react-icons/bi";
-import { BsFacebook, BsGithub, BsInstagram, BsTwitter } from "react-icons/bs";
+import {
+  BsFacebook,
+  BsGithub,
+  BsInstagram,
+  BsReddit,
+  BsTwitter,
+} from "react-icons/bs";
 
 export default function HomePage() {
   return (
@@ -18,7 +23,7 @@ export default function HomePage() {
         <div className="container mx-auto w-full p-6 px-5">
           <div className="flex w-full items-center justify-between">
             <a
-              className="flex items-center text-2xl font-bold text-indigo-400 no-underline hover:no-underline lg:text-4xl"
+              className="flex items-center text-2xl font-bold lg:text-4xl"
               href="#"
             >
               <img src="/logo.svg" alt="" className="me-3 w-14" />
@@ -295,39 +300,99 @@ export default function HomePage() {
       </div>
 
       {/* Footer */}
-      <div className="mt-10 border-t">
-        <div className="container mx-auto px-5 py-10">
-          <div className="grid w-full justify-between sm:flex sm:justify-between md:flex md:grid-cols-1">
-            <div>
-              <Footer.Brand
-                href="/"
-                src="/logo.svg"
-                alt="Logo"
-                name="MagicPost"
-              />
-            </div>
-            <div className="grid grid-cols-2 gap-8 sm:mt-4 sm:gap-6">
-              <div>
-                <Footer.Title title="about" />
-                <Footer.LinkGroup col>
-                  <Footer.Link href="#">MagicPost</Footer.Link>
-                </Footer.LinkGroup>
-              </div>
-              <div>
-                <Footer.Title title="Legal" />
-                <Footer.LinkGroup col>
-                  <Footer.Link href="#">Privacy Policy</Footer.Link>
-                  <Footer.Link href="#">Terms &amp; Conditions</Footer.Link>
-                </Footer.LinkGroup>
-              </div>
+      <footer className="border-t bg-white dark:bg-gray-900">
+        <div className="container mx-auto px-6 py-8">
+          <div className="flex flex-col items-center text-center">
+            <a className="flex items-center font-bold lg:text-4xl" href="/">
+              <img src="/logo.svg" alt="" className="me-3 w-10" />
+              <span className="hidden self-center whitespace-nowrap text-2xl font-bold sm:inline">
+                MagicPost
+              </span>
+            </a>
+
+            <div className="-mx-4 mt-6 flex flex-wrap justify-center">
+              <a
+                href="#"
+                className="mx-4 text-sm text-gray-600 transition-colors duration-300 hover:text-blue-500 dark:text-gray-300 dark:hover:text-blue-400"
+                aria-label="Reddit"
+              >
+                {" "}
+                Home{" "}
+              </a>
+
+              <a
+                href="#"
+                className="mx-4 text-sm text-gray-600 transition-colors duration-300 hover:text-blue-500 dark:text-gray-300 dark:hover:text-blue-400"
+                aria-label="Reddit"
+              >
+                {" "}
+                About{" "}
+              </a>
+
+              <a
+                href="#"
+                className="mx-4 text-sm text-gray-600 transition-colors duration-300 hover:text-blue-500 dark:text-gray-300 dark:hover:text-blue-400"
+                aria-label="Reddit"
+              >
+                {" "}
+                Teams{" "}
+              </a>
+
+              <a
+                href="#"
+                className="mx-4 text-sm text-gray-600 transition-colors duration-300 hover:text-blue-500 dark:text-gray-300 dark:hover:text-blue-400"
+                aria-label="Reddit"
+              >
+                {" "}
+                Privacy{" "}
+              </a>
+
+              <a
+                href="#"
+                className="mx-4 text-sm text-gray-600 transition-colors duration-300 hover:text-blue-500 dark:text-gray-300 dark:hover:text-blue-400"
+                aria-label="Reddit"
+              >
+                {" "}
+                Cookies{" "}
+              </a>
             </div>
           </div>
-          <Footer.Divider />
-          <div className="w-full sm:flex sm:items-center sm:justify-between">
-            <Footer.Copyright by="DeeDee" year={2023} />
+
+          <hr className="my-6 border-gray-200 dark:border-gray-700 md:my-10" />
+
+          <div className="flex flex-col items-center sm:flex-row sm:justify-between">
+            <p className="text-sm text-gray-500 dark:text-gray-300">
+              © 2023 DeeDee
+            </p>
+
+            <div className="-mx-2 flex pt-5 sm:pt-2">
+              <a
+                href="#"
+                className="mx-2 text-xl text-gray-600 transition-colors duration-300 hover:text-blue-500 dark:text-gray-300 dark:hover:text-blue-400"
+                aria-label="Reddit"
+              >
+                <BsReddit />
+              </a>
+
+              <a
+                href="#"
+                className="mx-2 text-xl text-gray-600 transition-colors duration-300 hover:text-blue-500 dark:text-gray-300 dark:hover:text-blue-400"
+                aria-label="Facebook"
+              >
+                <BsFacebook />
+              </a>
+
+              <a
+                href="#"
+                className="mx-2 text-xl text-gray-600 transition-colors duration-300 hover:text-blue-500 dark:text-gray-300 dark:hover:text-blue-400"
+                aria-label="Github"
+              >
+                <BsGithub />
+              </a>
+            </div>
           </div>
         </div>
-      </div>
+      </footer>
     </>
   );
 }

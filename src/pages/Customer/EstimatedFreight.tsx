@@ -63,8 +63,8 @@ export default function EstimatedFreight() {
       </div>
 
       {/* Main */}
-      <div className="container mx-auto px-5">
-        <div className="grid grid-cols-3 gap-10 rounded-lg border p-10">
+      <div className="container mx-auto p-5">
+        <div className="grid gap-10 rounded-lg border p-10 sm:grid-cols-2 md:grid-cols-3">
           <div className="">
             <div className="mb-2 block">
               <Label htmlFor="from" value="From" />
@@ -215,7 +215,7 @@ export default function EstimatedFreight() {
             </div>
             <TextInput id="weight" type="text" required />
           </div>
-          <div className=" flex items-center">
+          <div className="col-span-1 flex items-center sm:col-span-2">
             <Button
               className="bg-green-500"
               onClick={() => {

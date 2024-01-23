@@ -10,7 +10,11 @@ export const trackShipment = async (shipmentId: string) => {
   return response;
 };
 
-export const getListPostOffice = async (reqParams: {}) => {
+export const getListPostOffice = async (reqParams: {
+  province: string;
+  district: string;
+  type: string;
+}) => {
   const response = await axios({
     method: "get",
     url: API_BASE_URL + "/department",

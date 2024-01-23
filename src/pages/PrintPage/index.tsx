@@ -65,13 +65,15 @@ export default function PrintPage() {
               <Table.HeadCell>Value</Table.HeadCell>
             </Table.Head>
             <Table.Body>
-              {state.meta.item.map((item) => (
-                <Table.Row>
-                  <Table.Cell>{item.name}</Table.Cell>
-                  <Table.Cell>{item.quantity}</Table.Cell>
-                  <Table.Cell>{item.value}</Table.Cell>
-                </Table.Row>
-              ))}
+              {state.meta.item.map(
+                (item: { name: string; quantity: number; value: number }) => (
+                  <Table.Row>
+                    <Table.Cell>{item.name}</Table.Cell>
+                    <Table.Cell>{item.quantity}</Table.Cell>
+                    <Table.Cell>{item.value}</Table.Cell>
+                  </Table.Row>
+                ),
+              )}
             </Table.Body>
           </Table>
         </div>

@@ -140,7 +140,7 @@ export default function PostageTracking() {
           Shipment detail:
         </h1>
 
-        <div className="mt-5">
+        <div className="my-5">
           <h1>
             {(() => {
               if (status === "NONE") {

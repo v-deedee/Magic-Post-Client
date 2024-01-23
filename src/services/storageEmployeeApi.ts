@@ -3,7 +3,7 @@ import { getToken } from "./token";
 
 const API_BASE_URL = "http://localhost:3001";
 
-export const updatePtSTransactions = async (reqData: Object) => {
+export const updatePtSTransactions = async (reqData: {}) => {
   const response = await axios({
     method: "put",
     url: `${API_BASE_URL}/transaction/pts`,
@@ -16,7 +16,7 @@ export const updatePtSTransactions = async (reqData: Object) => {
   return response;
 };
 
-export const updateStSTransactions = async (reqData: Object) => {
+export const updateStSTransactions = async (reqData: {}) => {
   const response = await axios({
     method: "put",
     url: `${API_BASE_URL}/transaction/sts`,
@@ -29,7 +29,7 @@ export const updateStSTransactions = async (reqData: Object) => {
   return response;
 };
 
-export const pushShipmentStS = async (reqParams: Object, reqData: Object) => {
+export const pushShipmentStS = async (reqParams: {}, reqData: {}) => {
   const response = await axios({
     method: "post",
     url: `${API_BASE_URL}/transaction/sts`,
@@ -43,7 +43,7 @@ export const pushShipmentStS = async (reqParams: Object, reqData: Object) => {
   return response;
 };
 
-export const pushShipmentStP = async (reqParams: Object, reqData: Object) => {
+export const pushShipmentStP = async (reqParams: {}, reqData: {}) => {
   const response = await axios({
     method: "post",
     url: `${API_BASE_URL}/transaction/stp`,
