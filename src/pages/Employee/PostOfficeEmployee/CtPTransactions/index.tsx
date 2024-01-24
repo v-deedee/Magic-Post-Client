@@ -1,5 +1,5 @@
 import { Button, Label, Select, TextInput } from "flowbite-react";
-import { Form, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import {
   createShipment,
   getDistricts,
@@ -8,88 +8,33 @@ import {
 } from "../../../../services/postOfficeEmployeeApi";
 import { Table } from "flowbite-react";
 import { Modal } from "flowbite-react";
-// import { CtPTransactionModal } from "./CtPTransactionsModal";
 import { useEffect, useState } from "react";
-// import { useSelector } from "react-redux";
 import { HiPlus, HiTrash } from "react-icons/hi";
 import SearchBox from "../../../../components/SearchBox";
 import { trackShipment } from "../../../../services/customerApi";
-
-export const loader = async () => {
-  return null;
-};
-
-export const action = async ({ request, params }) => {
-  console.log("do action");
-  return "action";
-};
+import { Shipment } from "../../../../models/Shipment";
+import { Transaction } from "../../../../models/Transaction";
+// import { AxiosError } from "axios";
 
 export default function CtPTransactions() {
-  useEffect(() => {
-    try {
-      const fetchListCtPTransactionData = async () => {
-        const data = await listCtPTransactions({ limit: 500 });
-        const payload = data.data.data.payload;
-        const page = payload.page;
-        const totalPages = payload.totalPages;
-        const transactions = payload.transactions;
-        setListCtPTransaction({
-          page,
-          totalPages,
-          transactions,
-        });
-        setOldListCtPTransaction({
-          page,
-          totalPages,
-          transactions,
-        });
-      };
+  const [openCreateModal, setOpenCreateModal] = useState(false);
 
-      const fetchProvincesData = async () => {
-        const data = await getProvinces();
-        const payload = data.data.data.payload;
-        const provinces = payload.provinces;
-        setProvinces(provinces);
-      };
+  const [openDetailModal, setOpenDetailModal] = useState(false);
 
-      const fetchDistrictsData = async () => {
-        const data = await getDistricts({ province: provinces[0] });
-        const payload = data.data.data.payload;
-        const districts = payload.districts;
-        setSenderDistrict(districts);
-        setReceiverDistrict(districts);
-      };
-
-      fetchListCtPTransactionData();
-      fetchProvincesData();
-      fetchDistrictsData();
-    } catch (e) {
-      console.log(e);
-    }
-  }, []);
-
-  const [listCtPTransaction, setListCtPTransaction] = useState({
-    page: 0,
-    totalPages: 0,
-    transactions: [],
-  });
-
-  const [oldListCtPTransaction, setOldListCtPTransaction] = useState({
-    page: 0,
-    totalPages: 0,
-    transactions: [],
-  });
+  const [listCtPTransaction, setListCtPTransaction] = useState<Transaction[]>(
+    [],
+  );
 
   const [provinces, setProvinces] = useState([]);
 
-  const initCtPTransactionData = {
+  const [newTransaction, setNewTransaction] = useState({
     sender: {
       name: "",
       phone: "",
       province: "",
       district: "",
       street: "",
-      zipcode: "100000",
+      zipcode: "999999",
     },
     receiver: {
       name: "",
@@ -97,7 +42,7 @@ export default function CtPTransactions() {
       province: "",
       district: "",
       street: "",
-      zipcode: "100000",
+      zipcode: "999999",
     },
     meta: {
       type: "",
@@ -110,37 +55,42 @@ export default function CtPTransactions() {
         },
       ],
     },
-  };
-
-  const [CtPTransaction, setCtPTransaction] = useState(initCtPTransactionData);
+    // _id: "",
+  });
 
   const addItem = () => {
-    const newList = [...CtPTransaction.meta.item];
-    newList.push({
+    const newItemList = [...newTransaction.meta.item];
+    newItemList.push({
       name: "",
-      quantity: "",
-      value: "",
+      quantity: 0,
+      value: 0,
     });
-    let clone = { ...CtPTransaction };
-    clone.meta.item = newList;
-    setCtPTransaction(clone);
+    let clone = { ...newTransaction };
+    clone.meta.item = newItemList;
+    setNewTransaction(clone);
   };
 
-  const removeItem = (pos) => {
-    let clone = { ...CtPTransaction };
-    clone.meta.item = CtPTransaction.meta.item.filter((value, index) => {
+  const removeItem = (pos: number) => {
+    let clone = { ...newTransaction };
+    clone.meta.item = newTransaction.meta.item.filter((value, index) => {
+      console.log(value);
       return index != pos;
     });
-    setCtPTransaction(clone);
+    setNewTransaction(clone);
   };
 
-  const onChangeItem = (pos, item) => {
-    let clone = { ...CtPTransaction };
+  const onChangeItem = (
+    pos: number,
+    item: {
+      name: string;
+      quantity: number;
+      value: number;
+    },
+  ) => {
+    let clone = { ...newTransaction };
     clone.meta.item[pos] = item;
-    setCtPTransaction(clone);
+    setNewTransaction(clone);
   };
-
-  const [openCreateModal, setOpenCreateModal] = useState(false);
 
   const [reqError, setReqError] = useState({
     error: false,
@@ -149,32 +99,31 @@ export default function CtPTransactions() {
 
   const createNewTransaction = async () => {
     try {
-      const res = await createShipment(CtPTransaction);
+      const res = await createShipment(newTransaction);
       const shipment = res.data.data.payload.shipment;
-      let clone = { ...CtPTransaction };
-      clone.shipment = shipment;
-      setCtPTransaction(clone);
+      console.log(shipment);
+
+      let clone = { ...newTransaction };
+      // clone._id = shipment;
+      setNewTransaction(clone);
       setDisplayPrintInvoice("block");
       setReqError({
         error: false,
         msg: "",
       });
-    } catch (e) {
-      console.log(e);
+    } catch (err) {
+      const error = err as { response: { data: { message: string } } };
+      console.log(error);
       setReqError({
         error: true,
-        msg: e.response.data.message,
+        msg: error.response?.data.message,
       });
     }
   };
 
-  const [openDetailModal, setOpenDetailModal] = useState(false);
-
-  const [currentShipment, setCurrentShipment] = useState();
+  const [currentShipment, setCurrentShipment] = useState<Shipment>();
   const fetchShipmentData = async (id: string) => {
     const res = await trackShipment(id);
-    console.log(res);
-
     setCurrentShipment(res.data.data.payload.shipment);
   };
 
@@ -183,13 +132,13 @@ export default function CtPTransactions() {
   const updateSenderDistrict = async () => {
     setSenderDistrict([]);
     const data = await getDistricts({
-      province: CtPTransaction.sender.province,
+      province: newTransaction.sender.province,
     });
     const payload = data.data.data.payload;
     const districts = payload.districts;
-    let clone = { ...CtPTransaction };
+    let clone = { ...newTransaction };
     clone.sender.district = districts[0];
-    setCtPTransaction(clone);
+    setNewTransaction(clone);
     setSenderDistrict(districts);
   };
 
@@ -198,17 +147,47 @@ export default function CtPTransactions() {
   const updateReceiverDistrict = async () => {
     setReceiverDistrict([]);
     const data = await getDistricts({
-      province: CtPTransaction.receiver.province,
+      province: newTransaction.receiver.province,
     });
     const payload = data.data.data.payload;
     const districts = payload.districts;
-    let clone = { ...CtPTransaction };
+    let clone = { ...newTransaction };
     clone.receiver.district = districts[0];
-    setCtPTransaction(clone);
+    setNewTransaction(clone);
     setReceiverDistrict(districts);
   };
 
   const [displayPrintInvoice, setDisplayPrintInvoice] = useState("none");
+
+  useEffect(() => {
+    try {
+      const fetchListCtPTransactionData = async () => {
+        const data = await listCtPTransactions();
+        const payload = data.data.data.payload;
+        setListCtPTransaction(payload.transactions);
+      };
+
+      const fetchProvincesData = async () => {
+        const data = await getProvinces();
+        const payload = data.data.data.payload;
+        setProvinces(payload.provinces);
+      };
+
+      // const fetchDistrictsData = async () => {
+      //   const data = await getDistricts({ province: provinces[0] });
+      //   const payload = data.data.data.payload;
+      //   const districts = payload.districts;
+      //   setSenderDistrict(districts);
+      //   setReceiverDistrict(districts);
+      // };
+
+      fetchListCtPTransactionData();
+      fetchProvincesData();
+      // fetchDistrictsData();
+    } catch (err) {
+      console.log(err);
+    }
+  }, []);
 
   return (
     <div>
@@ -242,7 +221,7 @@ export default function CtPTransactions() {
             </Table.HeadCell>
           </Table.Head>
           <Table.Body className="divide-y">
-            {listCtPTransaction.transactions.map((transaction) => (
+            {listCtPTransaction.map((transaction) => (
               <Table.Row
                 key={transaction._id}
                 className="bg-white dark:border-gray-700 dark:bg-gray-800"
@@ -280,27 +259,37 @@ export default function CtPTransactions() {
 
       {/* Create transaction modal */}
       <Modal show={openCreateModal} onClose={() => setOpenCreateModal(false)}>
-        <Modal.Header>Create new Transaction</Modal.Header>
-        <Modal.Body>
-          <Form>
-            <div className="mb-4">
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            createNewTransaction();
+          }}
+        >
+          <Modal.Header>Create new Transaction</Modal.Header>
+          <Modal.Body className="max-h-[60vh] overflow-auto">
+            <div>
               <div className="block">
                 <Label htmlFor="type" value="Type" />
               </div>
               <Select
                 className="mb-2"
                 id="type"
+                required
                 onChange={(e) => {
-                  let clone = { ...CtPTransaction };
+                  let clone = { ...newTransaction };
                   clone.meta.type = e.target.value;
-                  setCtPTransaction(clone);
+                  setNewTransaction(clone);
                 }}
               >
-                <option value="">Select Type</option>
+                <option value="" defaultChecked>
+                  Select Type
+                </option>
                 <option value="DOCUMENT">Document</option>
                 <option value="GOODS">Goods</option>
               </Select>
+            </div>
 
+            <div>
               <div className="block">
                 <Label htmlFor="note" value="Note" />
               </div>
@@ -309,20 +298,23 @@ export default function CtPTransactions() {
                 type="text"
                 placeholder=""
                 required
-                value={CtPTransaction.meta.note}
                 onChange={(e) => {
-                  let clone = { ...CtPTransaction };
+                  let clone = { ...newTransaction };
                   clone.meta.note = e.target.value;
-                  setCtPTransaction(clone);
+                  setNewTransaction(clone);
                 }}
               />
             </div>
 
-            <div>
-              <h3 className="font-bold">List Item</h3>
+            <div className="mt-4">
+              <div className="block">
+                <Label htmlFor="" value="List item" />
+              </div>
+
               <hr />
-              {CtPTransaction.meta.item.map((item, index) => (
-                <div className="my-2 flex gap-2">
+
+              {newTransaction.meta.item.map((item, index) => (
+                <div key={index} className="my-2 flex gap-2">
                   <div className="grow flex-col">
                     <div className="block">
                       <Label htmlFor={`itemName${index}`} value="Name" />
@@ -356,7 +348,7 @@ export default function CtPTransactions() {
                       value={item.quantity}
                       onChange={(e) => {
                         const newItem = item;
-                        newItem.quantity = e.target.value;
+                        newItem.quantity = parseInt(e.target.value);
                         onChangeItem(index, newItem);
                       }}
                     />
@@ -373,7 +365,7 @@ export default function CtPTransactions() {
                       value={item.value}
                       onChange={(e) => {
                         const newItem = item;
-                        newItem.value = e.target.value;
+                        newItem.value = parseFloat(e.target.value);
                         onChangeItem(index, newItem);
                       }}
                     />
@@ -398,27 +390,33 @@ export default function CtPTransactions() {
               <Button className="my-2" onClick={addItem}>
                 Add
               </Button>
+
               <hr className="my-2" />
             </div>
+
             <div className="flex">
               <div className="grow">
-                <h3 className="font-bold">Sender</h3>
                 <div>
-                  <div className="mt-3">
-                    <Label htmlFor="sender-name" value="Name" />
+                  <div className="block">
+                    <Label htmlFor="note" value="Sender" />
                   </div>
-                  <TextInput
-                    id="sender-name"
-                    type="text"
-                    placeholder="Nguyen Van A"
-                    required
-                    value={CtPTransaction.sender.name}
-                    onChange={(e) => {
-                      let clone = { ...CtPTransaction };
-                      clone.sender.name = e.target.value;
-                      setCtPTransaction(clone);
-                    }}
-                  />
+                  <div>
+                    <div className="mt-3">
+                      <Label htmlFor="sender-name" value="Name" />
+                    </div>
+                    <TextInput
+                      id="sender-name"
+                      type="text"
+                      placeholder="Nguyen Van A"
+                      required
+                      value={newTransaction.sender.name}
+                      onChange={(e) => {
+                        let clone = { ...newTransaction };
+                        clone.sender.name = e.target.value;
+                        setNewTransaction(clone);
+                      }}
+                    />
+                  </div>
                 </div>
                 <div>
                   <div className="mt-3">
@@ -429,11 +427,11 @@ export default function CtPTransactions() {
                     type="text"
                     placeholder="0123456789"
                     required
-                    value={CtPTransaction.sender.phone}
+                    value={newTransaction.sender.phone}
                     onChange={(e) => {
-                      let clone = { ...CtPTransaction };
+                      let clone = { ...newTransaction };
                       clone.sender.phone = e.target.value;
-                      setCtPTransaction(clone);
+                      setNewTransaction(clone);
                     }}
                   />
                 </div>
@@ -444,17 +442,19 @@ export default function CtPTransactions() {
                   <Select
                     id="sender-province"
                     required
-                    value={CtPTransaction.sender.province}
+                    value={newTransaction.sender.province}
                     onChange={(e) => {
-                      let clone = { ...CtPTransaction };
+                      let clone = { ...newTransaction };
                       clone.sender.province = e.target.value;
-                      setCtPTransaction(clone);
+                      setNewTransaction(clone);
                       updateSenderDistrict();
                     }}
                   >
                     <option value="">Select Province</option>
                     {provinces.map((province) => (
-                      <option value={province}>{province}</option>
+                      <option key={province + "province1"} value={province}>
+                        {province}
+                      </option>
                     ))}
                   </Select>
                 </div>
@@ -465,16 +465,18 @@ export default function CtPTransactions() {
                   <Select
                     id="sender-district"
                     required
-                    value={CtPTransaction.sender.district}
+                    value={newTransaction.sender.district}
                     onChange={(e) => {
-                      let clone = { ...CtPTransaction };
+                      let clone = { ...newTransaction };
                       clone.sender.district = e.target.value;
-                      setCtPTransaction(clone);
+                      setNewTransaction(clone);
                     }}
                   >
                     <option value="">Select District</option>
                     {senderDistrict.map((district) => (
-                      <option value={district}>{district}</option>
+                      <option key={district + "district1"} value={district}>
+                        {district}
+                      </option>
                     ))}
                   </Select>
                 </div>
@@ -487,34 +489,38 @@ export default function CtPTransactions() {
                     type="text"
                     placeholder="80 Dinh Tien Hoang"
                     required
-                    value={CtPTransaction.sender.street}
+                    value={newTransaction.sender.street}
                     onChange={(e) => {
-                      let clone = { ...CtPTransaction };
+                      let clone = { ...newTransaction };
                       clone.sender.street = e.target.value;
-                      setCtPTransaction(clone);
+                      setNewTransaction(clone);
                     }}
                   />
                 </div>
               </div>
 
               <div className="grow px-4">
-                <h3 className="font-bold">Receiver</h3>
                 <div>
-                  <div className="mt-3">
-                    <Label htmlFor="receiver-name" value="Name" />
+                  <div className="block">
+                    <Label htmlFor="note" value="Receiver" />
                   </div>
-                  <TextInput
-                    id="receiver-name"
-                    type="text"
-                    placeholder="Nguyen Van A"
-                    required
-                    value={CtPTransaction.receiver.name}
-                    onChange={(e) => {
-                      let clone = { ...CtPTransaction };
-                      clone.receiver.name = e.target.value;
-                      setCtPTransaction(clone);
-                    }}
-                  />
+                  <div>
+                    <div className="mt-3">
+                      <Label htmlFor="receiver-name" value="Name" />
+                    </div>
+                    <TextInput
+                      id="receiver-name"
+                      type="text"
+                      placeholder="Nguyen Van A"
+                      required
+                      value={newTransaction.receiver.name}
+                      onChange={(e) => {
+                        let clone = { ...newTransaction };
+                        clone.receiver.name = e.target.value;
+                        setNewTransaction(clone);
+                      }}
+                    />
+                  </div>
                 </div>
                 <div>
                   <div className="mt-3">
@@ -525,11 +531,11 @@ export default function CtPTransactions() {
                     type="text"
                     placeholder="0123456789"
                     required
-                    value={CtPTransaction.receiver.phone}
+                    value={newTransaction.receiver.phone}
                     onChange={(e) => {
-                      let clone = { ...CtPTransaction };
+                      let clone = { ...newTransaction };
                       clone.receiver.phone = e.target.value;
-                      setCtPTransaction(clone);
+                      setNewTransaction(clone);
                     }}
                   />
                 </div>
@@ -540,17 +546,19 @@ export default function CtPTransactions() {
                   <Select
                     id="receiver-province"
                     required
-                    value={CtPTransaction.receiver.province}
+                    value={newTransaction.receiver.province}
                     onChange={(e) => {
-                      let clone = { ...CtPTransaction };
+                      let clone = { ...newTransaction };
                       clone.receiver.province = e.target.value;
-                      setCtPTransaction(clone);
+                      setNewTransaction(clone);
                       updateReceiverDistrict();
                     }}
                   >
                     <option value="">Select Province</option>
                     {provinces.map((province) => (
-                      <option value={province}>{province}</option>
+                      <option key={province + "province2"} value={province}>
+                        {province}
+                      </option>
                     ))}
                   </Select>
                 </div>
@@ -561,16 +569,18 @@ export default function CtPTransactions() {
                   <Select
                     id="receiver-district"
                     required
-                    value={CtPTransaction.receiver.district}
+                    value={newTransaction.receiver.district}
                     onChange={(e) => {
-                      let clone = { ...CtPTransaction };
+                      let clone = { ...newTransaction };
                       clone.receiver.district = e.target.value;
-                      setCtPTransaction(clone);
+                      setNewTransaction(clone);
                     }}
                   >
                     <option value="">Select District</option>
                     {receiverDistrict.map((district) => (
-                      <option value={district}>{district}</option>
+                      <option key={district + "district2"} value={district}>
+                        {district}
+                      </option>
                     ))}
                   </Select>
                 </div>
@@ -583,34 +593,28 @@ export default function CtPTransactions() {
                     type="text"
                     placeholder="80 Dinh Tien Hoang"
                     required
-                    value={CtPTransaction.receiver.street}
+                    value={newTransaction.receiver.street}
                     onChange={(e) => {
-                      let clone = { ...CtPTransaction };
+                      let clone = { ...newTransaction };
                       clone.receiver.street = e.target.value;
-                      setCtPTransaction(clone);
+                      setNewTransaction(clone);
                     }}
                   />
                 </div>
               </div>
             </div>
-          </Form>
-        </Modal.Body>
-        <Modal.Footer>
-          <Button
-            onClick={() => {
-              createNewTransaction();
-            }}
-          >
-            Submit
-          </Button>
-          <Button color="gray" onClick={() => setOpenCreateModal(false)}>
-            Cancel
-          </Button>
-          <Link to="/print" state={CtPTransaction}>
-            <Button style={{ display: displayPrintInvoice }}>Print</Button>
-          </Link>
-          <p className="text-red-500">{reqError.msg}</p>
-        </Modal.Footer>
+          </Modal.Body>
+          <Modal.Footer>
+            <Button type="submit">Submit</Button>
+            <Button color="gray" onClick={() => setOpenCreateModal(false)}>
+              Cancel
+            </Button>
+            <Link to="/print" state={newTransaction}>
+              <Button style={{ display: displayPrintInvoice }}>Print</Button>
+            </Link>
+            <p className="text-red-500">{reqError.msg}</p>
+          </Modal.Footer>
+        </form>
       </Modal>
 
       {/* View shipment detail modal */}
@@ -622,7 +626,7 @@ export default function CtPTransactions() {
       >
         <Modal.Header>Shipment detail</Modal.Header>
         <Modal.Body>
-          <div className="space-y-6">
+          <div className="space-y-6 dark:text-white">
             <ul>
               <li>
                 <span className="font-bold">Sender:</span>
@@ -666,22 +670,27 @@ export default function CtPTransactions() {
                     <div className="mt-2 overflow-x-auto">
                       <Table>
                         <Table.Head>
-                          <Table.HeadCell>Name</Table.HeadCell>
-                          <Table.HeadCell>Quantity</Table.HeadCell>
-                          <Table.HeadCell>Value</Table.HeadCell>
+                          <Table.HeadCell className="dark:bg-slate-600">
+                            Name
+                          </Table.HeadCell>
+                          <Table.HeadCell className="dark:bg-slate-600">
+                            Quantity
+                          </Table.HeadCell>
+                          <Table.HeadCell className="dark:bg-slate-600">
+                            Value
+                          </Table.HeadCell>
                         </Table.Head>
                         <Table.Body className="divide-y">
                           {currentShipment?.meta.item.map((item) => (
-                            <Table.Row className="bg-slate-100 dark:border-gray-700 dark:bg-gray-800">
-                              <Table.Cell className="text-black">
-                                {item.name}
-                              </Table.Cell>
-                              <Table.Cell className="text-black">
+                            <Table.Row
+                              key={item._id}
+                              className="bg-slate-100 dark:border-gray-700 dark:bg-gray-800"
+                            >
+                              <Table.Cell className="">{item.name}</Table.Cell>
+                              <Table.Cell className="">
                                 {item.quantity}
                               </Table.Cell>
-                              <Table.Cell className="text-black">
-                                {item.value}
-                              </Table.Cell>
+                              <Table.Cell className="">{item.value}</Table.Cell>
                             </Table.Row>
                           ))}
                         </Table.Body>

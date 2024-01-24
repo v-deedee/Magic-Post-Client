@@ -6,7 +6,7 @@ import { toggleSidebar } from "./SideBar";
 const Header: React.FC<{ children: JSX.Element }> = ({ children }) => {
   return (
     <nav className="fixed left-0 right-0 top-0 z-50 border-b border-gray-200 bg-white px-4 py-4 dark:border-gray-700 dark:bg-gray-800">
-      <div className="flex flex-wrap items-center justify-between">
+      <div className="flex items-center justify-between">
         <div className="flex items-center justify-start">
           {/* Hamburger menu button - toggle sidebar (for responsive) */}
           <button
@@ -30,16 +30,17 @@ const Header: React.FC<{ children: JSX.Element }> = ({ children }) => {
           </button>
 
           {/* Logo */}
-          <a href="#" className="flex w-60 items-center justify-start xl:pl-5">
+          <a href="#" className="flex items-center justify-start xl:pl-5">
             <img src={logo} className="logo mr-1 h-10 w-10" alt="logo" />
-            <span className="self-center whitespace-nowrap text-2xl font-bold dark:text-white">
+            <span className="hidden self-center whitespace-nowrap text-2xl font-bold dark:text-white sm:inline">
               MagicPost
             </span>
           </a>
         </div>
 
-        {/* User avatar */}
         {children}
+
+        {/* User avatar */}
         <Dropdown
           label={
             <Avatar

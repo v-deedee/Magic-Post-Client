@@ -7,7 +7,7 @@ import { Transaction } from "../../../../models/Transaction";
 import { Table } from "flowbite-react";
 interface IReceiveStSTransactionsProps {}
 
-export const ReceiveStSTransactions: FC<IReceiveStSTransactionsProps> = () => {
+const ReceiveStSTransactions: FC<IReceiveStSTransactionsProps> = () => {
   const [receivedStSTransactions, setReceivedStSTransactions] = useState<
     Transaction[]
   >([]);
@@ -124,3 +124,5 @@ export const ReceiveStSTransactions: FC<IReceiveStSTransactionsProps> = () => {
     </>
   );
 };
+
+export default ReceiveStSTransactions;

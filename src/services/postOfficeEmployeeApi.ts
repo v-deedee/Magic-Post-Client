@@ -38,11 +38,11 @@ export const getDistricts = async (reqParams: { province: string }) => {
   return response;
 };
 
-export const listCtPTransactions = async (reqParams: {}) => {
+export const listCtPTransactions = async () => {
   const response = await axios({
     method: "get",
     url: `${API_BASE_URL}/transaction/ctp/des`,
-    params: reqParams,
+    params: { limit: 100 },
     headers: {
       Authorization: "Bearer " + getToken(),
     },

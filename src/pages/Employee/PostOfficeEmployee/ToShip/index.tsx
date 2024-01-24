@@ -1,4 +1,3 @@
-import { FC } from "react";
 import { Button, Checkbox, Modal, Table } from "flowbite-react";
 import { useState, useEffect } from "react";
 import {
@@ -9,11 +8,15 @@ import {
 import { HiPlus } from "react-icons/hi";
 import SearchBox from "../../../../components/SearchBox";
 import { trackShipment } from "../../../../services/customerApi";
+import { Transaction } from "../../../../models/Transaction";
+import { Shipment } from "../../../../models/Shipment";
 
-interface IToShipProps {}
-
-export const ToShip: FC<IToShipProps> = (props) => {
-  const [listStPTransaction, setListStPTransaction] = useState({
+export default function ToShip() {
+  const [listStPTransaction, setListStPTransaction] = useState<{
+    page: 0;
+    totalPages: 0;
+    transactions: Transaction[];
+  }>({
     page: 0,
     totalPages: 0,
     transactions: [],
@@ -39,7 +42,7 @@ export const ToShip: FC<IToShipProps> = (props) => {
 
   const [openDetailModal, setOpenDetailModal] = useState(false);
 
-  const [currentShipment, setCurrentShipment] = useState();
+  const [currentShipment, setCurrentShipment] = useState<Shipment>();
   const fetchShipmentData = async (id: string) => {
     const res = await trackShipment(id);
     console.log(res);
@@ -47,14 +50,16 @@ export const ToShip: FC<IToShipProps> = (props) => {
     setCurrentShipment(res.data.data.payload.shipment);
   };
 
-  const [listStPShipmentNotPassed, setListStPShipmentNotPassed] = useState([]);
+  const [listStPShipmentNotPassed, setListStPShipmentNotPassed] = useState<
+    Transaction[]
+  >([]);
 
   const fetchStPShipmentNotPassed = async () => {
     const data = await listStPTransactions();
     const payload = data.data.data.payload;
     const transactions = payload.transactions;
     const transactionsNotPassed = transactions.filter(
-      (transaction) => transaction.status == "RECEIVED",
+      (transaction: Transaction) => transaction.status == "RECEIVED",
     );
     setListStPShipmentNotPassed(transactionsNotPassed);
   };
@@ -89,6 +94,9 @@ export const ToShip: FC<IToShipProps> = (props) => {
           <Table.HeadCell>Date</Table.HeadCell>
           <Table.HeadCell>Sender</Table.HeadCell>
           <Table.HeadCell>Status</Table.HeadCell>
+          <Table.HeadCell>
+            <span className="sr-only">Detail</span>
+          </Table.HeadCell>
         </Table.Head>
         <Table.Body className="divide-y">
           {listStPTransaction.transactions.map((transaction) => (
@@ -206,7 +214,7 @@ export const ToShip: FC<IToShipProps> = (props) => {
       >
         <Modal.Header>Shipment detail</Modal.Header>
         <Modal.Body>
-          <div className="space-y-6">
+          <div className="space-y-6 dark:text-white">
             <ul>
               <li>
                 <span className="font-bold">Sender:</span>
@@ -250,22 +258,24 @@ export const ToShip: FC<IToShipProps> = (props) => {
                     <div className="mt-2 overflow-x-auto">
                       <Table>
                         <Table.Head>
-                          <Table.HeadCell>Name</Table.HeadCell>
-                          <Table.HeadCell>Quantity</Table.HeadCell>
-                          <Table.HeadCell>Value</Table.HeadCell>
+                          <Table.HeadCell className="dark:bg-slate-600">
+                            Name
+                          </Table.HeadCell>
+                          <Table.HeadCell className="dark:bg-slate-600">
+                            Quantity
+                          </Table.HeadCell>
+                          <Table.HeadCell className="dark:bg-slate-600">
+                            Value
+                          </Table.HeadCell>
                         </Table.Head>
                         <Table.Body className="divide-y">
                           {currentShipment?.meta.item.map((item) => (
                             <Table.Row className="bg-slate-100 dark:border-gray-700 dark:bg-gray-800">
-                              <Table.Cell className="text-black">
-                                {item.name}
-                              </Table.Cell>
-                              <Table.Cell className="text-black">
+                              <Table.Cell className="">{item.name}</Table.Cell>
+                              <Table.Cell className="">
                                 {item.quantity}
                               </Table.Cell>
-                              <Table.Cell className="text-black">
-                                {item.value}
-                              </Table.Cell>
+                              <Table.Cell className="">{item.value}</Table.Cell>
                             </Table.Row>
                           ))}
                         </Table.Body>
@@ -283,4 +293,4 @@ export const ToShip: FC<IToShipProps> = (props) => {
       </Modal>
     </>
   );
-};
+}

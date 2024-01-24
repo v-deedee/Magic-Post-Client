@@ -6,9 +6,10 @@ import { login } from "../../services/api";
 import { setToken } from "../../services/token";
 import logo from "/logo.svg";
 
-export async function action({ request, params }) {
+export async function action({ request }: { request: Request }) {
   const formData = await request.formData();
   const loginData = Object.fromEntries(formData);
+
   try {
     const data = await login(loginData);
     const token = data.data.data.token.replace("Bearer ", "");
@@ -16,11 +17,11 @@ export async function action({ request, params }) {
     const role = stringToRole(data.data.data.payload.role);
     switch (role) {
       case ROLE.BOSS:
-        return redirect("/boss/dashboard");
+        return redirect("/boss/departments");
       case ROLE.STORAGE_MANAGER:
-        return redirect("/manager/dashboard");
+        return redirect("/manager/staffs");
       case ROLE.POSTOFFICE_MANAGER:
-        return redirect("/manager/dashboard");
+        return redirect("/manager/staffs");
       case ROLE.STORAGE_EMPLOYEE:
         return redirect("/storage-employee/pts-transactions");
       case ROLE.POSTOFFICE_EMPLOYEE:
@@ -31,10 +32,6 @@ export async function action({ request, params }) {
   } catch (err) {
     return "Wrong username or password";
   }
-}
-
-export async function loader({ params }) {
-  return "load success";
 }
 
 export default function LoginPage() {

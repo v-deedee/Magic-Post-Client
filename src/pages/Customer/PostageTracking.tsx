@@ -174,9 +174,10 @@ export default function PostageTracking() {
                           Sender: {sender.name}
                         </h5>
                         <p className="font-normal text-gray-700 dark:text-gray-400">
-                          Phone: *****{sender.phone.substring(-5, 5)} <br />
-                          Address:{" "}
-                          {`Address: ${sender.street}, ${sender.district}, ${sender.province}`}
+                          <span className="font-bold">Phone:</span> *****
+                          {sender.phone.substring(-5, 5)} <br />
+                          <span className="font-bold">Address:</span>{" "}
+                          {`${sender.street}, ${sender.district}, ${sender.province}`}
                         </p>
                       </Card>
 
@@ -185,9 +186,10 @@ export default function PostageTracking() {
                           Receiver: {receiver.name}
                         </h5>
                         <p className="font-normal text-gray-700 dark:text-gray-400">
-                          Phone: *****{receiver.phone.substring(-5, 5)} <br />
-                          Address:{" "}
-                          {`Address: ${receiver.street}, ${receiver.district}, ${receiver.province}`}
+                          <span className="font-bold">Phone:</span> *****
+                          {receiver.phone.substring(-5, 5)} <br />
+                          <span className="font-bold">Address:</span>{" "}
+                          {`${receiver.street}, ${receiver.district}, ${receiver.province}`}
                         </p>
                       </Card>
                     </div>

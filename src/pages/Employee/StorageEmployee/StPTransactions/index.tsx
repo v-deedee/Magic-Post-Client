@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Transaction } from "../../../../models/Transaction";
 import {
   listStPTransactions,
@@ -9,14 +9,14 @@ import { Button, Modal, Table, Checkbox } from "flowbite-react";
 import { HiPlus } from "react-icons/hi";
 import SearchBox from "../../../../components/SearchBox";
 import { trackShipment } from "../../../../services/customerApi";
-interface IStPTransactionsProps {}
+import { Shipment } from "../../../../models/Shipment";
 
-export const StPTransactions: FC<IStPTransactionsProps> = () => {
+export default function StPTransactions() {
   const [openCreateModal, setOpenCreateModal] = useState(false);
 
   const [openDetailModal, setOpenDetailModal] = useState(false);
 
-  const [currentShipment, setCurrentShipment] = useState();
+  const [currentShipment, setCurrentShipment] = useState<Shipment>();
   const fetchShipmentData = async (id: string) => {
     const res = await trackShipment(id);
     console.log(res);
@@ -333,4 +333,4 @@ export const StPTransactions: FC<IStPTransactionsProps> = () => {
       </div>
     </>
   );
-};
+}

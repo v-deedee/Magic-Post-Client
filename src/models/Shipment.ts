@@ -19,14 +19,12 @@ export interface Shipment {
     type: string;
     cost: number;
     start: string;
-    item: [
-      {
-        name: string;
-        quantity: number;
-        value: number;
-        _id: string;
-      },
-    ];
+    item: {
+      name: string;
+      quantity: number;
+      value: number;
+      _id: string;
+    }[];
     note: string;
   };
   _id: string;
@@ -40,7 +38,7 @@ export const defaultShipment: Shipment = {
     province: "",
     district: "",
     street: "",
-    zipcode: "",
+    zipcode: "999999",
   },
   receiver: {
     name: "",
@@ -48,7 +46,7 @@ export const defaultShipment: Shipment = {
     province: "",
     district: "",
     street: "",
-    zipcode: "",
+    zipcode: "999999",
   },
   meta: {
     type: "",

@@ -1,16 +1,7 @@
-import { HiHome, HiUserGroup, HiViewGrid } from "react-icons/hi";
+import { HiHome, HiUserGroup } from "react-icons/hi";
 import Sidebar from "../../components/SideBar";
 
 const options = [
-  {
-    url: "/boss/dashboard",
-    name: "Dashboard",
-    icon: (
-      <>
-        <HiViewGrid />
-      </>
-    ),
-  },
   {
     url: "/boss/departments",
     name: "Departments",

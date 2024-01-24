@@ -12,10 +12,7 @@ const API_BASE_URL = "http://localhost:3001";
 //     }
 // }
 
-export const login = async (loginData: {
-  username: string;
-  password: string;
-}) => {
+export const login = async (loginData: {}) => {
   try {
     const response = await axios({
       method: "post",

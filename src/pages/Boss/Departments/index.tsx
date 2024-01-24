@@ -112,17 +112,17 @@ export default function Departments() {
         {/* Table */}
         <div className="w-full overflow-x-auto">
           {/* Search box and Create button */}
-          <div className="flex justify-between">
-            <div className="p-2">
+          <div className="flex justify-between gap-4">
+            <div className="py-2 sm:px-2">
               <SearchBox
                 placeholder="Search by fields"
                 setKeyword={setKeyword}
               />
             </div>
-            <div className="p-2">
+            <div className="py-2 sm:px-2">
               <button
                 type="button"
-                className="mb-2 me-2 flex items-center rounded-lg bg-green-500 px-4 py-2 text-sm font-medium text-white hover:bg-green-600"
+                className="mb-2 flex items-center rounded-lg bg-green-500 px-4 py-2 text-sm font-medium text-white hover:bg-green-600"
                 onClick={() => setOpenCreateModal(true)}
               >
                 <HiPlus />

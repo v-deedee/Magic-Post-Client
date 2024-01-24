@@ -10,6 +10,24 @@ export const trackShipment = async (shipmentId: string) => {
   return response;
 };
 
+export const estimateCost = async (reqData: {
+  sender: {
+    province: string;
+    district: string;
+  };
+  receiver: {
+    province: string;
+    district: string;
+  };
+}) => {
+  const response = await axios({
+    method: "post",
+    url: API_BASE_URL + `/shipment/estimate-cost`,
+    data: reqData,
+  });
+  return response;
+};
+
 export const getListPostOffice = async (reqParams: {
   province: string;
   district: string;
