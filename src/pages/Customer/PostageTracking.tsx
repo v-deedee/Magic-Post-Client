@@ -64,10 +64,10 @@ export default function PostageTracking() {
   return (
     <>
       {/* Breadcrumb */}
-      <div className="bg-gray-50">
+      <div className="bg-gray-50 dark:bg-gray-700">
         <Breadcrumb
           aria-label="Solid background breadcrumb example"
-          className="container mx-auto px-5 py-3 dark:bg-gray-800"
+          className="container mx-auto px-5 py-3 dark:bg-gray-700"
         >
           <Breadcrumb.Item href="/" icon={HiHome}>
             Home
@@ -136,7 +136,7 @@ export default function PostageTracking() {
           </Button>
         </Form>
 
-        <h1 className="my-10 text-center text-3xl font-bold leading-tight md:text-left md:text-3xl">
+        <h1 className="my-10 text-center text-3xl font-bold leading-tight dark:text-white md:text-left md:text-3xl">
           Shipment detail:
         </h1>
 

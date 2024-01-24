@@ -8,22 +8,17 @@ import { Button, Modal, Table, Checkbox } from "flowbite-react";
 import { trackShipment } from "../../../../services/customerApi";
 import { HiPlus } from "react-icons/hi";
 import SearchBox from "../../../../components/SearchBox";
+import { Transaction } from "../../../../models/Transaction";
+import { Shipment } from "../../../../models/Shipment";
 
 export default function PtSTransactions() {
-  const [listPtSTransaction, setListPtSTransaction] = useState({
-    page: 0,
-    totalPages: 0,
-    transactions: [],
-  });
+  const [listPtSTransaction, setListPtSTransaction] = useState<Transaction[]>(
+    [],
+  );
   const fetchListTransactionData = async () => {
     const data = await listPtSTransactions();
     const payload = data.data.data.payload;
-    const { page, totalPages, transactions } = payload;
-    setListPtSTransaction({
-      page,
-      totalPages,
-      transactions,
-    });
+    setListPtSTransaction(payload.transactions);
   };
   useEffect(() => {
     fetchListTransactionData();
@@ -33,45 +28,29 @@ export default function PtSTransactions() {
 
   const [openDetailModal, setOpenDetailModal] = useState(false);
 
-  const [currentShipment, setCurrentShipment] = useState();
+  const [currentShipment, setCurrentShipment] = useState<Shipment>();
   const fetchShipmentData = async (id: string) => {
     const res = await trackShipment(id);
-    console.log(res);
-
     setCurrentShipment(res.data.data.payload.shipment);
   };
 
   const [listCtPTransactionNotPassed, setListCtPTransactionNotPassed] =
-    useState({
-      page: 0,
-      totalPages: 0,
-      transactions: [],
-    });
+    useState<Transaction[]>([]);
 
   const fetchCtPShipmentNotPassed = async () => {
-    setListCtPTransactionNotPassed({
-      page: 0,
-      totalPages: 0,
-      transactions: [],
-    });
+    setListCtPTransactionNotPassed([]);
 
-    const data = await listCtPTransactions({ limit: 500 });
+    const data = await listCtPTransactions();
     const payload = data.data.data.payload;
-    const page = payload.page;
-    const totalPages = payload.totalPages;
     const transactions = payload.transactions;
     const transactionsNotPassed = transactions.filter(
-      (transaction) => transaction.status == "RECEIVED",
+      (transaction: Transaction) => transaction.status == "RECEIVED",
     );
 
-    setListCtPTransactionNotPassed({
-      page,
-      totalPages,
-      transactions: transactionsNotPassed,
-    });
+    setListCtPTransactionNotPassed(transactionsNotPassed);
   };
 
-  const [listPushShipment, setListPushShipment] = useState([]);
+  const [listPushShipment, setListPushShipment] = useState([{ shipment: "" }]);
 
   return (
     <>
@@ -90,68 +69,76 @@ export default function PtSTransactions() {
             <span className="ms-1">Create</span>
           </button>
         </div>
-        <div className="w-64">
+        <div className="sm:w-64">
           <SearchBox placeholder="Search by fields" setKeyword={() => {}} />
         </div>
       </div>
 
-      <Table hoverable>
-        <Table.Head>
-          <Table.HeadCell>Shipment</Table.HeadCell>
-          <Table.HeadCell>Date</Table.HeadCell>
-          <Table.HeadCell>Sender</Table.HeadCell>
-          <Table.HeadCell>Des</Table.HeadCell>
-          <Table.HeadCell>Receiver</Table.HeadCell>
-          <Table.HeadCell>Status</Table.HeadCell>
-          <Table.HeadCell>
-            <span className="sr-only">Detail</span>
-          </Table.HeadCell>
-        </Table.Head>
-        <Table.Body className="divide-y">
-          {listPtSTransaction.transactions.map((transaction) => (
-            <Table.Row className="bg-white dark:border-gray-700 dark:bg-gray-800">
-              <Table.Cell>{transaction.shipment}</Table.Cell>
-              <Table.Cell>{transaction.start}</Table.Cell>
-              <Table.Cell>{transaction.sender}</Table.Cell>
-              <Table.Cell>
-                {transaction.des.district + " " + transaction.des.type}
-              </Table.Cell>
-              {/* <Table.Cell>{transaction.des.type}</Table.Cell> */}
-              <Table.Cell>
-                {transaction.receiver == null ? "UNKOWN" : transaction.receiver}
-              </Table.Cell>
-              <Table.Cell>
-                <div
-                  className={`rounded ${
-                    transaction.status === "RECEIVED"
-                      ? "bg-green-400"
-                      : "bg-yellow-300"
-                  } px-1 text-center text-xs font-bold text-white`}
-                >
-                  {transaction.status}
-                </div>
-              </Table.Cell>
-              <Table.Cell>
-                <button
-                  className="font-medium text-cyan-600 hover:underline disabled:opacity-40 disabled:hover:no-underline dark:text-cyan-500"
-                  onClick={() => {
-                    setOpenDetailModal(true);
-                    fetchShipmentData(transaction.shipment);
-                  }}
-                >
-                  Detail
-                </button>
-              </Table.Cell>
-            </Table.Row>
-          ))}
-        </Table.Body>
-      </Table>
+      {/* Table */}
+      <div className="overflow-x-auto">
+        <Table>
+          <Table.Head>
+            <Table.HeadCell>Shipment</Table.HeadCell>
+            <Table.HeadCell>Date</Table.HeadCell>
+            <Table.HeadCell>Sender</Table.HeadCell>
+            <Table.HeadCell>Des</Table.HeadCell>
+            <Table.HeadCell>Receiver</Table.HeadCell>
+            <Table.HeadCell>Status</Table.HeadCell>
+            <Table.HeadCell>
+              <span className="sr-only">Detail</span>
+            </Table.HeadCell>
+          </Table.Head>
+          <Table.Body className="">
+            {listPtSTransaction.map((transaction) => (
+              <Table.Row
+                key={transaction._id}
+                className="bg-white dark:border-gray-700 dark:bg-gray-800"
+              >
+                <Table.Cell>{transaction.shipment}</Table.Cell>
+                <Table.Cell>{transaction.start}</Table.Cell>
+                <Table.Cell>{transaction.sender}</Table.Cell>
+                <Table.Cell>
+                  {transaction.des.district + " " + transaction.des.type}
+                </Table.Cell>
+                {/* <Table.Cell>{transaction.des.type}</Table.Cell> */}
+                <Table.Cell>
+                  {transaction.receiver == null
+                    ? "UNKOWN"
+                    : transaction.receiver}
+                </Table.Cell>
+                <Table.Cell>
+                  <div
+                    className={`rounded ${
+                      transaction.status === "RECEIVED"
+                        ? "bg-green-400"
+                        : "bg-yellow-300"
+                    } px-1 text-center text-xs font-bold text-white`}
+                  >
+                    {transaction.status}
+                  </div>
+                </Table.Cell>
+                <Table.Cell>
+                  <button
+                    className="font-medium text-cyan-600 hover:underline disabled:opacity-40 disabled:hover:no-underline dark:text-cyan-500"
+                    onClick={() => {
+                      setOpenDetailModal(true);
+                      fetchShipmentData(transaction.shipment);
+                    }}
+                  >
+                    Detail
+                  </button>
+                </Table.Cell>
+              </Table.Row>
+            ))}
+          </Table.Body>
+        </Table>
+      </div>
 
       {/* Push shipment modal */}
       <Modal show={openCreateModal} onClose={() => setOpenCreateModal(false)}>
         <Modal.Header>Create</Modal.Header>
         <Modal.Body>
-          <Table hoverable>
+          <Table>
             <Table.Head>
               <Table.HeadCell>
                 <Checkbox disabled />
@@ -162,24 +149,23 @@ export default function PtSTransactions() {
               <Table.HeadCell>Status</Table.HeadCell>
             </Table.Head>
             <Table.Body>
-              {listCtPTransactionNotPassed.transactions.map((transaction) => (
-                <Table.Row>
+              {listCtPTransactionNotPassed.map((transaction) => (
+                <Table.Row key={transaction._id}>
                   <Table.Cell>
                     <Checkbox
                       className="hover:cursor-pointer"
                       onClick={(e) => {
-                        if (e.target.checked) {
+                        const target = e.target as HTMLInputElement;
+                        if (target.checked) {
                           let clone = [...listPushShipment];
                           clone.push({ shipment: transaction.shipment });
                           setListPushShipment(clone);
-                          console.log(clone);
                         } else {
                           let clone = listPushShipment.filter(
                             (shipment) =>
                               shipment.shipment != transaction.shipment,
                           );
                           setListPushShipment(clone);
-                          console.log(clone);
                         }
                       }}
                     />
@@ -279,7 +265,10 @@ export default function PtSTransactions() {
                         </Table.Head>
                         <Table.Body className="divide-y">
                           {currentShipment?.meta.item.map((item) => (
-                            <Table.Row className="bg-slate-100 dark:border-gray-700 dark:bg-gray-800">
+                            <Table.Row
+                              key={item._id}
+                              className="bg-slate-100 dark:border-gray-700 dark:bg-gray-800"
+                            >
                               <Table.Cell className="text-black">
                                 {item.name}
                               </Table.Cell>

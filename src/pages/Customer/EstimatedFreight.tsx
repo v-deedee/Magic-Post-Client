@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { Breadcrumb, Button, Label, Select, TextInput } from "flowbite-react";
+import { useEffect, useState } from "react";
+import { Breadcrumb, Button, Label, Select } from "flowbite-react";
 import {
   HiHome,
   HiAdjustments,
@@ -7,17 +7,88 @@ import {
   HiSearch,
 } from "react-icons/hi";
 import { Link } from "react-router-dom";
+import {
+  getDistricts,
+  getProvinces,
+} from "../../services/postOfficeEmployeeApi";
+import { estimateCost } from "../../services/customerApi";
 
 export default function EstimatedFreight() {
   const [cost, setCost] = useState(0);
 
+  const [newTransaction, setNewTransaction] = useState({
+    sender: {
+      province: "",
+      district: "",
+    },
+    receiver: {
+      province: "",
+      district: "",
+    },
+  });
+
+  const [provinces, setProvinces] = useState([]);
+
+  const [senderDistrict, setSenderDistrict] = useState([]);
+
+  const updateSenderDistrict = async () => {
+    setSenderDistrict([]);
+    const data = await getDistricts({
+      province: newTransaction.sender.province,
+    });
+    const payload = data.data.data.payload;
+    const districts = payload.districts;
+    let clone = { ...newTransaction };
+    clone.sender.district = districts[0];
+    setNewTransaction(clone);
+    setSenderDistrict(districts);
+  };
+
+  const [receiverDistrict, setReceiverDistrict] = useState([]);
+
+  const updateReceiverDistrict = async () => {
+    setReceiverDistrict([]);
+    const data = await getDistricts({
+      province: newTransaction.receiver.province,
+    });
+    const payload = data.data.data.payload;
+    const districts = payload.districts;
+    let clone = { ...newTransaction };
+    clone.receiver.district = districts[0];
+    setNewTransaction(clone);
+    setReceiverDistrict(districts);
+  };
+
+  const handleSubmit = async () => {
+    try {
+      const res = await estimateCost(newTransaction);
+      const estimatedCost = res.data.data.payload.cost;
+      setCost(estimatedCost);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  useEffect(() => {
+    try {
+      const fetchProvincesData = async () => {
+        const data = await getProvinces();
+        const payload = data.data.data.payload;
+        setProvinces(payload.provinces);
+      };
+      fetchProvincesData();
+    } catch (err) {
+      console.log(err);
+    }
+  }, []);
+
   return (
     <>
       {/* Breadcrumb */}
-      <div className="bg-gray-50">
+      <div className="bg-gray-50 dark:bg-gray-700">
         <Breadcrumb
           aria-label="Solid background breadcrumb example"
-          className="container mx-auto px-5 py-3 dark:bg-gray-800"
+          className="container mx-auto px-5 py-3 dark:bg-gray-700"
         >
           <Breadcrumb.Item href="/" icon={HiHome}>
             Home
@@ -64,174 +135,128 @@ export default function EstimatedFreight() {
 
       {/* Main */}
       <div className="container mx-auto p-5">
-        <div className="grid gap-10 rounded-lg border p-10 sm:grid-cols-2 md:grid-cols-3">
-          <div className="">
-            <div className="mb-2 block">
-              <Label htmlFor="from" value="From" />
-            </div>
-            <Select id="from" required>
-              <option>An Giang</option>
-              <option>Bà Rịa - Vũng Tàu</option>
-              <option>Bắc Giang</option>
-              <option>Bắc Kạn</option>
-              <option>Bạc Liêu</option>
-              <option>Bắc Ninh</option>
-              <option>Bến Tre</option>
-              <option>Bình Định</option>
-              <option>Bình Dương</option>
-              <option>Bình Phước</option>
-              <option>Bình Thuận</option>
-              <option>Cà Mau</option>
-              <option>Cần Thơ</option>
-              <option>Cao Bằng</option>
-              <option>Đà Nẵng</option>
-              <option>Đắk Lắk</option>
-              <option>Đắk Nông</option>
-              <option>Điện Biên</option>
-              <option>Đồng Nai</option>
-              <option>Đồng Tháp</option>
-              <option>Gia Lai</option>
-              <option>Hà Giang</option>
-              <option>Hà Nam</option>
-              <option>Hà Nội</option>
-              <option>Hà Tĩnh</option>
-              <option>Hải Dương</option>
-              <option>Hải Phòng</option>
-              <option>Hậu Giang</option>
-              <option>Hòa Bình</option>
-              <option>Hưng Yên</option>
-              <option>Khánh Hòa</option>
-              <option>Kiên Giang</option>
-              <option>Kon Tum</option>
-              <option>Lai Châu</option>
-              <option>Lâm Đồng</option>
-              <option>Lạng Sơn</option>
-              <option>Lào Cai</option>
-              <option>Long An</option>
-              <option>Nam Định</option>
-              <option>Nghệ An</option>
-              <option>Ninh Bình</option>
-              <option>Ninh Thuận</option>
-              <option>Phú Thọ</option>
-              <option>Phú Yên</option>
-              <option>Quảng Bình</option>
-              <option>Quảng Nam</option>
-              <option>Quảng Ngãi</option>
-              <option>Quảng Ninh</option>
-              <option>Quảng Trị</option>
-              <option>Sóc Trăng</option>
-              <option>Sơn La</option>
-              <option>Tây Ninh</option>
-              <option>Thái Bình</option>
-              <option>Thái Nguyên</option>
-              <option>Thanh Hóa</option>
-              <option>Thừa Thiên Huế</option>
-              <option>Tiền Giang</option>
-              <option>TP Hồ Chí Minh</option>
-              <option>Trà Vinh</option>
-              <option>Tuyên Quang</option>
-              <option>Vĩnh Long</option>
-              <option>Vĩnh Phúc</option>
-              <option>Yên Bái</option>
-            </Select>
-          </div>
-          <div>
-            <div className="mb-2 block">
-              <Label htmlFor="to" value="To" />
-            </div>
-            <Select id="to" required>
-              <option>An Giang</option>
-              <option>Bà Rịa - Vũng Tàu</option>
-              <option>Bắc Giang</option>
-              <option>Bắc Kạn</option>
-              <option>Bạc Liêu</option>
-              <option>Bắc Ninh</option>
-              <option>Bến Tre</option>
-              <option>Bình Định</option>
-              <option>Bình Dương</option>
-              <option>Bình Phước</option>
-              <option>Bình Thuận</option>
-              <option>Cà Mau</option>
-              <option>Cần Thơ</option>
-              <option>Cao Bằng</option>
-              <option>Đà Nẵng</option>
-              <option>Đắk Lắk</option>
-              <option>Đắk Nông</option>
-              <option>Điện Biên</option>
-              <option>Đồng Nai</option>
-              <option>Đồng Tháp</option>
-              <option>Gia Lai</option>
-              <option>Hà Giang</option>
-              <option>Hà Nam</option>
-              <option>Hà Nội</option>
-              <option>Hà Tĩnh</option>
-              <option>Hải Dương</option>
-              <option>Hải Phòng</option>
-              <option>Hậu Giang</option>
-              <option>Hòa Bình</option>
-              <option>Hưng Yên</option>
-              <option>Khánh Hòa</option>
-              <option>Kiên Giang</option>
-              <option>Kon Tum</option>
-              <option>Lai Châu</option>
-              <option>Lâm Đồng</option>
-              <option>Lạng Sơn</option>
-              <option>Lào Cai</option>
-              <option>Long An</option>
-              <option>Nam Định</option>
-              <option>Nghệ An</option>
-              <option>Ninh Bình</option>
-              <option>Ninh Thuận</option>
-              <option>Phú Thọ</option>
-              <option>Phú Yên</option>
-              <option>Quảng Bình</option>
-              <option>Quảng Nam</option>
-              <option>Quảng Ngãi</option>
-              <option>Quảng Ninh</option>
-              <option>Quảng Trị</option>
-              <option>Sóc Trăng</option>
-              <option>Sơn La</option>
-              <option>Tây Ninh</option>
-              <option>Thái Bình</option>
-              <option>Thái Nguyên</option>
-              <option>Thanh Hóa</option>
-              <option>Thừa Thiên Huế</option>
-              <option>Tiền Giang</option>
-              <option>TP Hồ Chí Minh</option>
-              <option>Trà Vinh</option>
-              <option>Tuyên Quang</option>
-              <option>Vĩnh Long</option>
-              <option>Vĩnh Phúc</option>
-              <option>Yên Bái</option>
-            </Select>
-          </div>
-          <div>
-            <div className="mb-2 block">
-              <Label
-                htmlFor="weight"
-                value="Weight (kg)"
-                className="text-black"
-              />
-            </div>
-            <TextInput id="weight" type="text" required />
-          </div>
-          <div className="col-span-1 flex items-center sm:col-span-2">
-            <Button
-              className="bg-green-500"
-              onClick={() => {
-                setCost(Math.floor(Math.random() * 16) + 15);
-              }}
-            >
-              Estimate
-            </Button>
+        <div className="rounded-lg border p-4 sm:p-10">
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              handleSubmit();
+            }}
+          >
+            {/* Position and Destination */}
+            <div className="gap-5 sm:flex">
+              {/* Sender */}
+              <div className="grow">
+                <div className="mb-2 block">
+                  <Label htmlFor="" value="FROM:" />
+                </div>
+                {/* Province */}
+                <div>
+                  <div className="mt-3">
+                    <Label htmlFor="sender-province" value="Province" />
+                  </div>
+                  <Select
+                    id="sender-province"
+                    required
+                    value={newTransaction.sender.province}
+                    onChange={(e) => {
+                      let clone = { ...newTransaction };
+                      clone.sender.province = e.target.value;
+                      setNewTransaction(clone);
+                      updateSenderDistrict();
+                    }}
+                  >
+                    <option value="">Select Province</option>
+                    {provinces.map((province) => (
+                      <option key={province + "province1"} value={province}>
+                        {province}
+                      </option>
+                    ))}
+                  </Select>
+                </div>
+                {/* District */}
+                <div>
+                  <div className="mt-3">
+                    <Label htmlFor="sender-district" value="District" />
+                  </div>
+                  <Select
+                    id="sender-district"
+                    required
+                    value={newTransaction.sender.district}
+                    onChange={(e) => {
+                      let clone = { ...newTransaction };
+                      clone.sender.district = e.target.value;
+                      setNewTransaction(clone);
+                    }}
+                  >
+                    <option value="">Select District</option>
+                    {senderDistrict.map((district) => (
+                      <option key={district + "district1"} value={district}>
+                        {district}
+                      </option>
+                    ))}
+                  </Select>
+                </div>
+              </div>
 
-            {(() => {
-              if (cost != 0) {
-                return <p className="ml-4">{cost}.000 VND</p>;
-              }
-              return <></>;
-            })()}
-          </div>
+              {/* Receiver */}
+              <div className="grow">
+                <div className="mb-2 block">
+                  <Label htmlFor="" value="TO:" />
+                </div>
+                {/* Province */}
+                <div>
+                  <div className="mt-3">
+                    <Label htmlFor="receiver-province" value="Province" />
+                  </div>
+                  <Select
+                    id="receiver-province"
+                    required
+                    value={newTransaction.receiver.province}
+                    onChange={(e) => {
+                      let clone = { ...newTransaction };
+                      clone.receiver.province = e.target.value;
+                      setNewTransaction(clone);
+                      updateReceiverDistrict();
+                    }}
+                  >
+                    <option value="">Select Province</option>
+                    {provinces.map((province) => (
+                      <option key={province + "province2"} value={province}>
+                        {province}
+                      </option>
+                    ))}
+                  </Select>
+                </div>
+                {/* District */}
+                <div>
+                  <div className="mt-3">
+                    <Label htmlFor="receiver-district" value="District" />
+                  </div>
+                  <Select
+                    id="receiver-district"
+                    required
+                    value={newTransaction.receiver.district}
+                    onChange={(e) => {
+                      let clone = { ...newTransaction };
+                      clone.receiver.district = e.target.value;
+                      setNewTransaction(clone);
+                    }}
+                  >
+                    <option value="">Select District</option>
+                    {receiverDistrict.map((district) => (
+                      <option key={district + "district2"} value={district}>
+                        {district}
+                      </option>
+                    ))}
+                  </Select>
+                </div>
+              </div>
+            </div>
+            <div className="mt-5 flex items-center">
+              <Button type="submit">Estimate</Button>
+              <p className="ml-4 font-bold dark:text-white">{cost} VND</p>
+            </div>
+          </form>
         </div>
       </div>
     </>

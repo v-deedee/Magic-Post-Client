@@ -40,9 +40,9 @@ export default function LoginPage() {
 
   return (
     <main
-      className={`flex h-screen bg-[url('/src/assets/images/login-background.jpg')] align-middle dark:bg-zinc-700`}
+      className={`flex h-screen align-middle sm:bg-[url('/src/assets/images/login-background.jpg')]`}
     >
-      <div className="m-auto w-96 rounded-lg border-gray-500 bg-white/90 p-5 shadow-lg dark:border-4 dark:bg-zinc-800">
+      <div className="m-auto w-96 rounded-lg border-gray-500 bg-white/90 p-5 shadow-lg dark:bg-zinc-800 dark:sm:border-4">
         <a href="/" className="my-10 flex justify-center">
           <img src={logo} className="mr-2 h-10 w-10" alt="logo" />
           <span className="self-center whitespace-nowrap text-3xl font-bold text-[#319684] dark:text-white">

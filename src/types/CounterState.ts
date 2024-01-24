@@ -1,3 +1,0 @@
-interface CounterState {
-    count: number
-}

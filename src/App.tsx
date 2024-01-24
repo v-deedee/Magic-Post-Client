@@ -169,7 +169,7 @@ export default function HomePage() {
         </section>
 
         {/* Third section - Contact */}
-        <section className="bg-white dark:bg-gray-900">
+        <section className="mb-10">
           <div className="container mx-auto px-5 lg:py-12">
             <div className="lg:-mx-6 lg:flex lg:items-start">
               <div className="py-10 lg:mx-6 lg:w-1/2">
@@ -251,7 +251,7 @@ export default function HomePage() {
               {/* Form */}
               <div className="lg:mx-6 lg:w-1/2">
                 <div className="mx-auto w-full overflow-hidden rounded-lg bg-white px-8 py-10 shadow-lg  dark:bg-gray-900 lg:max-w-xl">
-                  <h1 className="text-lg font-medium text-gray-700">
+                  <h1 className="text-lg font-medium text-gray-700 dark:text-white">
                     What do you want to ask
                   </h1>
 
@@ -300,12 +300,12 @@ export default function HomePage() {
       </div>
 
       {/* Footer */}
-      <footer className="border-t bg-white dark:bg-gray-900">
+      <footer className="border-t bg-white dark:border-none dark:bg-gray-900">
         <div className="container mx-auto px-6 py-8">
           <div className="flex flex-col items-center text-center">
             <a className="flex items-center font-bold lg:text-4xl" href="/">
               <img src="/logo.svg" alt="" className="me-3 w-10" />
-              <span className="hidden self-center whitespace-nowrap text-2xl font-bold sm:inline">
+              <span className="hidden self-center whitespace-nowrap text-2xl font-bold dark:text-white sm:inline">
                 MagicPost
               </span>
             </a>

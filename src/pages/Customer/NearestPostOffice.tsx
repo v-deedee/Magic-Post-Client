@@ -65,10 +65,10 @@ export default function NearestPostOffice() {
   return (
     <>
       {/* Breadcrumb */}
-      <div className="bg-gray-50">
+      <div className="bg-gray-50 dark:bg-gray-700">
         <Breadcrumb
           aria-label="Solid background breadcrumb example"
-          className="container mx-auto px-5 py-3 dark:bg-gray-800"
+          className="container mx-auto px-5 py-3 dark:bg-gray-700"
         >
           <Breadcrumb.Item href="/" icon={HiHome}>
             Home
@@ -110,7 +110,9 @@ export default function NearestPostOffice() {
         </div>
       </div>
 
+      {/* Main */}
       <div className="container mx-auto p-5 md:flex">
+        {/* Form & Table */}
         <div className="mb-5 md:w-2/5">
           <Form
             onSubmit={async (e) => {
@@ -206,6 +208,7 @@ export default function NearestPostOffice() {
           </Table>
         </div>
 
+        {/* Map */}
         <div className="h-96 overflow-hidden md:w-3/5 md:ps-10">
           <MapContainer
             center={[location.lat, location.lon]}

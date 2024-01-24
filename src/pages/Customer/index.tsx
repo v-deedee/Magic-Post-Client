@@ -32,12 +32,12 @@ export default function Customer() {
       </div>
 
       {/* Footer */}
-      <footer className="border-t bg-white dark:bg-gray-900">
+      <footer className="border-t bg-white dark:border-none dark:bg-gray-900">
         <div className="container mx-auto px-6 py-8">
           <div className="flex flex-col items-center text-center">
             <a className="flex items-center font-bold lg:text-4xl" href="/">
               <img src="/logo.svg" alt="" className="me-3 w-10" />
-              <span className="self-center whitespace-nowrap text-2xl font-bold">
+              <span className="hidden self-center whitespace-nowrap text-2xl font-bold dark:text-white sm:inline">
                 MagicPost
               </span>
             </a>

@@ -267,6 +267,7 @@ export default function CtPTransactions() {
         >
           <Modal.Header>Create new Transaction</Modal.Header>
           <Modal.Body className="max-h-[60vh] overflow-auto">
+            {/* Select shipment type */}
             <div>
               <div className="block">
                 <Label htmlFor="type" value="Type" />
@@ -289,6 +290,7 @@ export default function CtPTransactions() {
               </Select>
             </div>
 
+            {/* Note for shipment */}
             <div>
               <div className="block">
                 <Label htmlFor="note" value="Note" />
@@ -306,6 +308,7 @@ export default function CtPTransactions() {
               />
             </div>
 
+            {/* List of items */}
             <div className="mt-4">
               <div className="block">
                 <Label htmlFor="" value="List item" />
@@ -394,8 +397,11 @@ export default function CtPTransactions() {
               <hr className="my-2" />
             </div>
 
+            {/* Sender and Receiver information */}
             <div className="flex">
+              {/* Sender */}
               <div className="grow">
+                {/* Name */}
                 <div>
                   <div className="block">
                     <Label htmlFor="note" value="Sender" />
@@ -418,6 +424,7 @@ export default function CtPTransactions() {
                     />
                   </div>
                 </div>
+                {/* Phone */}
                 <div>
                   <div className="mt-3">
                     <Label htmlFor="sender-phone" value="Phone" />
@@ -435,6 +442,7 @@ export default function CtPTransactions() {
                     }}
                   />
                 </div>
+                {/* Province */}
                 <div>
                   <div className="mt-3">
                     <Label htmlFor="sender-province" value="Province" />
@@ -458,6 +466,7 @@ export default function CtPTransactions() {
                     ))}
                   </Select>
                 </div>
+                {/* District */}
                 <div>
                   <div className="mt-3">
                     <Label htmlFor="sender-district" value="District" />
@@ -480,6 +489,7 @@ export default function CtPTransactions() {
                     ))}
                   </Select>
                 </div>
+                {/* Street */}
                 <div>
                   <div className="mt-3">
                     <Label htmlFor="sender-street" value="Street" />
@@ -499,7 +509,9 @@ export default function CtPTransactions() {
                 </div>
               </div>
 
+              {/* Receiver */}
               <div className="grow px-4">
+                {/* Name */}
                 <div>
                   <div className="block">
                     <Label htmlFor="note" value="Receiver" />
@@ -522,6 +534,7 @@ export default function CtPTransactions() {
                     />
                   </div>
                 </div>
+                {/* Phone */}
                 <div>
                   <div className="mt-3">
                     <Label htmlFor="receiver-phone" value="Phone" />
@@ -539,6 +552,7 @@ export default function CtPTransactions() {
                     }}
                   />
                 </div>
+                {/* Province */}
                 <div>
                   <div className="mt-3">
                     <Label htmlFor="receiver-province" value="Province" />
@@ -562,6 +576,7 @@ export default function CtPTransactions() {
                     ))}
                   </Select>
                 </div>
+                {/* District */}
                 <div>
                   <div className="mt-3">
                     <Label htmlFor="receiver-district" value="District" />
@@ -584,6 +599,7 @@ export default function CtPTransactions() {
                     ))}
                   </Select>
                 </div>
+                {/* Street */}
                 <div>
                   <div className="mt-3">
                     <Label htmlFor="receiver-street" value="Street" />
