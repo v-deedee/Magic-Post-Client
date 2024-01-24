@@ -14,6 +14,7 @@ import {
 import SearchBox from "../../../components/SearchBox";
 import { Manager, defaultManager } from "../../../models/Manager";
 import AfterCreateModal from "./modals/AfterCreateModal";
+import { Modal, Button } from "flowbite-react";
 
 export default function Managers() {
   const [openCreateModal, setOpenCreateModal] = useState(false);
@@ -25,6 +26,8 @@ export default function Managers() {
   const [newUserInfo, setNewUserInfo] = useState("");
 
   const [openUpdateModal, setOpentUpdateModal] = useState(false);
+
+  const [openDetailModal, setOpenDetailModal] = useState(false);
 
   // const [currentPage, setCurrentPage] = useState(1);
 
@@ -69,10 +72,19 @@ export default function Managers() {
     fetchCurrentManagers();
   }, [currentManagerUsername]);
 
-  const showDetail = (username: string) => {
+  const showDetail = (name: string, username: string) => {
     setCurrentManagerUsername(username);
+    setKeyword(name);
+
+    document.getElementById("searchbox")?.focus();
 
     document.getElementById("managerView")?.classList.remove("hidden");
+  };
+
+  const showDetailModal = (username: string) => {
+    setCurrentManagerUsername(username);
+
+    setOpenDetailModal(true);
   };
 
   const [keyword, setKeyword] = useState("");
@@ -97,12 +109,13 @@ export default function Managers() {
     <>
       <div className="flex gap-4">
         {/* Table */}
-        <div className="w-1/2">
+        <div className="w-full sm:w-1/2">
           {/* Search box & Create button */}
           <div className="flex justify-between">
             <div className="p-2">
               <SearchBox
                 placeholder="Search by fields"
+                keyword={keyword}
                 setKeyword={setKeyword}
               />
             </div>
@@ -123,6 +136,7 @@ export default function Managers() {
             managers={searchList}
             currentManagerUsername={currentManagerUsername}
             showDetail={showDetail}
+            showDetailModal={showDetailModal}
           />
 
           {/* Pagination */}
@@ -133,8 +147,73 @@ export default function Managers() {
           /> */}
         </div>
 
+        {/* Department view modal (for responsive) */}
+        <Modal size={"md"} show={openDetailModal}>
+          <Modal.Header>Manager information</Modal.Header>
+          <Modal.Body className="dark:text-gray-200">
+            <div>
+              <div className="flex p-2">
+                <h1 className="text-lg font-semibold">Details</h1>
+              </div>
+              <ul className="list-disc ps-6">
+                <li>
+                  <span className="font-semibold">Name:</span>{" "}
+                  {currentManager?.firstname + " " + currentManager?.lastname}
+                </li>
+                <li>
+                  <span className="font-semibold">Department:</span>{" "}
+                  {currentManager?.department.district +
+                    " " +
+                    currentManager?.department.type}
+                </li>
+                <li>
+                  <span className="font-semibold">Username:</span>{" "}
+                  {currentManager?.username}
+                </li>
+                <li>
+                  <span className="font-semibold">Role:</span>{" "}
+                  {currentManager?.role}
+                </li>
+                <li>
+                  <span className="font-semibold">Gender:</span>{" "}
+                  {currentManager?.gender}
+                </li>
+                <li>
+                  <span className="font-semibold">Email:</span>{" "}
+                  {currentManager?.email}
+                </li>
+                <li>
+                  <div className="flex items-center">
+                    <span className="font-semibold">Active:</span>{" "}
+                    {currentManager?.active ? (
+                      <div className="ms-1 text-green-400">
+                        <HiCheckCircle />
+                      </div>
+                    ) : (
+                      <div className="ms-1 text-red-400">
+                        <HiXCircle />
+                      </div>
+                    )}
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </Modal.Body>
+          <Modal.Footer>
+            <Button
+              className="flex items-center"
+              onClick={() => setOpentUpdateModal(true)}
+            >
+              Update
+            </Button>
+            <Button color="gray" onClick={() => setOpenDetailModal(false)}>
+              Close
+            </Button>
+          </Modal.Footer>
+        </Modal>
+
         {/* Manager information */}
-        <div className="w-1/2 overflow-x-auto rounded-lg bg-white p-2 dark:bg-gray-800 dark:text-gray-300">
+        <div className="hidden w-1/2 overflow-x-auto rounded-lg bg-white p-2 dark:bg-gray-800 dark:text-gray-300 sm:block">
           <h1 className="border-b p-4 text-center text-xl font-semibold">
             Manager information
           </h1>

@@ -1,16 +1,18 @@
 import { Table } from "flowbite-react";
-import { IManager } from ".";
+import { Manager } from "../../../models/Manager";
 
 interface IManagerTableProps {
-  managers: Array<IManager>;
+  managers: Array<Manager>;
   currentManagerUsername: string;
-  showDetail: (username: string) => void;
+  showDetail: (name: string, username: string) => void;
+  showDetailModal: (username: string) => void;
 }
 
 const ManagerTable: React.FC<IManagerTableProps> = ({
   managers,
   currentManagerUsername,
   showDetail,
+  showDetailModal,
 }) => {
   return (
     <div className="w-full overflow-x-auto">
@@ -55,7 +57,7 @@ const ManagerTable: React.FC<IManagerTableProps> = ({
                 </div>
                 <button
                   className="font-medium text-cyan-600 hover:underline dark:text-cyan-500 sm:hidden"
-                  onClick={() => showDetail(manager.username)}
+                  onClick={() => showDetailModal(manager.username)}
                 >
                   Detail
                 </button>
@@ -72,7 +74,12 @@ const ManagerTable: React.FC<IManagerTableProps> = ({
               <Table.Cell className="hidden sm:table-cell">
                 <button
                   className="font-medium text-cyan-600 hover:underline dark:text-cyan-500"
-                  onClick={() => showDetail(manager.username)}
+                  onClick={() =>
+                    showDetail(
+                      manager.firstname + " " + manager.lastname,
+                      manager.username,
+                    )
+                  }
                 >
                   Detail
                 </button>

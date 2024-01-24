@@ -14,6 +14,7 @@ import {
 import SearchBox from "../../../components/SearchBox";
 import { Manager } from "../../../models/Manager";
 import AfterCreateModal from "./modals/AfterCreateModal";
+import { Modal, Button } from "flowbite-react";
 
 export default function Departments() {
   const [openCreateModal, setOpenCreateModal] = useState(false);
@@ -26,6 +27,8 @@ export default function Departments() {
   });
 
   const [openUpdateModal, setOpentUpdateModal] = useState(false);
+
+  const [openDetailModal, setOpenDetailModal] = useState(false);
 
   // const [currentPage, setCurrentPage] = useState(1);
 
@@ -72,18 +75,27 @@ export default function Departments() {
     }
   }, [currentDepartmentId]);
 
-  const showDetail = (id: string, type: string) => {
+  const showDetail = (id: string, name: string, type: string) => {
     setCurrentDepartmentId(id);
+    setKeyword(name);
 
-    // document.getElementById("mapView")?.classList.add("hidden");
+    document.getElementById("searchbox")?.focus();
+
+    document.getElementById("placeholder")?.classList.add("sm:hidden");
 
     if (type === "STORAGE") {
-      document.getElementById("storageView")?.classList.remove("hidden");
-      document.getElementById("postOfficeView")?.classList.add("hidden");
+      document.getElementById("storageView")?.classList.add("sm:block");
+      document.getElementById("postOfficeView")?.classList.remove("sm:block");
     } else {
-      document.getElementById("storageView")?.classList.add("hidden");
-      document.getElementById("postOfficeView")?.classList.remove("hidden");
+      document.getElementById("storageView")?.classList.remove("sm:block");
+      document.getElementById("postOfficeView")?.classList.add("sm:block");
     }
+  };
+
+  const showDetailModal = (id: string) => {
+    setCurrentDepartmentId(id);
+
+    setOpenDetailModal(true);
   };
 
   const [keyword, setKeyword] = useState("");
@@ -110,12 +122,13 @@ export default function Departments() {
     <>
       <div className="flex gap-4">
         {/* Table */}
-        <div className="w-full overflow-x-auto">
+        <div id="table" className="w-full overflow-x-auto sm:w-1/2">
           {/* Search box and Create button */}
           <div className="flex justify-between gap-4">
             <div className="py-2 sm:px-2">
               <SearchBox
                 placeholder="Search by fields"
+                keyword={keyword}
                 setKeyword={setKeyword}
               />
             </div>
@@ -136,6 +149,7 @@ export default function Departments() {
             departments={searchList}
             currentDepartmentId={currentDepartmentId}
             showDetail={showDetail}
+            showDetailModal={showDetailModal}
           />
 
           {/* Pagination */}
@@ -146,15 +160,20 @@ export default function Departments() {
           /> */}
         </div>
 
-        {/* Map view */}
-        {/* <div
-          id="mapView"
-          className="w-1/2 rounded-lg bg-white dark:bg-gray-800 dark:text-gray-300"
+        {/* Placeholder view */}
+        <div
+          id="placeholder"
+          className="hidden w-1/2 overflow-x-auto rounded-lg bg-white p-2 dark:bg-gray-800 dark:text-gray-300 sm:block"
         >
-          <div className="border-b p-3 text-center">
-            <h2 className="font-bold">MAP</h2>
+          <h1 className="border-b p-4 text-center text-xl font-semibold">
+            Department information
+          </h1>
+          <div>
+            <h1 className="mt-5 text-center text-lg text-gray-500">
+              Click on each department to see detail information
+            </h1>
           </div>
-        </div> */}
+        </div>
 
         {/* Post office view */}
         <div
@@ -214,7 +233,13 @@ export default function Departments() {
                 <button
                   className="font-medium text-cyan-600 hover:underline dark:text-cyan-500"
                   onClick={() =>
-                    showDetail(currentDepartment.cfs._id, "STORAGE")
+                    showDetail(
+                      currentDepartment.cfs._id,
+                      currentDepartment.cfs.district +
+                        " " +
+                        currentDepartment.cfs.type,
+                      "STORAGE",
+                    )
                   }
                 >
                   {currentDepartment?.cfs.district + " " + "STORAGE"}
@@ -224,6 +249,159 @@ export default function Departments() {
           </ul>
         </div>
 
+        {/* Department view modal (for responsive) */}
+        <Modal size={"md"} show={openDetailModal}>
+          {currentDepartment.type === "POSTOFFICE" ? (
+            <>
+              <Modal.Header>Post Office View</Modal.Header>
+              <Modal.Body className="dark:text-gray-200">
+                <div className="flex items-center justify-between p-2">
+                  <h1 className="text-lg font-semibold">Details</h1>
+                </div>
+                <ul className="list-disc ps-6">
+                  <li>
+                    <span className="font-semibold">Manager:</span>{" "}
+                    {currentManager?.firstname + " " + currentManager?.lastname}
+                  </li>
+                  <li>
+                    <span className="font-semibold">Name:</span>{" "}
+                    {currentDepartment?.district +
+                      " " +
+                      currentDepartment?.type}
+                  </li>
+                  <li>
+                    <span className="font-semibold">Phone:</span>{" "}
+                    {currentDepartment?.phone}
+                  </li>
+                  <li>
+                    <div className="flex items-center">
+                      <span className="font-semibold">Active:</span>{" "}
+                      {currentDepartment?.active ? (
+                        <div className="ms-1 text-green-400">
+                          <HiCheckCircle />
+                        </div>
+                      ) : (
+                        <div className="ms-1 text-red-400">
+                          <HiXCircle />
+                        </div>
+                      )}
+                    </div>
+                  </li>
+                  <li>
+                    <span className="font-semibold">Zipcode:</span>{" "}
+                    {currentDepartment?.zipcode}
+                  </li>
+                  {currentDepartment.type === "POSTOFFICE" && (
+                    <li>
+                      <span className="font-semibold">Storage:</span>{" "}
+                      <button
+                        className="font-medium text-cyan-600 hover:underline dark:text-cyan-500"
+                        onClick={() => {
+                          setOpenDetailModal(false);
+                          setCurrentDepartmentId(currentDepartment.cfs._id);
+                          setKeyword(
+                            currentDepartment.cfs.district +
+                              " " +
+                              currentDepartment.cfs.type,
+                          );
+
+                          document.getElementById("searchbox")?.focus();
+                        }}
+                      >
+                        {currentDepartment?.cfs.district + " " + "STORAGE"}
+                      </button>
+                    </li>
+                  )}
+                </ul>
+              </Modal.Body>
+              <Modal.Footer>
+                <Button
+                  className="flex items-center"
+                  onClick={() => setOpentUpdateModal(true)}
+                >
+                  Update
+                </Button>
+                <Button color="gray" onClick={() => setOpenDetailModal(false)}>
+                  Close
+                </Button>
+              </Modal.Footer>
+            </>
+          ) : (
+            <>
+              <Modal.Header>Storage View</Modal.Header>
+              <Modal.Body className="dark:text-gray-200">
+                <div className="flex items-center justify-between p-2">
+                  <h1 className="text-lg font-semibold">Details</h1>
+                </div>
+                <ul className="list-disc ps-6">
+                  <li>
+                    <span className="font-semibold">Manager:</span>{" "}
+                    {currentManager?.firstname + " " + currentManager?.lastname}
+                  </li>
+                  <li>
+                    <span className="font-semibold">Name:</span>{" "}
+                    {currentDepartment?.district +
+                      " " +
+                      currentDepartment?.type}
+                  </li>
+                  <li>
+                    <span className="font-semibold">Phone:</span>{" "}
+                    {currentDepartment?.phone}
+                  </li>
+                  <li>
+                    <div className="flex items-center">
+                      <span className="font-semibold">Active:</span>{" "}
+                      {currentDepartment?.active ? (
+                        <div className="ms-1 text-green-400">
+                          <HiCheckCircle />
+                        </div>
+                      ) : (
+                        <div className="ms-1 text-red-400">
+                          <HiXCircle />
+                        </div>
+                      )}
+                    </div>
+                  </li>
+                  <li>
+                    <div className="font-semibold">Connected post offices:</div>
+                    <ul className="list-[circle] ps-5">
+                      {currentLinkedPostOffices?.map((postOffice) => (
+                        <li key={postOffice._id}>
+                          <button
+                            className="font-medium text-cyan-600 hover:underline dark:text-cyan-500"
+                            onClick={() => {
+                              setOpenDetailModal(false);
+                              setCurrentDepartmentId(postOffice._id);
+                              setKeyword(
+                                postOffice.district + " " + postOffice.type,
+                              );
+
+                              document.getElementById("searchbox")?.focus();
+                            }}
+                          >
+                            {postOffice.district + " " + postOffice.type}
+                          </button>
+                        </li>
+                      ))}
+                    </ul>
+                  </li>
+                </ul>
+              </Modal.Body>
+              <Modal.Footer>
+                <Button
+                  className="flex items-center"
+                  onClick={() => setOpentUpdateModal(true)}
+                >
+                  Update
+                </Button>
+                <Button color="gray" onClick={() => setOpenDetailModal(false)}>
+                  Close
+                </Button>
+              </Modal.Footer>
+            </>
+          )}
+        </Modal>
+
         {/* Storage view */}
         <div
           id="storageView"
@@ -232,7 +410,6 @@ export default function Departments() {
           <h1 className="mb-4 text-center text-lg font-semibold">
             Storage View
           </h1>
-
           <hr className="mt-4 font-bold text-black" />
           <div className="flex items-center justify-between p-2">
             <h1 className="text-lg font-semibold">Details</h1>
@@ -279,7 +456,13 @@ export default function Departments() {
                   <li key={postOffice._id}>
                     <button
                       className="font-medium text-cyan-600 hover:underline dark:text-cyan-500"
-                      onClick={() => showDetail(postOffice._id, "POSTOFFICE")}
+                      onClick={() =>
+                        showDetail(
+                          postOffice._id,
+                          postOffice.district + " " + postOffice.type,
+                          "POSTOFFICE",
+                        )
+                      }
                     >
                       {postOffice.district + " " + postOffice.type}
                     </button>

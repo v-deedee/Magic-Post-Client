@@ -4,13 +4,15 @@ import { Department } from "../../../models/Department";
 interface IDepartmentTableProps {
   departments: Array<Department>;
   currentDepartmentId: string;
-  showDetail: (id: string, type: string) => void;
+  showDetail: (id: string, name: string, type: string) => void;
+  showDetailModal: (id: string) => void;
 }
 
 const DepartmentTable: React.FC<IDepartmentTableProps> = ({
   departments,
   currentDepartmentId,
   showDetail,
+  showDetailModal,
 }) => {
   return (
     <>
@@ -55,7 +57,7 @@ const DepartmentTable: React.FC<IDepartmentTableProps> = ({
                 </div>
                 <button
                   className="font-medium text-cyan-600 hover:underline dark:text-cyan-500 sm:hidden"
-                  onClick={() => showDetail(department._id, department.type)}
+                  onClick={() => showDetailModal(department._id)}
                 >
                   Detail
                 </button>
@@ -75,7 +77,13 @@ const DepartmentTable: React.FC<IDepartmentTableProps> = ({
               <Table.Cell className="hidden sm:table-cell">
                 <button
                   className="font-medium text-cyan-600 hover:underline dark:text-cyan-500"
-                  onClick={() => showDetail(department._id, department.type)}
+                  onClick={() =>
+                    showDetail(
+                      department._id,
+                      department.district + " " + department.type,
+                      department.type,
+                    )
+                  }
                 >
                   Detail
                 </button>
