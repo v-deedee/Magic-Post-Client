@@ -1,18 +1,17 @@
 import { Button, Modal } from "flowbite-react";
 import { HiCheckCircle, HiExclamationCircle } from "react-icons/hi";
 
-interface AfterCreateModalProps {
+interface AfterUpdateModalProps {
   openModal: boolean;
   setOpenModal: (newStatus: boolean) => void;
   success: boolean;
   userInfo: string;
 }
 
-const AfterCreateModal: React.FC<AfterCreateModalProps> = ({
+const AfterUpdateModal: React.FC<AfterUpdateModalProps> = ({
   openModal,
   setOpenModal,
   success,
-  userInfo,
 }) => {
   return (
     <>
@@ -31,12 +30,8 @@ const AfterCreateModal: React.FC<AfterCreateModalProps> = ({
                   <span className="me-2 text-3xl text-green-500">
                     <HiCheckCircle />
                   </span>
-                  A new user has been added:
+                  Update Successfully!
                 </div>
-                <ul className="list-disc ps-10">
-                  <li>Username: {userInfo}</li>
-                  <li>Password: {userInfo}</li>
-                </ul>
               </>
             ) : (
               <>
@@ -60,4 +55,4 @@ const AfterCreateModal: React.FC<AfterCreateModalProps> = ({
   );
 };
 
-export default AfterCreateModal;
+export default AfterUpdateModal;

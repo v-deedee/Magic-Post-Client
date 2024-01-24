@@ -15,17 +15,22 @@ import SearchBox from "../../../components/SearchBox";
 import { Manager, defaultManager } from "../../../models/Manager";
 import AfterCreateModal from "./modals/AfterCreateModal";
 import { Modal, Button } from "flowbite-react";
+import AfterUpdateModal from "./modals/AfterUpdateModal";
 
 export default function Managers() {
   const [openCreateModal, setOpenCreateModal] = useState(false);
 
   const [openAfterCreateModal, setOpenAfterCreateModal] = useState(false);
 
-  const [isSuccess, setIsSuccess] = useState(false);
+  const [isCreateSuccess, setIsCreateSuccess] = useState(false);
 
   const [newUserInfo, setNewUserInfo] = useState("");
 
   const [openUpdateModal, setOpentUpdateModal] = useState(false);
+
+  const [openAfterUpdateModal, setOpenAfterUpdateModal] = useState(false);
+
+  const [isUpdateSuccess, setIsUpdateSuccess] = useState(false);
 
   const [openDetailModal, setOpenDetailModal] = useState(false);
 
@@ -288,7 +293,7 @@ export default function Managers() {
           fetchManagers={fetchManagers}
           openAfterModal={(success: boolean, userInfo: string) => {
             setOpenAfterCreateModal(true);
-            setIsSuccess(success);
+            setIsCreateSuccess(success);
             setNewUserInfo(userInfo);
           }}
         />
@@ -296,7 +301,7 @@ export default function Managers() {
         <AfterCreateModal
           openModal={openAfterCreateModal}
           setOpenModal={setOpenAfterCreateModal}
-          success={isSuccess}
+          success={isCreateSuccess}
           userInfo={newUserInfo}
         />
 
@@ -306,6 +311,17 @@ export default function Managers() {
           departments={departments}
           currentManager={currentManager}
           fetchCurrentManagers={fetchCurrentManagers}
+          openAfterModal={(success: boolean) => {
+            setOpenAfterUpdateModal(true);
+            setIsUpdateSuccess(success);
+          }}
+        />
+
+        <AfterUpdateModal
+          openModal={openAfterUpdateModal}
+          setOpenModal={setOpenAfterUpdateModal}
+          success={isUpdateSuccess}
+          userInfo={newUserInfo}
         />
       </div>
     </>

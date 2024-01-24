@@ -1,7 +1,7 @@
 import { Button, Modal } from "flowbite-react";
 import { HiCheckCircle, HiExclamationCircle } from "react-icons/hi";
 
-interface AfterCreateModalProps {
+interface AfterUpdateModalProps {
   openModal: boolean;
   setOpenModal: (newStatus: boolean) => void;
   message: {
@@ -10,7 +10,7 @@ interface AfterCreateModalProps {
   };
 }
 
-const AfterCreateModal: React.FC<AfterCreateModalProps> = ({
+const AfterUpdateModal: React.FC<AfterUpdateModalProps> = ({
   openModal,
   setOpenModal,
   message,
@@ -50,4 +50,4 @@ const AfterCreateModal: React.FC<AfterCreateModalProps> = ({
   );
 };
 
-export default AfterCreateModal;
+export default AfterUpdateModal;

@@ -1,16 +1,17 @@
 import { Modal, Button, Label, TextInput, Select } from "flowbite-react";
 import { useForm, SubmitHandler } from "react-hook-form";
-import { IManager } from "..";
 import { useEffect } from "react";
 import { Department } from "../../../../models/Department";
 import { updateManager } from "../../../../services/bossApi";
+import { Manager } from "../../../../models/Manager";
 
 interface UpdateManagerModalProps {
   openModal: boolean;
   setOpenModal: (newStatus: boolean) => void;
-  currentManager: IManager;
+  currentManager: Manager;
   departments: Array<Department>;
   fetchCurrentManagers: () => void;
+  openAfterModal: (success: boolean) => void;
 }
 
 interface IFormInput {
@@ -28,6 +29,7 @@ const UpdateManagerModal: React.FC<UpdateManagerModalProps> = ({
   currentManager,
   departments,
   fetchCurrentManagers,
+  openAfterModal,
 }) => {
   const {
     register,
@@ -42,10 +44,15 @@ const UpdateManagerModal: React.FC<UpdateManagerModalProps> = ({
     console.log(data);
     setOpenModal(false);
 
-    const res = await updateManager(currentManager.username, data);
-    console.log(res);
-
-    fetchCurrentManagers();
+    try {
+      const res = await updateManager(currentManager.username, data);
+      console.log(res);
+      openAfterModal(true);
+      fetchCurrentManagers();
+    } catch (error) {
+      console.log(error);
+      openAfterModal(false);
+    }
 
     reset();
   };

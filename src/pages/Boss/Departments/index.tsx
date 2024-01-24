@@ -15,6 +15,7 @@ import SearchBox from "../../../components/SearchBox";
 import { Manager } from "../../../models/Manager";
 import AfterCreateModal from "./modals/AfterCreateModal";
 import { Modal, Button } from "flowbite-react";
+import AfterUpdateModal from "./modals/AfterUpdateModal";
 
 export default function Departments() {
   const [openCreateModal, setOpenCreateModal] = useState(false);
@@ -27,6 +28,13 @@ export default function Departments() {
   });
 
   const [openUpdateModal, setOpentUpdateModal] = useState(false);
+
+  const [openAfterUpdateModal, setopenAfterUpdateModal] = useState(false);
+
+  const [afterUpdateMessage, setAfterUpdateMessage] = useState({
+    success: false,
+    content: "",
+  });
 
   const [openDetailModal, setOpenDetailModal] = useState(false);
 
@@ -500,6 +508,19 @@ export default function Departments() {
           currentDepartment={currentDepartment}
           departments={departments}
           fetchDetail={fetchDetail}
+          openAfterModal={(success: boolean, content: string) => {
+            setopenAfterUpdateModal(true);
+            setAfterUpdateMessage({
+              success: success,
+              content: content,
+            });
+          }}
+        />
+
+        <AfterUpdateModal
+          openModal={openAfterUpdateModal}
+          setOpenModal={setopenAfterUpdateModal}
+          message={afterUpdateMessage}
         />
       </div>
     </>

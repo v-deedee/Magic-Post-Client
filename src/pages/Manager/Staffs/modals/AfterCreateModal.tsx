@@ -23,11 +23,11 @@ const AfterCreateModal: React.FC<AfterCreateModalProps> = ({
         onClose={() => setOpenModal(false)}
       >
         <Modal.Header>{success ? "Successfully" : "Error"}</Modal.Header>
-        <Modal.Body>
+        <Modal.Body className="dark:text-gray-50">
           <div className="space-y-6">
             {success ? (
               <>
-                <div className="flex items-center ">
+                <div className="flex items-center">
                   <span className="me-2 text-3xl text-green-500">
                     <HiCheckCircle />
                   </span>
@@ -40,10 +40,12 @@ const AfterCreateModal: React.FC<AfterCreateModalProps> = ({
               </>
             ) : (
               <>
-                <span className="me-2 text-3xl text-red-500">
-                  <HiExclamationCircle />
-                </span>
-                Something went wrong!
+                <div className="flex items-center">
+                  <span className="me-2 text-3xl text-red-500">
+                    <HiExclamationCircle />
+                  </span>
+                  Something went wrong!
+                </div>
               </>
             )}
           </div>

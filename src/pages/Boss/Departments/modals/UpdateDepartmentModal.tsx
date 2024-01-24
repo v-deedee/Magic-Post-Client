@@ -10,6 +10,7 @@ interface UpdateDepartmentModalProps {
   currentDepartment: Department;
   departments: Array<Department>;
   fetchDetail: () => void;
+  openAfterModal: (success: boolean, content: string) => void;
 }
 
 interface IFormInput {
@@ -28,6 +29,7 @@ const UpdateDepartmentModal: React.FC<UpdateDepartmentModalProps> = ({
   currentDepartment,
   departments,
   fetchDetail,
+  openAfterModal,
 }) => {
   const {
     register,
@@ -41,10 +43,16 @@ const UpdateDepartmentModal: React.FC<UpdateDepartmentModalProps> = ({
     console.log(data);
     setOpenModal(false);
 
-    const res = await updateDepartment(currentDepartment._id, data);
-    console.log(res);
+    try {
+      const res = await updateDepartment(currentDepartment._id, data);
+      console.log(res);
+      openAfterModal(true, "Update successfully!");
 
-    fetchDetail();
+      fetchDetail();
+    } catch (error) {
+      console.log(error);
+      openAfterModal(false, "Something went wrong!");
+    }
 
     reset();
   };
