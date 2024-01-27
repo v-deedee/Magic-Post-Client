@@ -24,6 +24,226 @@ interface IFormInput {
 const provinces = [
   {
     index: 0,
+    province: "An Giang",
+    districts: [
+      "Long Xuyen",
+      "Chau Doc",
+      "An Phu",
+      "Tan Chau",
+      "Thoai Son",
+      "Chau Phu",
+    ],
+  },
+  {
+    index: 1,
+    province: "Ba Ria-Vung Tau",
+    districts: [
+      "Ba Ria",
+      "Vung Tau",
+      "Chau Duc",
+      "Con Dao",
+      "Dat Do",
+      "Long Dien",
+      "Tan Thanh",
+      "Xuyen Moc",
+    ],
+  },
+  {
+    index: 2,
+    province: "Bac Giang",
+    districts: [
+      "Bac Giang",
+      "Yen The",
+      "Luc Nam",
+      "Luc Ngan",
+      "Son Dong",
+      "Tan Yen",
+      "Viet Yen",
+      "Hiep Hoa",
+    ],
+  },
+  {
+    index: 3,
+    province: "Bac Kan",
+    districts: [
+      "Bac Kan",
+      "Bac Can",
+      "Cho Don",
+      "Ba Be",
+      "Pac Nam",
+      "Pac Ngoi",
+    ],
+  },
+  {
+    index: 4,
+    province: "Bac Lieu",
+    districts: [
+      "Bac Lieu",
+      "Hồng Dan",
+      "Phước Long",
+      "Vĩnh Lợi",
+      "Gia Rai",
+      "Dong Hai",
+    ],
+  },
+  {
+    index: 5,
+    province: "Bac Ninh",
+    districts: [
+      "Bac Ninh",
+      "Tuu Son",
+      "Tien Du",
+      "Que Vo",
+      "Gia Binh",
+      "Yen Phong",
+    ],
+  },
+  {
+    index: 6,
+    province: "Ben Tre",
+    districts: [
+      "Ben Tre",
+      "Chau Thanh",
+      "Chau Thanh",
+      "Cho Lach",
+      "Giong Trom",
+      "Mo Cay",
+    ],
+  },
+  {
+    index: 9,
+    province: "Binh Dinh",
+    districts: [
+      "Quy Nhon",
+      "An Nhon",
+      "Tay Son",
+      "Hoai Nhon",
+      "Phu My",
+      "Van Canh",
+    ],
+  },
+  {
+    index: 10,
+    province: "Binh Duong",
+    districts: [
+      "Thu Dau Mot",
+      "Thuan An",
+      "Di An",
+      "Tan Uyen",
+      "Ben Cat",
+      "Bau Bang",
+    ],
+  },
+  {
+    index: 11,
+    province: "Binh Phuoc",
+    districts: [
+      "Dong Xoai",
+      "Phuoc Long",
+      "Binh Long",
+      "Chon Thanh",
+      "Dong Phu",
+      "Bu Dang",
+    ],
+  },
+  {
+    index: 12,
+    province: "Binh Thuan",
+    districts: [
+      "Phan Thiet",
+      "La Gi",
+      "Tuy Phong",
+      "Bac Binh",
+      "Ham Thuan Bac",
+      "Ham Thuan Nam",
+    ],
+  },
+  {
+    index: 14,
+    province: "Ca Mau",
+    districts: [
+      "Ca Mau",
+      "U Minh",
+      "Dam Doi",
+      "Ngoc Hien",
+      "Thoi Binh",
+      "Tran Van Thoi",
+    ],
+  },
+  {
+    index: 15,
+    province: "Can Tho",
+    districts: [
+      "Ninh Kieu",
+      "Binh Thuy",
+      "Cai Rang",
+      "O Mon",
+      "Thot Not",
+      "Vinh Thanh",
+    ],
+  },
+  {
+    index: 18,
+    province: "Da Nang",
+    districts: [
+      "Hai Chau",
+      "Thanh Khe",
+      "Son Tra",
+      "Ngu Hanh Son",
+      "Cam Le",
+      "Lien Chieu",
+    ],
+  },
+  {
+    index: 19,
+    province: "Dak Lak",
+    districts: [
+      "Buon Ma Thuot",
+      "Buon Ho",
+      "Buon Don",
+      "Ea Kar",
+      "Ea Sup",
+      "Krong Buk",
+    ],
+  },
+  {
+    index: 20,
+    province: "Dong Nai",
+    districts: [
+      "Bien Hoa",
+      "Long Khanh",
+      "Nhon Trach",
+      "Cam My",
+      "Thong Nhat",
+      "Tan Phu",
+    ],
+  },
+  {
+    index: 21,
+    province: "Dong Thap",
+    districts: [
+      "Cao Lanh",
+      "Sa Dec",
+      "Hong Ngu",
+      "Tan Hong",
+      "Tam Nong",
+      "Thap Muoi",
+    ],
+  },
+  {
+    index: 24,
+    province: "Gia Lai",
+    districts: [
+      "Pleiku",
+      "An Khe",
+      "Ayun Pa",
+      "Chu Pah",
+      "Ia Grai",
+      "Mang Yang",
+    ],
+  },
+  {
+    index: 25,
     province: "Ha Noi",
     districts: [
       "Ba Dinh",
@@ -41,8 +261,44 @@ const provinces = [
     ],
   },
   {
-    index: 1,
-    province: "Ho Chi Minh City",
+    index: 26,
+    province: "Hai Duong",
+    districts: [
+      "Hai Duong",
+      "Kinh Mon",
+      "Nam Sach",
+      "Ninh Giang",
+      "Cam Giang",
+      "Thanh Ha",
+    ],
+  },
+  {
+    index: 27,
+    province: "Hai Phong",
+    districts: [
+      "Hong Bang",
+      "Ngo Quyen",
+      "Le Chan",
+      "Kien An",
+      "Hai An",
+      "Duong Kinh",
+    ],
+  },
+  {
+    index: 28,
+    province: "Hau Giang",
+    districts: [
+      "Vi Thanh",
+      "Vung Liem",
+      "Long My",
+      "Chau Thanh",
+      "Chau Thanh",
+      "Phung Hiep",
+    ],
+  },
+  {
+    index: 32,
+    province: "Ho Chi Minh",
     districts: [
       "District 1",
       "District 2",
@@ -65,55 +321,7 @@ const provinces = [
     ],
   },
   {
-    index: 2,
-    province: "Hai Phong",
-    districts: [
-      "Hong Bang",
-      "Ngo Quyen",
-      "Le Chan",
-      "Kien An",
-      "Hai An",
-      "Duong Kinh",
-    ],
-  },
-  {
-    index: 3,
-    province: "Da Nang",
-    districts: [
-      "Hai Chau",
-      "Thanh Khe",
-      "Son Tra",
-      "Ngu Hanh Son",
-      "Cam Le",
-      "Lien Chieu",
-    ],
-  },
-  {
-    index: 4,
-    province: "Hai Duong",
-    districts: [
-      "Hai Duong",
-      "Kinh Mon",
-      "Nam Sach",
-      "Ninh Giang",
-      "Cam Giang",
-      "Thanh Ha",
-    ],
-  },
-  {
-    index: 5,
-    province: "Hung Yen",
-    districts: [
-      "Hung Yen",
-      "My Hao",
-      "Van Lam",
-      "An Thi",
-      "Khoai Chau",
-      "Kim Dong",
-    ],
-  },
-  {
-    index: 6,
+    index: 33,
     province: "Hoa Binh",
     districts: [
       "Hoa Binh",
@@ -125,139 +333,19 @@ const provinces = [
     ],
   },
   {
-    index: 7,
-    province: "Ninh Binh",
+    index: 34,
+    province: "Hung Yen",
     districts: [
-      "Ninh Binh",
-      "Tam Diep",
-      "Nho Quan",
-      "Gia Vien",
-      "Hoa Lu",
-      "Yen Khanh",
+      "Hung Yen",
+      "My Hao",
+      "Van Lam",
+      "An Thi",
+      "Khoai Chau",
+      "Kim Dong",
     ],
   },
   {
-    index: 8,
-    province: "Thai Binh",
-    districts: [
-      "Thai Binh",
-      "Hung Ha",
-      "Quynh Phu",
-      "Quynh Luu",
-      "Dong Hung",
-      "Tien Hai",
-    ],
-  },
-  {
-    index: 9,
-    province: "Vinh Phuc",
-    districts: [
-      "Vinh Yen",
-      "Phuc Yen",
-      "Yen Lac",
-      "Tam Dao",
-      "Binh Xuyen",
-      "Song Lo",
-    ],
-  },
-  {
-    index: 10,
-    province: "Phu Tho",
-    districts: [
-      "Viet Tri",
-      "Hung Hoa",
-      "Thuy Nguyen",
-      "Thanh Ba",
-      "Yen Lap",
-      "Cam Khe",
-    ],
-  },
-  {
-    index: 11,
-    province: "Bac Ninh",
-    districts: [
-      "Bac Ninh",
-      "Tuu Son",
-      "Tien Du",
-      "Que Vo",
-      "Gia Binh",
-      "Yen Phong",
-    ],
-  },
-  {
-    index: 12,
-    province: "Quang Ninh",
-    districts: [
-      "Ha Long",
-      "Mong Cai",
-      "Cam Pha",
-      "Uong Bi",
-      "Quang Yen",
-      "Dong Trieu",
-    ],
-  },
-  {
-    index: 13,
-    province: "Thua Thien Hue",
-    districts: [
-      "Hue",
-      "Quang Dien",
-      "Phong Dien",
-      "Phu Vang",
-      "Huong Tra",
-      "Huong Thuy",
-    ],
-  },
-  {
-    index: 14,
-    province: "Quang Nam",
-    districts: [
-      "Tam Ky",
-      "Hoi An",
-      "Dai Loc",
-      "Dien Ban",
-      "Dai Loc",
-      "Dong Giang",
-    ],
-  },
-  {
-    index: 15,
-    province: "Quang Ngai",
-    districts: [
-      "Quang Ngai",
-      "Binh Son",
-      "Son Tinh",
-      "Tu Nghia",
-      "Minh Long",
-      "Mo Duc",
-    ],
-  },
-  {
-    index: 16,
-    province: "Binh Dinh",
-    districts: [
-      "Quy Nhon",
-      "An Nhon",
-      "Tay Son",
-      "Hoai Nhon",
-      "Phu My",
-      "Van Canh",
-    ],
-  },
-  {
-    index: 17,
-    province: "Phu Yen",
-    districts: [
-      "Tuy Hoa",
-      "Dong Hoa",
-      "Tay Hoa",
-      "Song Hinh",
-      "Dong Xuan",
-      "Son Hoa",
-    ],
-  },
-  {
-    index: 18,
+    index: 35,
     province: "Khanh Hoa",
     districts: [
       "Nha Trang",
@@ -266,210 +354,6 @@ const provinces = [
       "Khanh Vinh",
       "Van Ninh",
       "Dien Khanh",
-    ],
-  },
-  {
-    index: 19,
-    province: "Ninh Thuan",
-    districts: [
-      "Phan Rang - Thap Cham",
-      "Bac Ai",
-      "Ninh Son",
-      "Ninh Hai",
-      "Ninh Phuoc",
-      "Thuong Hai",
-    ],
-  },
-  {
-    index: 20,
-    province: "Binh Thuan",
-    districts: [
-      "Phan Thiet",
-      "La Gi",
-      "Tuy Phong",
-      "Bac Binh",
-      "Ham Thuan Bac",
-      "Ham Thuan Nam",
-    ],
-  },
-  {
-    index: 21,
-    province: "Kon Tum",
-    districts: [
-      "Kon Tum",
-      "Dak Glei",
-      "Ngoc Hoi",
-      "Dak To",
-      "Kon Plong",
-      "Tu Mo Rong",
-    ],
-  },
-  {
-    index: 22,
-    province: "Gia Lai",
-    districts: [
-      "Pleiku",
-      "An Khe",
-      "Ayun Pa",
-      "Chu Pah",
-      "Ia Grai",
-      "Mang Yang",
-    ],
-  },
-  {
-    index: 23,
-    province: "Dak Lak",
-    districts: [
-      "Buon Ma Thuot",
-      "Buon Ho",
-      "Buon Don",
-      "Ea Kar",
-      "Ea Sup",
-      "Krong Buk",
-    ],
-  },
-  {
-    index: 24,
-    province: "Lam Dong",
-    districts: [
-      "Da Lat",
-      "Bao Loc",
-      "Don Duong",
-      "Duc Trong",
-      "Di Linh",
-      "Lac Duong",
-    ],
-  },
-  {
-    index: 25,
-    province: "Binh Duong",
-    districts: [
-      "Thu Dau Mot",
-      "Thuan An",
-      "Di An",
-      "Tan Uyen",
-      "Ben Cat",
-      "Bau Bang",
-    ],
-  },
-  {
-    index: 26,
-    province: "Dong Nai",
-    districts: [
-      "Bien Hoa",
-      "Long Khanh",
-      "Nhon Trach",
-      "Cam My",
-      "Thong Nhat",
-      "Tan Phu",
-    ],
-  },
-  {
-    index: 27,
-    province: "Binh Phuoc",
-    districts: [
-      "Dong Xoai",
-      "Phuoc Long",
-      "Binh Long",
-      "Chon Thanh",
-      "Dong Phu",
-      "Bu Dang",
-    ],
-  },
-  {
-    index: 28,
-    province: "Tay Ninh",
-    districts: [
-      "Tay Ninh",
-      "Trang Bang",
-      "Go Dau",
-      "Duong Minh Chau",
-      "Chau Thanh",
-      "Ben Cau",
-    ],
-  },
-  {
-    index: 29,
-    province: "Binh Thuan",
-    districts: [
-      "Phan Thiet",
-      "La Gi",
-      "Tuy Phong",
-      "Bac Binh",
-      "Ham Thuan Bac",
-      "Ham Thuan Nam",
-    ],
-  },
-  {
-    index: 30,
-    province: "Long An",
-    districts: [
-      "Tan An",
-      "Kien Tuong",
-      "Can Giuoc",
-      "Can Duoc",
-      "Ben Luc",
-      "Duc Hoa",
-    ],
-  },
-  {
-    index: 31,
-    province: "Tien Giang",
-    districts: [
-      "My Tho",
-      "Go Cong",
-      "Cai Lay",
-      "Cai Be",
-      "Chau Thanh",
-      "Tan Phuoc",
-    ],
-  },
-  {
-    index: 32,
-    province: "Ben Tre",
-    districts: [
-      "Ben Tre",
-      "Chau Thanh",
-      "Chau Thanh",
-      "Cho Lach",
-      "Giong Trom",
-      "Mo Cay",
-    ],
-  },
-  {
-    index: 33,
-    province: "Tra Vinh",
-    districts: [
-      "Tra Vinh",
-      "Cang Long",
-      "Chau Thanh",
-      "Cau Ke",
-      "Tieu Can",
-      "Duyen Hai",
-    ],
-  },
-  {
-    index: 34,
-    province: "Vinh Long",
-    districts: [
-      "Vinh Long",
-      "Long Ho",
-      "Mang Thit",
-      "Tam Binh",
-      "Tra On",
-      "Vung Liem",
-    ],
-  },
-  {
-    index: 35,
-    province: "Hau Giang",
-    districts: [
-      "Vi Thanh",
-      "Vung Liem",
-      "Long My",
-      "Chau Thanh",
-      "Chau Thanh",
-      "Phung Hiep",
     ],
   },
   {
@@ -485,247 +369,127 @@ const provinces = [
     ],
   },
   {
-    index: 37,
-    province: "Can Tho",
-    districts: [
-      "Ninh Kieu",
-      "Binh Thuy",
-      "Cai Rang",
-      "O Mon",
-      "Thot Not",
-      "Vinh Thanh",
-    ],
-  },
-  {
-    index: 38,
-    province: "An Giang",
-    districts: [
-      "Long Xuyen",
-      "Chau Doc",
-      "An Phu",
-      "Tan Chau",
-      "Thoai Son",
-      "Chau Phu",
-    ],
-  },
-  {
     index: 39,
-    province: "Dong Thap",
+    province: "Kon Tum",
     districts: [
-      "Cao Lanh",
-      "Sa Dec",
-      "Hong Ngu",
-      "Tan Hong",
-      "Tam Nong",
-      "Thap Muoi",
+      "Kon Tum",
+      "Dak Glei",
+      "Ngoc Hoi",
+      "Dak To",
+      "Kon Plong",
+      "Tu Mo Rong",
     ],
   },
   {
     index: 40,
-    province: "Tien Giang",
+    province: "Lam Dong",
     districts: [
-      "My Tho",
-      "Go Cong",
-      "Cai Lay",
-      "Cai Be",
-      "Chau Thanh",
-      "Tan Phuoc",
+      "Da Lat",
+      "Bao Loc",
+      "Don Duong",
+      "Duc Trong",
+      "Di Linh",
+      "Lac Duong",
     ],
   },
   {
     index: 41,
-    province: "Vinh Long",
+    province: "Long An",
     districts: [
-      "Vinh Long",
-      "Long Ho",
-      "Mang Thit",
-      "Tam Binh",
-      "Tra On",
-      "Vung Liem",
+      "Tan An",
+      "Kien Tuong",
+      "Can Giuoc",
+      "Can Duoc",
+      "Ben Luc",
+      "Duc Hoa",
     ],
   },
   {
     index: 42,
-    province: "Hau Giang",
+    province: "Ninh Binh",
     districts: [
-      "Vi Thanh",
-      "Vung Liem",
-      "Long My",
-      "Chau Thanh",
-      "Chau Thanh",
-      "Phung Hiep",
+      "Ninh Binh",
+      "Tam Diep",
+      "Nho Quan",
+      "Gia Vien",
+      "Hoa Lu",
+      "Yen Khanh",
     ],
   },
   {
     index: 43,
-    province: "Kien Giang",
+    province: "Ninh Thuan",
     districts: [
-      "Rach Gia",
-      "Ha Tien",
-      "Kien Luong",
-      "Hon Dat",
-      "Tan Hiep",
-      "Chau Thanh",
+      "Phan Rang - Thap Cham",
+      "Bac Ai",
+      "Ninh Son",
+      "Ninh Hai",
+      "Ninh Phuoc",
+      "Thuong Hai",
     ],
   },
   {
     index: 44,
-    province: "Can Tho",
+    province: "Phu Tho",
     districts: [
-      "Ninh Kieu",
-      "Binh Thuy",
-      "Cai Rang",
-      "O Mon",
-      "Thot Not",
-      "Vinh Thanh",
+      "Viet Tri",
+      "Hung Hoa",
+      "Thuy Nguyen",
+      "Thanh Ba",
+      "Yen Lap",
+      "Cam Khe",
     ],
   },
   {
     index: 45,
-    province: "An Giang",
+    province: "Phu Yen",
     districts: [
-      "Long Xuyen",
-      "Chau Doc",
-      "An Phu",
-      "Tan Chau",
-      "Thoai Son",
-      "Chau Phu",
+      "Tuy Hoa",
+      "Dong Hoa",
+      "Tay Hoa",
+      "Song Hinh",
+      "Dong Xuan",
+      "Son Hoa",
     ],
   },
   {
     index: 46,
-    province: "Dong Thap",
+    province: "Quang Nam",
     districts: [
-      "Cao Lanh",
-      "Sa Dec",
-      "Hong Ngu",
-      "Tan Hong",
-      "Tam Nong",
-      "Thap Muoi",
+      "Tam Ky",
+      "Hoi An",
+      "Dai Loc",
+      "Dien Ban",
+      "Dai Loc",
+      "Dong Giang",
     ],
   },
   {
     index: 47,
-    province: "Ben Tre",
+    province: "Quang Ngai",
     districts: [
-      "Ben Tre",
-      "Chau Thanh",
-      "Chau Thanh",
-      "Cho Lach",
-      "Giong Trom",
-      "Mo Cay",
+      "Quang Ngai",
+      "Binh Son",
+      "Son Tinh",
+      "Tu Nghia",
+      "Minh Long",
+      "Mo Duc",
     ],
   },
   {
     index: 48,
-    province: "Tra Vinh",
+    province: "Quang Ninh",
     districts: [
-      "Tra Vinh",
-      "Cang Long",
-      "Chau Thanh",
-      "Cau Ke",
-      "Tieu Can",
-      "Duyen Hai",
+      "Ha Long",
+      "Mong Cai",
+      "Cam Pha",
+      "Uong Bi",
+      "Quang Yen",
+      "Dong Trieu",
     ],
   },
   {
     index: 49,
-    province: "Vinh Long",
-    districts: [
-      "Vinh Long",
-      "Long Ho",
-      "Mang Thit",
-      "Tam Binh",
-      "Tra On",
-      "Vung Liem",
-    ],
-  },
-  {
-    index: 50,
-    province: "Hau Giang",
-    districts: [
-      "Vi Thanh",
-      "Vung Liem",
-      "Long My",
-      "Chau Thanh",
-      "Chau Thanh",
-      "Phung Hiep",
-    ],
-  },
-  {
-    index: 51,
-    province: "Kien Giang",
-    districts: [
-      "Rach Gia",
-      "Ha Tien",
-      "Kien Luong",
-      "Hon Dat",
-      "Tan Hiep",
-      "Chau Thanh",
-    ],
-  },
-  {
-    index: 52,
-    province: "Can Tho",
-    districts: [
-      "Ninh Kieu",
-      "Binh Thuy",
-      "Cai Rang",
-      "O Mon",
-      "Thot Not",
-      "Vinh Thanh",
-    ],
-  },
-  {
-    index: 53,
-    province: "An Giang",
-    districts: [
-      "Long Xuyen",
-      "Chau Doc",
-      "An Phu",
-      "Tan Chau",
-      "Thoai Son",
-      "Chau Phu",
-    ],
-  },
-  {
-    index: 54,
-    province: "Dong Thap",
-    districts: [
-      "Cao Lanh",
-      "Sa Dec",
-      "Hong Ngu",
-      "Tan Hong",
-      "Tam Nong",
-      "Thap Muoi",
-    ],
-  },
-  {
-    index: 55,
-    province: "Bac Lieu",
-    districts: [
-      "Bac Lieu",
-      "Hồng Dan",
-      "Phước Long",
-      "Vĩnh Lợi",
-      "Gia Rai",
-      "Dong Hai",
-    ],
-  },
-  {
-    index: 56,
-    province: "Ca Mau",
-    districts: [
-      "Ca Mau",
-      "U Minh",
-      "Dam Doi",
-      "Ngoc Hien",
-      "Thoi Binh",
-      "Tran Van Thoi",
-    ],
-  },
-  {
-    index: 57,
     province: "Soc Trang",
     districts: [
       "Soc Trang",
@@ -737,7 +501,55 @@ const provinces = [
     ],
   },
   {
-    index: 58,
+    index: 50,
+    province: "Tay Ninh",
+    districts: [
+      "Tay Ninh",
+      "Trang Bang",
+      "Go Dau",
+      "Duong Minh Chau",
+      "Chau Thanh",
+      "Ben Cau",
+    ],
+  },
+  {
+    index: 51,
+    province: "Thai Binh",
+    districts: [
+      "Thai Binh",
+      "Hung Ha",
+      "Quynh Phu",
+      "Quynh Luu",
+      "Dong Hung",
+      "Tien Hai",
+    ],
+  },
+  {
+    index: 52,
+    province: "Thua Thien Hue",
+    districts: [
+      "Hue",
+      "Quang Dien",
+      "Phong Dien",
+      "Phu Vang",
+      "Huong Tra",
+      "Huong Thuy",
+    ],
+  },
+  {
+    index: 53,
+    province: "Tien Giang",
+    districts: [
+      "My Tho",
+      "Go Cong",
+      "Cai Lay",
+      "Cai Be",
+      "Chau Thanh",
+      "Tan Phuoc",
+    ],
+  },
+  {
+    index: 56,
     province: "Tra Vinh",
     districts: [
       "Tra Vinh",
@@ -750,30 +562,6 @@ const provinces = [
   },
   {
     index: 59,
-    province: "Ben Tre",
-    districts: [
-      "Ben Tre",
-      "Chau Thanh",
-      "Chau Thanh",
-      "Cho Lach",
-      "Giong Trom",
-      "Mo Cay",
-    ],
-  },
-  {
-    index: 60,
-    province: "Tien Giang",
-    districts: [
-      "My Tho",
-      "Go Cong",
-      "Cai Lay",
-      "Cai Be",
-      "Chau Thanh",
-      "Tan Phuoc",
-    ],
-  },
-  {
-    index: 61,
     province: "Vinh Long",
     districts: [
       "Vinh Long",
@@ -785,27 +573,15 @@ const provinces = [
     ],
   },
   {
-    index: 62,
-    province: "Hau Giang",
-    districts: [
-      "Vi Thanh",
-      "Vung Liem",
-      "Long My",
-      "Chau Thanh",
-      "Chau Thanh",
-      "Phung Hiep",
-    ],
-  },
-  {
     index: 63,
-    province: "Bac Kan",
+    province: "Vinh Phuc",
     districts: [
-      "Bac Kan",
-      "Bac Can",
-      "Cho Don",
-      "Ba Be",
-      "Pac Nam",
-      "Pac Ngoi",
+      "Vinh Yen",
+      "Phuc Yen",
+      "Yen Lac",
+      "Tam Dao",
+      "Binh Xuyen",
+      "Song Lo",
     ],
   },
 ];
@@ -845,6 +621,7 @@ const CreateDepartmentModal: React.FC<CreateDepartmentModalProps> = ({
 
     reset();
   };
+
   return (
     <Modal
       dismissible
@@ -863,12 +640,19 @@ const CreateDepartmentModal: React.FC<CreateDepartmentModalProps> = ({
             <div className="mb-2 block">
               <Label htmlFor="province" value="Province" />
             </div>
-            <TextInput
-              id="province"
-              type="text"
-              {...register("province", { required: true })}
-              placeholder="Enter province"
-            />
+            <Select id="province" {...register("province", { required: true })}>
+              <option value="" defaultChecked>
+                Select province
+              </option>
+              {provinces.map((province) => (
+                <option
+                  key={"province" + province.index}
+                  value={province.province}
+                >
+                  {province.province}
+                </option>
+              ))}
+            </Select>
 
             {errors.province && (
               <p className="text-red-500 dark:text-red-400">
@@ -882,12 +666,20 @@ const CreateDepartmentModal: React.FC<CreateDepartmentModalProps> = ({
             <div className="mb-2 block">
               <Label htmlFor="district" value="District" />
             </div>
-            <TextInput
-              id="district"
-              type="text"
-              {...register("district", { required: true })}
-              placeholder="Select district"
-            />
+
+            <Select id="district" {...register("district", { required: true })}>
+              <option value="" defaultChecked>
+                Select district
+              </option>
+              {watch("province") &&
+                provinces
+                  .find((province) => province.province === watch("province"))
+                  ?.districts.map((district, index) => (
+                    <option key={district + index} value={district}>
+                      {district}
+                    </option>
+                  ))}
+            </Select>
 
             {errors.district && (
               <p className="text-red-500 dark:text-red-400">

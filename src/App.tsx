@@ -32,7 +32,7 @@ export default function HomePage() {
               </span>
             </a>
 
-            <div className="flex w-1/2 content-center justify-end">
+            <div className="flex content-center justify-end">
               <Link to="/login">
                 <Button color="blue">Login</Button>
               </Link>
@@ -137,7 +137,7 @@ export default function HomePage() {
         </section>
 
         {/* Second section */}
-        <section className="lg:bg-gray-100">
+        <section className="dark:bg-gray-800 lg:bg-gray-100">
           <div className="container mx-auto">
             <div className="space-y-12 px-5 py-8 lg:space-y-20 lg:px-6 lg:py-20">
               <div className="items-center gap-8 lg:grid lg:grid-cols-2 xl:gap-16">
