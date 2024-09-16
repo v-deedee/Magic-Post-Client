@@ -5,7 +5,8 @@
 #TailwindCSS**
 
 
-#### _(This repo only contains the Front-end source code. The server source code is located in a different repo.)_
+#### Server: https://github.com/pbdanh/Magic-Post-Server
+#### Demo: https://www.youtube.com/watch?v=EIR40qNdMPw
 
 MagicPost là công ty hoạt động trong lĩnh vực chuyển phát. Công ty này có các điểm giao dịch phủ khắp cả nước. Mỗi điểm giao dịch phụ trách một vùng. Ngoài các điểm giao dịch, công ty cũng có nhiều điểm tập kết hàng hóa. Mỗi điểm giao dịch sẽ làm việc với một điểm tập kết. Ngược lại, một điểm tập kết sẽ làm việc với nhiều điểm giao dịch.
 
